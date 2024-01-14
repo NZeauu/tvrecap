@@ -14,10 +14,13 @@ TVRecap is a web application that allows users to search for TV shows and movies
 ${\textcolor{red}{WARNING}}$: This will overwrite any existing tables with the same name. This is a MariaDB database, so it may not work with other SQL databases.
 
 ## Features
-- [ ] Remember me functionality on login
 - [ ] Avatar choice on account parameters
+- [ ] Responsive website (for screen under 15")
+- [ ] Remember me functionality on login
+- [ ] Forget password
 - [ ] Multi languages choice
 - [ ] Search bar
+      
 
 ## License
 This project is licensed under the AFL-3.0 License - see the [LICENSE.md](LICENSE.md) file for details
