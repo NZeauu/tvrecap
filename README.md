@@ -1,7 +1,7 @@
 # TVRecap
 
 ## Description
-TVRecap is a web application that allows users to search for TV shows and movies and view information about them. Users can also create an account and add shows/movies to their watchlist.
+TVRecap is a web application that allows users to search for TV shows and movies and view information about them. Users can also create an account and add shows/movies to their watchlist. The pages are <span style="color: red; font-weight: bold;">ONLY IN FRENCH</span> for the moment.
 
 ## Technologies Used
 - [MySQL](https://www.mysql.com/)
