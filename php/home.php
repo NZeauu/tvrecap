@@ -15,40 +15,59 @@ $request =substr($_SERVER['PATH_INFO'], 1);
 $request = explode('/', $request);
 $requestResource = array_shift($request);
 
-if($requestResource == "mail"){
+if($requestResource == "username"){
+
     $data = false;
 
-    // Check if the request is a POST request
     if($requestMethod == "GET"){
-
-        // Get the data from the request
+        
         $email = $_GET['email'];
 
-        $data = checkMail($db, $email);
+        $data = getUsername($db, $email);
+
     }
 
 }
 
-if($requestResource == "login"){
+if($requestResource == "totaltime"){
+
     $data = false;
 
-    // Check if the request is a POST request
-    if($requestMethod == "POST"){
+    if($requestMethod == "GET"){
+        
+        $email = $_GET['email'];
 
-        // Get the data from the request
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-
-        $data = connectionAccount($db, $email, $password);
-
-        // Create a cookie session with the user id
-        if($data){
-            setcookie('user_id', $email, time() + 3600, '/');
-        }
+        $data = getTotalTime($db, $email);
 
     }
 
 }
+
+if($requestResource == "movieswatched"){
+    $data = false;
+
+    if($requestMethod == "GET"){
+        
+        $email = $_GET['email'];
+
+        $data = getMoviesWatched($db, $email);
+
+    }
+}
+
+if($requestResource == "episodeswatched"){
+    $data = false;
+
+    if($requestMethod == "GET"){
+        
+        $email = $_GET['email'];
+
+        $data = getEpisodesWatched($db, $email);
+
+    }
+}
+
+
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-control: no-store, no-cache, must-revalidate');

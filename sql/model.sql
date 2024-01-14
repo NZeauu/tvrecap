@@ -1,3 +1,12 @@
+-- DROP TABLE IF EXISTS
+DROP TABLE IF EXISTS `Seen_List`;
+DROP TABLE IF EXISTS `Accounts`;
+DROP TABLE IF EXISTS `Films`;
+DROP TABLE IF EXISTS `Episodes`;
+DROP TABLE IF EXISTS `Séries`;
+DROP TABLE IF EXISTS `Covers`;
+
+-- CREATE DATABASE
 CREATE TABLE `Covers`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `nom` VARCHAR(255) NOT NULL,
@@ -7,10 +16,9 @@ ALTER TABLE
     `Covers` ADD INDEX `covers_id_index`(`id`);
 CREATE TABLE `Episodes`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `serie` VARCHAR(255) NOT NULL,
     `nom` VARCHAR(255) NOT NULL,
     `num_ep` BIGINT NOT NULL,
-    `duree` TIME NOT NULL,
+    `duree` BIGINT NOT NULL,
     `saison` BIGINT NOT NULL,
     `serie_id` BIGINT UNSIGNED NOT NULL
 );
@@ -33,7 +41,7 @@ CREATE TABLE `Films`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `nom` VARCHAR(255) NOT NULL,
     `image_id` BIGINT UNSIGNED NOT NULL,
-    `duree` TIME NOT NULL,
+    `duree` BIGINT NOT NULL,
     `date_sortie` YEAR NOT NULL,
     `categorie` VARCHAR(255) NOT NULL,
     `synopsis` VARCHAR(255) NOT NULL,
@@ -54,8 +62,8 @@ CREATE TABLE `Seen_List`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `user_id` BIGINT UNSIGNED NOT NULL,
     `type` VARCHAR(255) NOT NULL COMMENT 'movie/serie',
-    `movie_id` BIGINT UNSIGNED NOT NULL,
-    `episode_id` BIGINT UNSIGNED NOT NULL
+    `movie_id` BIGINT UNSIGNED,
+    `episode_id` BIGINT UNSIGNED
 );
 ALTER TABLE
     `Seen_List` ADD INDEX `seen_list_id_index`(`id`);

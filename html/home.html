@@ -22,11 +22,11 @@
             </div>
             <div id="menu-links">
                 <a href="home.html" id="link" style="background-color: #F20000;"><img style="padding-right: 10px;" src="../img/home.svg"><span>Accueil</span></a>
-                <a href="series.html" id="link"><img style="padding-right: 10px;" src="../img/movie.svg"><span>Films</span></a>
-                <a href="movies.html" id="link"><img style="padding-right: 10px;" src="../img/series.svg"><span>Séries</span></a>
-                <a href="actors.html" id="link"><img style="padding-right: 10px;" src="../img/history.svg"><span>Mon historique</span></a>
-                <a href="about.html" id="link"><img style="padding-right: 10px;" src="../img/add.svg"><span>Proposer un ajout</span></a>
-                <a href="about.html" id="link"><img style="padding-right: 10px;" src="../img/settings.svg"><span>Paramètres</span></a>
+                <a href="movies.html" id="link"><img style="padding-right: 10px;" src="../img/movie.svg"><span>Films</span></a>
+                <a href="series.html" id="link"><img style="padding-right: 10px;" src="../img/series.svg"><span>Séries</span></a>
+                <a href="history.html" id="link"><img style="padding-right: 10px;" src="../img/history.svg"><span>Mon historique</span></a>
+                <a href="add.html" id="link"><img style="padding-right: 10px;" src="../img/add.svg"><span>Proposer un ajout</span></a>
+                <a href="settings.html" id="link"><img style="padding-right: 10px;" src="../img/settings.svg"><span>Paramètres</span></a>
             </div>
             <div id="disconnect">
                 <button id="logout"><img style="padding-right: 10px;" src="../img/logout.svg"><span>Déconnexion</span></button>
@@ -35,12 +35,13 @@
         <div id="content">
             <!-- Header bar -->
             <div id="header">
-                <div id="search-bar">
+                <!-- Search bar functionnality to code -->
+                <!-- <div id="search-bar">
                     <input type="text" id="search" placeholder="Rechercher une série, un film...">
                     <button id="search-button"><img src="../img/search.svg"></button>
-                </div>
+                </div> -->
                 <div id="user">
-                    <span id="username">Utilisateur</span>
+                    <span id="username"></span>
                     <div id="avatar">
                         <img src="../img/avatars/default.svg">
                     </div>
@@ -58,21 +59,21 @@
                 
                 <div id="cards">
                     <div id="card-item">
-                        <section id="card-title">Les plus populaires</section>
+                        <section id="card-title">Temps passé</section>
                         <div id="card-content">
-                            
+                            <section id="time-passed"></section>
                         </div>
                     </div>
                     <div id="card-item">
-                        <section id="card-title">Les plus populaires</section>
+                        <section id="card-title">Nombre de films vus</section>
                         <div id="card-content">
-                            
+                            <section id="movies-num"></section>
                         </div>
                     </div>
                     <div id="card-item">
-                        <section id="card-title">Les plus populaires</section>
+                        <section id="card-title">Nombre d'épisodes vus</section>
                         <div id="card-content">
-                            <section>XX:XX</section>
+                            <section id="episodes-num"></section>
                         </div>
                     </div>
                 </div>
@@ -90,3 +91,4 @@
         
         <script src="../js/home.js"></script>
     </body>
+</html>
