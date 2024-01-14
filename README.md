@@ -16,6 +16,7 @@ TVRecap is a web application that allows users to search for TV shows and movies
 ## Features
 - [ ] Remember me functionality on login
 - [ ] Avatar choice on account parameters
+- [ ] Multi languages choice
 
 ## License
 This project is licensed under the AFL-3.0 License - see the [LICENSE.md](LICENSE.md) file for details
