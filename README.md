@@ -17,6 +17,7 @@ ${\textcolor{red}{WARNING}}$: This will overwrite any existing tables with the s
 - [ ] Remember me functionality on login
 - [ ] Avatar choice on account parameters
 - [ ] Multi languages choice
+- [ ] Search bar
 
 ## License
 This project is licensed under the AFL-3.0 License - see the [LICENSE.md](LICENSE.md) file for details
