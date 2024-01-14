@@ -1,7 +1,7 @@
 # TVRecap
 
 ## Description
-TVRecap is a web application that allows users to search for TV shows and movies and view information about them. Users can also create an account and add shows/movies to their watchlist. The pages are $${\color{red}ONLY IN FRENCH}$$ for the moment.
+TVRecap is a web application that allows users to search for TV shows and movies and view information about them. Users can also create an account and add shows/movies to their watchlist. The pages are ${\color{red}ONLY IN FRENCH}$ for the moment.
 
 ## Technologies Used
 - [MySQL](https://www.mysql.com/)
@@ -11,7 +11,7 @@ TVRecap is a web application that allows users to search for TV shows and movies
 ## Installation
 1. Clone the repository to your local machine or server
 2. Create a database using and import the `model.sql` file to create the tables.<br>
-$${\color{red}WARNING}$$: This will overwrite any existing tables with the same name. This is a MariaDB database, so it may not work with other SQL databases.
+${\color{red}WARNING}$: This will overwrite any existing tables with the same name. This is a MariaDB database, so it may not work with other SQL databases.
 
 ## Features
 - [ ] Remember me functionality on login
