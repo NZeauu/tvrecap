@@ -1,5 +1,31 @@
+// If the user clicks on the register button, the register function is called
 $("#registerbutton").click(function() {
+    register();    
+});
 
+
+// If the user presses enter in one of the input fields, the register function is called
+$("#usernameinput").keypress(function(e) {
+    if (e.which == 13) {
+        register();
+    }
+});
+
+$("#passwordinput").keypress(function(e) {
+    if (e.which == 13) {
+        register();
+    }
+});
+
+$("#mailinput").keypress(function(e) {
+    if (e.which == 13) {
+        register();
+    }
+});
+
+// Register function
+
+function register(){
     //reset error messages
     $("#usernameinput").css("border-color", "#ccc");
     $("#userError").css("display", "none");
@@ -93,5 +119,4 @@ $("#registerbutton").click(function() {
             }
         });
     });
-    
-});
+}

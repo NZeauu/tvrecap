@@ -1,4 +1,24 @@
+// If the user clicks on the login button, the login function is called
 $("#loginbutton").click(function(){
+    login();  
+});
+
+// If the user presses enter in the email or password input field, the login function is called
+$("#mailinput").keypress(function(e){
+    if(e.which == 13){
+        login();
+    }
+});
+
+$("#passwordinput").keypress(function(e){
+    if(e.which == 13){
+        login();
+    }
+});
+
+
+// Login function
+function login(){
 
     //reset error messages
     $("#mailinput").css("border-color", "#ccc");
@@ -62,4 +82,4 @@ $("#loginbutton").click(function(){
         });
     }
 
-});
+}

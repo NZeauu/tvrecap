@@ -15,7 +15,7 @@ function cookieCheck() {
 // cookieCheck();
 
 // Check if the cookie is set every second
-// setInterval(cookieCheck, 1000);
+setInterval(cookieCheck, 1000);
 
 // Get the user's name from the cookie
 function getCookie(cookieName) {
@@ -39,8 +39,6 @@ function getCookie(cookieName) {
 // Set the user's name in the navbar
 function setUserName() {
     var email = getCookie("user_id");
-
-    console.log(email);
 
     if (email === null) {
         $("#username").text("User not found");
@@ -198,12 +196,18 @@ function getEpisodesWatched() {
     });
 }
 
-window.onload = function() {
+$(document).ready(function () {
+    // Get the user's name
     setUserName();
-    getTotalTime();
+    // Get the number of movies watched
     getMoviesWatched();
+
+    // Get the number of episodes watched
     getEpisodesWatched();
-}
+
+    // Get total time spent watching TV shows
+    getTotalTime();
+});
 
 // -------------------------------------------------------
 // ---------------------- LOGOUT -------------------------

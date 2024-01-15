@@ -132,6 +132,53 @@ function getUsername($conn, $email){
 // -------------- MOVIES -------------- //
 // ------------------------------------ //
 
+// Get all the movies
+function getAllMovies($conn){
+    try{
+        $sql = "SELECT * FROM Films";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $movies = array();
+
+            while($row = $result->fetch_assoc()) {
+                $movies[] = $row;
+            }
+
+            return $movies;
+        }
+        else {
+            return null;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+
+}
+
+// Get the movie cover
+// We get back the blob of the cover
+// We need to convert it to an image
+function getMovieCover($conn, $id_cover){
+    try{
+        $sql = "SELECT image FROM Covers WHERE id = '$id_cover'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+
+            return $row["image"];
+        }
+        else {
+            return null;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
 
 
 // ------------------------------------ //
