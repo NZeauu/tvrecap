@@ -15,6 +15,7 @@ ${\textcolor{red}{WARNING}}$: This will overwrite any existing tables with the s
 
 ## Features
 - [ ] Avatar choice on account parameters
+- [ ] Content adding page for admin account
 - [ ] Responsive website (for screen under 15")
 - [ ] Remember me functionality on login
 - [ ] Forget password
