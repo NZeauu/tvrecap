@@ -43,7 +43,7 @@ if($requestResource == "login"){
 
         // Create a cookie session with the user id
         if($data){
-            setcookie('user_id', $email, time() + 3600, '/');
+            setcookie('user_mail', $email, time() + 3600, '/');
         }
 
     }

@@ -136,7 +136,7 @@
 .movie-card-img{
     display: flex;
     width: 160px;
-    height: fit-content;
+    height: 220px;
 }
 .movie-card-img img{
     display: flex;

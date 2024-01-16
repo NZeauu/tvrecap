@@ -4,7 +4,7 @@
 
 // Cookie check
 function cookieCheck() {
-    if(document.cookie.indexOf("user_id") === -1) {
+    if(document.cookie.indexOf("user_mail") === -1) {
 
         // Redirect to the login page
         window.location.replace("login.html");
@@ -38,7 +38,7 @@ function getCookie(cookieName) {
 
 // Set the user's name in the navbar
 function setUserName() {
-    var email = getCookie("user_id");
+    var email = getCookie("user_mail");
 
     if (email === null) {
         $("#username").text("User not found");
@@ -62,7 +62,7 @@ function setUserName() {
 
 // Get total time spent watching TV shows
 function getTotalTime() {
-    var email = getCookie("user_id");
+    var email = getCookie("user_mail");
 
     if (email === null) {
         $("#time-passed").text("----");
@@ -134,7 +134,7 @@ function getTotalTime() {
 
 // Get the number of movies watched
 function getMoviesWatched() {
-    var email = getCookie("user_id");
+    var email = getCookie("user_mail");
 
     if (email === null) {
         $("#movies-num").text("----");
@@ -166,7 +166,7 @@ function getMoviesWatched() {
 
 // Get the number of episodes watched
 function getEpisodesWatched() {
-    var email = getCookie("user_id");
+    var email = getCookie("user_mail");
 
     if (email === null) {
         $("#episodes-num").text("----");
@@ -216,7 +216,7 @@ $(document).ready(function () {
 // Disconnect the user
 function disconnect() {
     // Delete the cookie
-    document.cookie = "user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "user_mail=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     // Redirect to the login page
     window.location.replace("login.html");
 }

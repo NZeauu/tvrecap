@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS `Covers`;
 CREATE TABLE `Covers`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `nom` VARCHAR(255) NOT NULL,
-    `image` BLOB NOT NULL
+    `image` MEDIUMBLOB NOT NULL
 );
 ALTER TABLE
     `Covers` ADD INDEX `covers_id_index`(`id`);

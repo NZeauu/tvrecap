@@ -5,7 +5,7 @@
 // Cookie check
 function cookieCheck() {
 
-    if(document.cookie.indexOf("user_id") === -1) {
+    if(document.cookie.indexOf("user_mail") === -1) {
 
         // Redirect to the login page
         window.location.replace("login.html");
@@ -39,7 +39,7 @@ function getCookie(cookieName) {
 
 // Set the user's name in the navbar
 function setUserName() {
-    var email = getCookie("user_id");
+    var email = getCookie("user_mail");
 
     if (email === null) {
         $("#username").text("User not found");
@@ -187,7 +187,6 @@ function getImage(id, imgNumber) {
         data: { id_cover: imageId },
         success: function (data) {
             // Mettez à jour le contenu de l'élément avec l'image récupérée
-            // $('#list').html('<img src="data:image/jpeg;base64,' + data + '" alt="Image">');
             $('#movie-card-img' + imgNumber).html('<img src="data:image/jpeg;base64,' + data + '" alt="Image">');
 
         },
@@ -195,9 +194,6 @@ function getImage(id, imgNumber) {
             console.error('Erreur lors de la récupération de l\'image');
         }
     });
-
-
-
 
 }
 
@@ -315,7 +311,7 @@ function createCard(data){
 // Disconnect the user
 function disconnect() {
     // Delete the cookie
-    document.cookie = "user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "user_mail=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     // Redirect to the login page
     window.location.replace("login.html");
 }

@@ -256,6 +256,25 @@ function getFilteredMovies($conn, $category, $duration, $year){
 
 }
 
+// Get the movie details
+function getMovieDetails($conn, $id_movie){
+    try{
+        $sql = "SELECT * FROM Films WHERE id = '$id_movie'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+
+            return $row;
+        }
+        else {
+            return null;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
 
 
 // ------------------------------------ //
@@ -373,5 +392,51 @@ function getEpisodesWatched($conn, $email){
     }
     catch(PDOException $e) {
         echo "Error: " . $e->getMessage();
+    }
+}
+
+// Check if the movie is in the seen list
+function checkMovieSeen($conn, $email, $id_movie){
+    try{
+        $sql = "SELECT * FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND movie_id = '$id_movie'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            return true;
+        }
+        else {
+            return false;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+// Add the movie to the seen list
+function addMovieSeen($conn, $email, $id_movie){
+    try{
+        $sql = "INSERT INTO Seen_List (user_id, type, movie_id, episode_id) VALUES ((SELECT id FROM Accounts WHERE email = '$email'), 'movie', '$id_movie', null)";
+        $conn->query($sql);
+
+        return true;
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Delete the movie from the seen list
+function deleteMovieSeen($conn, $email, $id_movie){
+    try{
+        $sql = "DELETE FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND movie_id = '$id_movie'";
+        $conn->query($sql);
+
+        return true;
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
