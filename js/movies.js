@@ -57,6 +57,69 @@ function setUserName() {
 
 
 // -------------------------------------------------------
+// -------------------- FILTERS --------------------------
+// -------------------------------------------------------
+
+// Fill select with years
+function fillYears() {
+    var currentYear = new Date().getFullYear();
+
+    let i = currentYear;
+
+    let min_year = currentYear - 50;
+
+    for (i; i >= currentYear - 50; i--) {
+        $('#year').append($('<option>', {
+            value: i,
+            text: i
+        }));
+        if (i == currentYear - 50){
+            $('#year').append($('<option>', {
+                value: currentYear - 51,
+                text: currentYear - 51 + " et moins"
+            }));
+        }
+    }
+
+    
+}
+
+// Fill select with categories
+function fillCategories() {
+    var list = [
+        "Action",
+        "Aventure",
+        "Animation",
+        "Comédie",
+        "Crime",
+        "Documentaire",
+        "Drame",
+        "Famille",
+        "Fantaisie",
+        "Horreur",
+        "Mystère",
+        "Romance",
+        "Science-fiction",
+        "Thriller",
+        "Guerre",
+        "Western",
+        "Biopic",
+        "Historique",
+        "Musical",
+        "Sport"
+    ];
+
+    for (let i = 0; i < list.length; i++) {
+        $('#category').append($('<option>', {
+            value: list[i],
+            text: list[i]
+        }));
+    }
+}
+
+
+
+// -------------------------------------------------------
 // --------------------- MOVIES --------------------------
 // -------------------------------------------------------
 
@@ -69,6 +132,48 @@ function getAllMovies() {
         createCard(data);
     });
 }
+
+// Get movies filtered
+function getFilteredMovies() {
+
+    var category = $("#category").val();
+    var duration = $("#duration").val();
+    var year = $("#year").val();
+
+    if (category == "all" && duration == "all" && year == "all") {
+        getAllMovies();
+        return;
+    }
+
+    $.ajax('../php/movies.php/filtered', {
+        method: 'GET',
+        data: {
+            category: $("#category").val(),
+            duration: $("#duration").val(),
+            year: $("#year").val(),
+        },
+    }).done(function (data) {
+        // console.log(data);
+        createCard(data);
+    });
+}
+
+// Get movies sorted
+$("#filter-button").click(function () {
+    getFilteredMovies();
+});
+
+// Reset the filters
+$("#reset-button").click(function () {
+    $("#category").val("all");
+    $("#duration").val("all");
+    $("#year").val("all");
+    getAllMovies();
+});
+
+
+
+
 
 // Get the image of the movie
 function getImage(id, imgNumber) {
@@ -102,7 +207,10 @@ function getImage(id, imgNumber) {
 
 function createCard(data){
 
-    console.log(data);
+    // console.log(data);
+
+    // Empty the list
+    $('#list').empty();
 
     // If the data is empty or null print a message
     if (data === null || data === "") {
@@ -135,7 +243,6 @@ function createCard(data){
         const cardContent = $('<div>').attr('id', 'card-content');
 
         // Get the movie image
-        console.log(data[i].id);
         const movieCardImg = $('<div>').attr('id', 'movie-card-img' + i);
         movieCardImg.attr('class', 'movie-card-img');
 
@@ -180,6 +287,7 @@ function createCard(data){
 
         const movieDetailsButton = $('<div>').attr('id', 'movie-details-but');
         const detailsButton = $('<button>').attr('id', 'movie-details-button').text('Détails');
+        detailsButton.attr('onclick', 'window.location.href = "movie-details.html?id=' + data[i].id + '";');
         detailsButton.attr('value', data[i].id);
         movieDetailsButton.append(detailsButton);
 
@@ -229,4 +337,10 @@ $(document).ready(function () {
 
     // Get all the movies from the database
     getAllMovies();
+
+    // Fill the select with years
+    fillYears();
+
+    // Fill the select with categories
+    fillCategories();
 });

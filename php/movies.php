@@ -25,17 +25,18 @@ if($requestResource == "all"){
 
 }
 
-if($requestResource == "cover"){
+if($requestResource == "filtered"){
     
     $data = false;
 
     if($requestMethod == "GET"){
 
-        $id_cover = $_GET['id_cover'];
-
-        $data = getMovieCover($db, $id_cover);
+        $category = $_GET['category'];
+        $duration = $_GET['duration'];
+        $year = $_GET['year'];
+        
+        $data = getFilteredMovies($db, $category, $duration, $year);
     }
-
 }
 
 header('Content-Type: application/json; charset=utf-8');

@@ -179,6 +179,83 @@ function getMovieCover($conn, $id_cover){
     }
 }
 
+// Get filtered movies
+function getFilteredMovies($conn, $category, $duration, $year){
+    try{
+
+        // If the user didn't select a category, we select all the categories
+        if ($category != "all"){
+            $category = "categorie LIKE '%$category%'";
+        }
+        else{
+            $category = "1";
+        }
+
+        // If the user didn't select a duration, we select all the durations
+        if ($duration != "all"){
+
+            // Duration less than 1 hour
+            if ($duration == "60"){
+                $duration = "duree <= '60'";
+            }
+
+            // Duration between 1 hour and 2 hours
+            else if ($duration == "120"){
+                $duration = "duree > '60' AND duree <= '120'";
+            }
+
+            // Duration more than 2 hours
+            else if ($duration == "999"){
+                $duration = "duree > '120'";
+            }
+        }
+        else{
+            $duration = "1";
+        }
+
+        // If the user didn't select a year, we select all the years
+        if ($year != "all"){
+
+            // Get actual year
+            $actual_year = date("Y");
+
+            $min_year = $actual_year - 51;
+
+            if ($year == $min_year){
+                $year = "date_sortie <= '$min_year'";
+            }
+            else{
+                $year = "date_sortie = '$year'";
+            }        
+
+        }
+        else{
+            $year = "1";
+        }
+
+        $sql = "SELECT * FROM Films WHERE $category AND $duration AND $year";
+
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $movies = array();
+
+            while($row = $result->fetch_assoc()) {
+                $movies[] = $row;
+            }
+
+            return $movies;
+        }
+        else {
+            return null;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+
+}
+
 
 
 // ------------------------------------ //
