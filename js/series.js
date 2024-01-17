@@ -55,7 +55,6 @@ function setUserName() {
     });
 }
 
-
 // -------------------------------------------------------
 // -------------------- FILTERS --------------------------
 // -------------------------------------------------------
@@ -86,27 +85,28 @@ function fillYears() {
 
 // Fill select with categories
 function fillCategories() {
+
     var list = [
         "Action",
         "Aventure",
         "Animation",
         "Comédie",
-        "Crime",
-        "Documentaire",
         "Drame",
-        "Famille",
-        "Fantaisie",
         "Horreur",
         "Mystère",
-        "Romance",
         "Science-fiction",
+        "Fantastique",
+        "Policier",
         "Thriller",
-        "Guerre",
-        "Western",
-        "Biopic",
+        "Romance",
         "Historique",
-        "Musical",
-        "Sport"
+        "Biographique",
+        "Documentaire",
+        "Fantasy",
+        "Superhéros",
+        "Famille",
+        "Espionnage",
+        "Western"
     ];
 
     for (let i = 0; i < list.length; i++) {
@@ -117,15 +117,13 @@ function fillCategories() {
     }
 }
 
-
-
 // -------------------------------------------------------
-// --------------------- MOVIES --------------------------
+// --------------------- SERIES --------------------------
 // -------------------------------------------------------
 
-// Get the movies from the database
-function getAllMovies() {
-    $.ajax('../php/movies.php/all', {
+// Get the series from the database
+function getAllSeries() {
+    $.ajax('../php/series.php/all', {
         method: 'GET',
     }).done(function (data) {
         // console.log(data);
@@ -133,21 +131,23 @@ function getAllMovies() {
     });
 }
 
-// Get movies filtered
-function getFilteredMovies() {
+// Get series filtered
+function getFilteredSeries() {
 
+    var seasons = $("#seasons").val();
     var category = $("#category").val();
     var duration = $("#duration").val();
     var year = $("#year").val();
 
-    if (category == "all" && duration == "all" && year == "all") {
-        getAllMovies();
+    if (seasons == "all" && category == "all" && duration == "all" && year == "all") {
+        getAllSeries();
         return;
     }
 
     $.ajax('../php/series.php/filtered', {
         method: 'GET',
         data: {
+            seasons: seasons,
             category: category,
             duration: duration,
             year: year,
@@ -158,9 +158,9 @@ function getFilteredMovies() {
     });
 }
 
-// Get movies sorted
+// Get series sorted
 $("#filter-button").click(function () {
-    getFilteredMovies();
+    getFilteredSeries();
 });
 
 // Reset the filters
@@ -168,14 +168,12 @@ $("#reset-button").click(function () {
     $("#category").val("all");
     $("#duration").val("all");
     $("#year").val("all");
-    getAllMovies();
+    getAllSeries();
 });
 
 
 
-
-
-// Get the image of the movie
+// Get the image of the serie
 function getImage(id, imgNumber) {
 
     var imageId = id;
@@ -187,7 +185,7 @@ function getImage(id, imgNumber) {
         data: { id_cover: imageId },
         success: function (data) {
             // Mettez à jour le contenu de l'élément avec l'image récupérée
-            $('#movie-card-img' + imgNumber).html('<img src="data:image/jpeg;base64,' + data + '" alt="Image">');
+            $('#serie-card-img' + imgNumber).html('<img src="data:image/jpeg;base64,' + data + '" alt="Image">');
 
         },
         error: function () {
@@ -197,20 +195,20 @@ function getImage(id, imgNumber) {
 
 }
 
+
+
 // -------------------------------------------------------
 // ------------------ CARD CREATION ----------------------
 // -------------------------------------------------------
 
 function createCard(data){
 
-    // console.log(data);
-
     // Empty the list
     $('#list').empty();
 
     // If the data is empty or null print a message
     if (data === null || data === "") {
-        const message = $('<p>').text('Aucun film à afficher !');
+        const message = $('<p>').text('Aucune série à afficher !');
         $('#list').append(message);
 
         // Create style for the message
@@ -225,83 +223,128 @@ function createCard(data){
 
     for(let i = 0; i < data.length; i++){
 
-        const duration = data[i].duree;
-        const hours = Math.floor(duration / 60);
-        var minutes = duration % 60;
-
-        // Add a 0 if the minutes are less than 10
-        if (minutes < 10) {
-            minutes = '0' + minutes;
-        }
-
-        // Create the movie card
-        const movieCard = $('<div>').attr('id', 'movie-card');
+        // Create the serie card
+        const serieCard = $('<div>').attr('id', 'serie-card');
         const cardContent = $('<div>').attr('id', 'card-content');
 
-        // Get the movie image
-        const movieCardImg = $('<div>').attr('id', 'movie-card-img' + i);
-        movieCardImg.attr('class', 'movie-card-img');
+        // Get the serie image
+        const serieCardImg = $('<div>').attr('id', 'serie-card-img' + i);
+        serieCardImg.attr('class', 'serie-card-img');
 
         getImage(data[i].image_id, i);
 
-        const movieCardInfo = $('<div>').attr('id', 'movie-card-info');
+        const serieCardInfo = $('<div>').attr('id', 'serie-card-info');
 
-        const movieCardTitle = $('<div>').attr('id', 'movie-card-title');
+        const serieCardTitle = $('<div>').attr('id', 'serie-card-title');
 
-        const movieTitle = $('<div>').attr('id', 'movie-title');
+        const serieTitle = $('<div>').attr('id', 'serie-title');
         const titleSection = $('<section>').text(data[i].nom);
-        movieTitle.append(titleSection);
+        serieTitle.append(titleSection);
 
-        const movieYear = $('<div>').attr('id', 'movie-year');
+        const serieYear = $('<div>').attr('id', 'serie-year');
         const yearSection = $('<section>').text(data[i].date_sortie);
-        movieYear.append(yearSection);
+        serieYear.append(yearSection);
 
-        movieCardTitle.append(movieTitle);
-        movieCardTitle.append(movieYear);
+        serieCardTitle.append(serieTitle);
+        serieCardTitle.append(serieYear);
 
         const separatorLine = $('<div>').attr('id', 'separator-line');
 
         const bottomCard = $('<div>').attr('id', 'bottom-card');
 
-        const movieCardDetails = $('<div>').attr('id', 'movie-card-details');
+        const serieCardDetails1 = $('<div>').attr('id', 'serie-card-details');
 
-        const movieCardCategory = $('<div>').attr('id', 'movie-card-category');
+        const serieCardCategory = $('<div>').attr('id', 'serie-card-category');
         const categoryTitleSection = $('<section>').attr('id', 'category-title').text('Catégorie(s)');
-        const movieCategorySection = $('<section>').attr('id', 'movie-category').text(data[i].categorie);
-        movieCardCategory.append(categoryTitleSection);
-        movieCardCategory.append(movieCategorySection);
+        const serieCategorySection = $('<section>').attr('id', 'serie-category').text(data[i].categorie);
+        serieCardCategory.append(categoryTitleSection);
+        serieCardCategory.append(serieCategorySection);
 
-        const movieCardDuration = $('<div>').attr('id', 'movie-card-duration');
-        const durationTitleSection = $('<section>').attr('id', 'duration-title').text('Durée');
-        const movieDurationSection = $('<section>').attr('id', 'movie-duration').text(hours + 'h' + minutes);
-        movieCardDuration.append(durationTitleSection);
-        movieCardDuration.append(movieDurationSection);
+        const serieCardDuration = $('<div>').attr('id', 'serie-card-duration');
+        const durationTitleSection = $('<section>').attr('id', 'duration-title').text('Durée moyenne d\'un épisode');
+        const serieDurationSection = $('<section>').attr('id', 'serie-duration');
 
-        movieCardDetails.append(movieCardCategory);
-        movieCardDetails.append(movieCardDuration);
+        // Get the average duration of an episode
+        $.ajax('../php/series.php/duration', {
+            method: 'GET',
+            data: {
+                id_serie: data[i].id
+            },
+        }).done(function (data) {
+            // console.log(data);
+            var duration = data;
 
-        const movieDetailsButton = $('<div>').attr('id', 'movie-details-but');
-        const detailsButton = $('<button>').attr('id', 'movie-details-button').text('Détails');
-        detailsButton.attr('onclick', 'window.location.href = "movie-details.html?id=' + data[i].id + '";');
+            if(duration > 60){
+                var hours = Math.floor(duration / 60);
+                var minutes = duration % 60;
+
+                // Add a 0 if the minutes are less than 10
+                if (minutes < 10) {
+                    minutes = '0' + minutes;
+                }
+
+                // If the minutes are a float, round them
+                if (minutes % 1 !== 0) {
+                    minutes = Math.round(minutes);
+                }
+
+                $('#serie-duration').text(hours + 'h' + minutes);
+            }
+            else{
+
+                // Add a 0 if the minutes are less than 10
+                if (duration < 10) {
+                    duration = '0' + duration;
+                }
+
+                // If the minutes are a float, round them
+                if (duration % 1 !== 0) {
+                    duration = Math.round(duration);
+                }
+
+                $('#serie-duration').text(duration + 'min');
+            }
+        });
+        serieCardDuration.append(durationTitleSection);
+        serieCardDuration.append(serieDurationSection);
+
+        serieCardDetails1.append(serieCardCategory);
+        serieCardDetails1.append(serieCardDuration);
+
+        const serieCardDetails2 = $('<div>').attr('id', 'serie-card-details');
+
+        const serieCardSeasons = $('<div>').attr('id', 'serie-card-seasons');
+        const seasonsTitleSection = $('<section>').attr('id', 'seasons-title').text('Nombre de saison(s)');
+        const serieSeasonsSection = $('<section>').attr('id', 'serie-category').text(data[i].nb_saisons);
+        serieCardSeasons.append(seasonsTitleSection);
+        serieCardSeasons.append(serieSeasonsSection);
+
+        serieCardDetails2.append(serieCardSeasons);
+
+        const serieDetailsButton = $('<div>').attr('id', 'serie-details-but');
+        const detailsButton = $('<button>').attr('id', 'serie-details-button').text('Détails');
+        detailsButton.attr('onclick', 'window.location.href = "serie-details.html?id=' + data[i].id + '";');
         detailsButton.attr('value', data[i].id);
-        movieDetailsButton.append(detailsButton);
+        serieDetailsButton.append(detailsButton);
 
-        bottomCard.append(movieCardDetails);
-        bottomCard.append(movieDetailsButton);
+        bottomCard.append(serieCardDetails1);
+        bottomCard.append(serieCardDetails2);
+        bottomCard.append(serieDetailsButton);
 
-        movieCardInfo.append(movieCardTitle);
-        movieCardInfo.append(separatorLine);
-        movieCardInfo.append(bottomCard);
+        serieCardInfo.append(serieCardTitle);
+        serieCardInfo.append(separatorLine);
+        serieCardInfo.append(bottomCard);
 
-        cardContent.append(movieCardImg);
-        cardContent.append(movieCardInfo);
+        cardContent.append(serieCardImg);
+        cardContent.append(serieCardInfo);
 
-        movieCard.append(cardContent);
+        serieCard.append(cardContent);
 
-        // Append the movie card to the body of the document
-        $('#list').append(movieCard);
+        // Append the serie card to the body of the document
+        $('#list').append(serieCard);
     }
 }
+
 
 // -------------------------------------------------------
 // ---------------------- LOGOUT -------------------------
@@ -330,8 +373,8 @@ $("#logout").click(function () {
 $(document).ready(function () {
     setUserName();
 
-    // Get all the movies from the database
-    getAllMovies();
+    // Get all the series from the database
+    getAllSeries();
 
     // Fill the select with years
     fillYears();

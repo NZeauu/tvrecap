@@ -119,6 +119,170 @@ function getUsername($conn, $email){
 // -------------- SERIES -------------- //
 // ------------------------------------ //
 
+// Get all the series
+function getAllSeries($conn){
+    try{
+        $sql = "SELECT * FROM Séries";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $series = array();
+
+            while($row = $result->fetch_assoc()) {
+                $series[] = $row;
+            }
+
+            return $series;
+        }
+        else {
+            return null;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+
+}
+
+// Get filtered series
+function getFilteredSeries($conn, $seasons, $category, $duration, $year){
+    try{
+
+        // If the user didn't select a number of seasons, we select all the seasons
+        if ($seasons != "all"){
+
+            // Number of seasons less than 2
+            if ($seasons == "2"){
+                $seasons = "nb_saisons <= '2'";
+            }
+
+            // Number of seasons between 2 and 5
+            else if ($seasons == "5"){
+                $seasons = "nb_saisons > '2' AND nb_saisons <= '5'";
+            }
+
+            // Number of seasons more than 5
+            else if ($seasons == "999"){
+                $seasons = "nb_saisons > '5'";
+            }
+        }
+        else{
+            $seasons = "1";
+        }
+
+
+        // If the user didn't select a category, we select all the categories
+        if ($category != "all"){
+            $category = "categorie LIKE '%$category%'";
+        }
+        else{
+            $category = "1";
+        }
+
+        // If the user didn't select a duration, we select all the durations
+        if ($duration != "all"){
+
+            // Duration less than 30 min
+            if ($duration == "30"){
+                $duration = "duree <= '30'";
+            }
+
+            // Duration between 30 min and 1 hour
+            else if ($duration == "60"){
+                $duration = "duree > '30' AND duree <= '60'";
+            }
+
+            // Duration more than 1 hours
+            else if ($duration == "999"){
+                $duration = "duree > '60'";
+            }
+        }
+        else{
+            $duration = "1";
+        }
+
+        // If the user didn't select a year, we select all the years
+        if ($year != "all"){
+
+            // Get actual year
+            $actual_year = date("Y");
+
+            $min_year = $actual_year - 51;
+
+            if ($year == $min_year){
+                $year = "date_sortie <= '$min_year'";
+            }
+            else{
+                $year = "date_sortie = '$year'";
+            }        
+
+        }
+        else{
+            $year = "1";
+        }
+
+        $sql = "SELECT * FROM Séries WHERE $seasons AND $category AND $duration AND $year";
+
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $series = array();
+
+            while($row = $result->fetch_assoc()) {
+                $series[] = $row;
+            }
+
+            return $series;
+        }
+        else {
+            return null;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+
+}
+
+// Get average duration of the episodes of a serie
+function getAverageDuration($conn, $id_serie){
+    try{
+        $sql = "SELECT AVG(duree) AS average_duration FROM Episodes WHERE serie_id = '$id_serie'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+
+            return $row["average_duration"];
+        }
+        else {
+            return null;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+// Get average duration of the episodes for all the series
+function getAverageDurationAllSeries($conn){
+    try{
+        $sql = "SELECT AVG(duree) AS average_duration FROM Episodes";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+
+            return $row["average_duration"];
+        }
+        else {
+            return null;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
 
 
 // ------------------------------------ //
@@ -155,28 +319,6 @@ function getAllMovies($conn){
         echo "Error: " . $e->getMessage();
     }
 
-}
-
-// Get the movie cover
-// We get back the blob of the cover
-// We need to convert it to an image
-function getMovieCover($conn, $id_cover){
-    try{
-        $sql = "SELECT image FROM Covers WHERE id = '$id_cover'";
-        $result = $conn->query($sql);
-
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-
-            return $row["image"];
-        }
-        else {
-            return null;
-        } 
-    }
-    catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
 }
 
 // Get filtered movies

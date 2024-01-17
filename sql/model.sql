@@ -24,19 +24,23 @@ CREATE TABLE `Episodes`(
 );
 ALTER TABLE
     `Episodes` ADD INDEX `episodes_id_index`(`id`);
+ALTER TABLE 
+    `Episodes` ADD CONSTRAINT `unique_episode_season` UNIQUE (`num_ep`, `saison`, `serie_id`);
 CREATE TABLE `Séries`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `nom` VARCHAR(255) NOT NULL,
     `nb_saisons` INT NOT NULL,
     `date_sortie` YEAR NOT NULL,
     `categorie` VARCHAR(255) NOT NULL,
-    `synopsis` VARCHAR(255) NOT NULL,
+    `synopsis` VARCHAR(1000) NOT NULL,
     `actors` VARCHAR(255) NOT NULL,
     `realisator` VARCHAR(255) NOT NULL,
     `image_id` BIGINT UNSIGNED NOT NULL
 );
 ALTER TABLE
     `Séries` ADD INDEX `séries_id_index`(`id`);
+ALTER TABLE 
+    `Séries` ADD CONSTRAINT `unique_serie_entered` UNIQUE (`nom`, `nb_saisons`, `image_id`);
 CREATE TABLE `Films`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `nom` VARCHAR(255) NOT NULL,
@@ -44,12 +48,14 @@ CREATE TABLE `Films`(
     `duree` BIGINT NOT NULL,
     `date_sortie` YEAR NOT NULL,
     `categorie` VARCHAR(255) NOT NULL,
-    `synopsis` VARCHAR(255) NOT NULL,
+    `synopsis` VARCHAR(1000) NOT NULL,
     `actors` VARCHAR(255) NOT NULL,
     `realisator` VARCHAR(255) NOT NULL
 );
 ALTER TABLE
     `Films` ADD INDEX `films_id_index`(`id`);
+ALTER TABLE 
+    `Films` ADD CONSTRAINT `unique_film_entered` UNIQUE (`nom`, `image_id`, `date_sortie`);
 CREATE TABLE `Accounts`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `username` VARCHAR(255) NOT NULL,
@@ -58,6 +64,8 @@ CREATE TABLE `Accounts`(
 );
 ALTER TABLE
     `Accounts` ADD INDEX `accounts_id_index`(`id`);
+ALTER TABLE 
+    `Accounts` ADD CONSTRAINT `unique_user` UNIQUE (`username`, `email`);
 CREATE TABLE `Seen_List`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `user_id` BIGINT UNSIGNED NOT NULL,
@@ -67,6 +75,10 @@ CREATE TABLE `Seen_List`(
 );
 ALTER TABLE
     `Seen_List` ADD INDEX `seen_list_id_index`(`id`);
+ALTER TABLE 
+    `Seen_List` ADD CONSTRAINT `unique_movie_user_entry` UNIQUE (`user_id`, `type`, `movie_id`);
+ALTER TABLE 
+    `Seen_List` ADD CONSTRAINT `unique_episode_user_entry` UNIQUE (`user_id`, `type`, `episode_id`);
 ALTER TABLE
     `Seen_List` ADD CONSTRAINT `seen_list_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Accounts`(`id`);
 ALTER TABLE

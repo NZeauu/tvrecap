@@ -1,8 +1,8 @@
 /* ---------------------------------- */
-/* --------- MOVIES SECTION --------- */
+/* --------- SERIES SECTION --------- */
 /* ---------------------------------- */
 
-#movies-page{
+#series-page{
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -21,7 +21,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 5%;
+    gap: 2%;
     background-color: #E2E2E2;
     width: 95%;
     height: fit-content;
@@ -60,6 +60,7 @@
     font-weight: bold;
     text-align: center;
 }
+
 /* Style the options */
 option {
     font-weight: bold;
@@ -94,9 +95,8 @@ option {
     cursor: pointer;
 }
 
-
 /* ---------------------------- */
-/* -------- MOVIE LIST -------- */
+/* ------- SERIES LIST -------- */
 /* ---------------------------- */
 
 #list{
@@ -114,7 +114,7 @@ option {
 /* ---------------------------- */
 
 /* Card root */
-#movie-card{
+#serie-card{
     display: flex;
     height: fit-content;
     width: 100%;
@@ -136,13 +136,13 @@ option {
     width: 100%;
 }
 
-/* Movie picture */
-.movie-card-img{
+/* serie picture */
+.serie-card-img{
     display: flex;
     width: 160px;
     height: 220px;
 }
-.movie-card-img img{
+.serie-card-img img{
     display: flex;
     width: 100%;
     height: 100%;
@@ -150,8 +150,8 @@ option {
     border-radius: 10px;
 }
 
-/* Contains all the infos about the movie */
-#movie-card-info{
+/* Contains all the infos about the serie */
+#serie-card-info{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -159,8 +159,8 @@ option {
 }
 
 /* Top part of the card */
-/*Contains the title and the year of the movie */
-#movie-card-title{
+/*Contains the title and the year of the serie */
+#serie-card-title{
     display: flex;
     width: 100%;
     padding-bottom: 12px;
@@ -179,8 +179,8 @@ option {
     justify-content: space-between;
 }
 
-/* Contains the category and the duration of the movie */
-#movie-card-details{
+/* Contains the category and the duration of the serie */
+#serie-card-details{
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -188,14 +188,14 @@ option {
 }
 
 /* Category and duration blocs */
-#movie-card-category, #movie-card-duration{
+#serie-card-category, #serie-card-duration, #serie-card-seasons{
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
 /* Details button */
-#movie-details-button{
+#serie-details-button{
     display: flex;
     padding: 8px 20px;
     align-items: center;
@@ -204,7 +204,7 @@ option {
     border-radius: 4px;
     background: var(--buttons-red, rgba(255, 0, 0, 0.58));
 }
-#movie-details-button:hover{
+#serie-details-button:hover{
     background: var(--buttons-red-hover, rgba(255, 0, 0, 0.8));
     cursor: pointer;
 }
@@ -222,10 +222,10 @@ option {
 /* ---------------------------- */
 /* -------- CARD TEXTS -------- */
 /* ---------------------------- */
-#movie-title{
+#serie-title{
     font-size: 24px;
 }
-#movie-year{
+#serie-year{
     font-size: small;
 }
 #category-title{
@@ -233,6 +233,10 @@ option {
     font-weight: bold;
 }
 #duration-title{
+    font-size: 16px;
+    font-weight: bold;
+}
+#seasons-title{
     font-size: 16px;
     font-weight: bold;
 }

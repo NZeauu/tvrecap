@@ -111,7 +111,7 @@ function getTotalTime() {
                     minutes = "0" + minutes;
                 }
 
-                $("#time-passed").text(hours + "H "+ minutes);
+                $("#time-passed").text(hours + "H"+ minutes);
             }
             else{
 

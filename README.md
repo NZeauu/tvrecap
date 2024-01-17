@@ -10,10 +10,12 @@ TVRecap is a web application that allows users to search for TV shows and movies
 
 ## Installation
 1. Clone the repository to your local machine or server
-2. Create a database using and import the `model.sql` file to create the tables.<br>
+2. Create a new database and import the `model.sql` file to create the tables.
 ${\textcolor{red}{WARNING}}$: This will overwrite any existing tables with the same name. This is a MariaDB database, so it may not work with other SQL databases.
 
-## Features
+## Features to add
+- [ ] Add SMTP functionality to send verification email on account creation
+- [ ] Add SMTP functionality to send password reset email
 - [ ] Avatar choice on account parameters
 - [ ] Content adding page for admin account
 - [ ] Responsive website (for screen under 15")
