@@ -2,7 +2,7 @@
 
 include 'constants.php';
 
-// Connect to the database
+// Connect to the database "OK" 
 function dbconnect() {
     // Create a connection to the database
     $conn = new mysqli(DB_SERVER, DB_USER, DB_PASSWORD, DB_NAME);
@@ -19,7 +19,7 @@ function dbconnect() {
 // -------------- USERS --------------- //
 // ------------------------------------ //
 
-// User connection
+// User connection "OK"
 function connectionAccount($conn, $mail, $password) {
 
     try{
@@ -44,7 +44,7 @@ function connectionAccount($conn, $mail, $password) {
     } 
 }
 
-// User registration
+// User registration "OK"
 function registerAccount($conn, $username, $email, $password){
     try{
         $sql = "INSERT INTO Accounts (username, email, password) VALUES ('$username', '$email', '$password')";
@@ -58,7 +58,7 @@ function registerAccount($conn, $username, $email, $password){
     }
 }
 
-// Check if the email is already used
+// Check if the email is already used "OK"
 function checkMail($conn, $email){
     try{
         $sql = "SELECT * FROM Accounts WHERE email = '$email'";
@@ -76,7 +76,7 @@ function checkMail($conn, $email){
     }
 }
 
-// Check if the username is already used
+// Check if the username is already used "OK"
 function checkUsername($conn, $username){
     try{
         $sql = "SELECT * FROM Accounts WHERE username = '$username'";
@@ -94,7 +94,7 @@ function checkUsername($conn, $username){
     }
 }
 
-// Get the user name from the email
+// Get the user name from the email "OK"
 function getUsername($conn, $email){
     try{
         $sql = "SELECT username FROM Accounts WHERE email = '$email'";
@@ -119,7 +119,7 @@ function getUsername($conn, $email){
 // -------------- SERIES -------------- //
 // ------------------------------------ //
 
-// Get all the series
+// Get all the series "OK"
 function getAllSeries($conn){
     try{
         $sql = "SELECT * FROM Séries";
@@ -144,7 +144,7 @@ function getAllSeries($conn){
 
 }
 
-// Get filtered series
+// Get filtered series "OK"
 function getFilteredSeries($conn, $seasons, $category, $duration, $year){
     try{
 
@@ -170,6 +170,27 @@ function getFilteredSeries($conn, $seasons, $category, $duration, $year){
             $seasons = "1";
         }
 
+        // If the user didn't select a duration, we select all the durations
+        if ($duration != "all"){
+
+            // Duration less than 30 min
+            if ($duration == "30"){
+                $duration = "id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) <= 30)";
+            }
+
+            // Duration between 30 min and 1 hour
+            else if ($duration == "60"){
+                $duration = "id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) > 30 AND AVG(duree) <= 60)";
+            }
+
+            // Duration more than 1 hours
+            else if ($duration == "999"){
+                $duration = "id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) > 60)";
+            }
+        }
+        else{
+            $duration = "1";
+        }
 
         // If the user didn't select a category, we select all the categories
         if ($category != "all"){
@@ -177,28 +198,6 @@ function getFilteredSeries($conn, $seasons, $category, $duration, $year){
         }
         else{
             $category = "1";
-        }
-
-        // If the user didn't select a duration, we select all the durations
-        if ($duration != "all"){
-
-            // Duration less than 30 min
-            if ($duration == "30"){
-                $duration = "duree <= '30'";
-            }
-
-            // Duration between 30 min and 1 hour
-            else if ($duration == "60"){
-                $duration = "duree > '30' AND duree <= '60'";
-            }
-
-            // Duration more than 1 hours
-            else if ($duration == "999"){
-                $duration = "duree > '60'";
-            }
-        }
-        else{
-            $duration = "1";
         }
 
         // If the user didn't select a year, we select all the years
@@ -244,7 +243,7 @@ function getFilteredSeries($conn, $seasons, $category, $duration, $year){
 
 }
 
-// Get average duration of the episodes of a serie
+// Get average duration of the episodes of a serie "OK"
 function getAverageDuration($conn, $id_serie){
     try{
         $sql = "SELECT AVG(duree) AS average_duration FROM Episodes WHERE serie_id = '$id_serie'";
@@ -264,16 +263,21 @@ function getAverageDuration($conn, $id_serie){
     }
 }
 
-// Get average duration of the episodes for all the series
-function getAverageDurationAllSeries($conn){
+// Filter the series by average duration of the episodes "OK"
+function filterSeriesByAverageDuration($conn, $average_duration){
     try{
-        $sql = "SELECT AVG(duree) AS average_duration FROM Episodes";
+
+        
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
+            $series = array();
 
-            return $row["average_duration"];
+            while($row = $result->fetch_assoc()) {
+                $series[] = $row;
+            }
+
+            return $series;
         }
         else {
             return null;
@@ -284,6 +288,25 @@ function getAverageDurationAllSeries($conn){
     }
 }
 
+// Get the serie details "OK"
+function getSerieDetails($db, $serieId){
+    try{
+        $sql = "SELECT * FROM Séries WHERE id = '$serieId'";
+        $result = $db->query($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+
+            return $row;
+        }
+        else {
+            return null;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
 
 // ------------------------------------ //
 // -------------- EPISODES ------------ //
@@ -296,7 +319,7 @@ function getAverageDurationAllSeries($conn){
 // -------------- MOVIES -------------- //
 // ------------------------------------ //
 
-// Get all the movies
+// Get all the movies "OK"
 function getAllMovies($conn){
     try{
         $sql = "SELECT * FROM Films";
@@ -321,7 +344,7 @@ function getAllMovies($conn){
 
 }
 
-// Get filtered movies
+// Get filtered movies "OK"
 function getFilteredMovies($conn, $category, $duration, $year){
     try{
 
@@ -398,7 +421,7 @@ function getFilteredMovies($conn, $category, $duration, $year){
 
 }
 
-// Get the movie details
+// Get the movie details "OK"
 function getMovieDetails($conn, $id_movie){
     try{
         $sql = "SELECT * FROM Films WHERE id = '$id_movie'";
@@ -423,7 +446,7 @@ function getMovieDetails($conn, $id_movie){
 // ------------ SEEN LIST ------------- //
 // ------------------------------------ //
 
-// Get the total time of the seen list
+// Get the total time of the seen list "OK"
 function getTotalTime($conn, $email){
     try{
         $sql = "SELECT `Accounts`.`email` AS `User_Email`,
@@ -463,7 +486,7 @@ function getTotalTime($conn, $email){
     }
 }
 
-// Get the total number of movies watched by the user
+// Get the total number of movies watched by the user "OK"
 function getMoviesWatched($conn, $email){
     try{
         $sql = "SELECT `Accounts`.`email` AS `User_Email`,
@@ -500,7 +523,7 @@ function getMoviesWatched($conn, $email){
     }
 }
 
-// Get the total number of episodes watched by the user
+// Get the total number of episodes watched by the user "OK"
 function getEpisodesWatched($conn, $email){
     try{
         $sql = "SELECT `Accounts`.`email` AS `User_Email`,
@@ -537,7 +560,7 @@ function getEpisodesWatched($conn, $email){
     }
 }
 
-// Check if the movie is in the seen list
+// Check if the movie is in the seen list "OK"
 function checkMovieSeen($conn, $email, $id_movie){
     try{
         $sql = "SELECT * FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND movie_id = '$id_movie'";
@@ -555,7 +578,7 @@ function checkMovieSeen($conn, $email, $id_movie){
     }
 }
 
-// Add the movie to the seen list
+// Add the movie to the seen list "OK"
 function addMovieSeen($conn, $email, $id_movie){
     try{
         $sql = "INSERT INTO Seen_List (user_id, type, movie_id, episode_id) VALUES ((SELECT id FROM Accounts WHERE email = '$email'), 'movie', '$id_movie', null)";
@@ -569,7 +592,7 @@ function addMovieSeen($conn, $email, $id_movie){
     }
 }
 
-// Delete the movie from the seen list
+// Delete the movie from the seen list "OK"
 function deleteMovieSeen($conn, $email, $id_movie){
     try{
         $sql = "DELETE FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND movie_id = '$id_movie'";
@@ -580,5 +603,23 @@ function deleteMovieSeen($conn, $email, $id_movie){
     catch(PDOException $e) {
         echo "Error: " . $e->getMessage();
         return false;
+    }
+}
+
+// Check if a serie is fully watched "OK"
+function checkSerieFullyWatched($conn, $email, $id_serie){
+    try{
+        $sql = "SELECT * FROM Episodes WHERE id NOT IN (SELECT episode_id FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND type = 'serie') AND serie_id = '$id_serie';";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            return false;
+        }
+        else {
+            return true;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
     }
 }

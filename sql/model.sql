@@ -61,11 +61,14 @@ CREATE TABLE `Accounts`(
     `username` VARCHAR(255) NOT NULL,
     `email` VARCHAR(255) NOT NULL,
     `password` VARCHAR(255) NOT NULL
+    `administrator` BOOLEAN NOT NULL DEFAULT FALSE
 );
 ALTER TABLE
     `Accounts` ADD INDEX `accounts_id_index`(`id`);
 ALTER TABLE 
     `Accounts` ADD CONSTRAINT `unique_user` UNIQUE (`username`, `email`);
+ALTER TABLE 
+    `Accounts` ADD UNIQUE(`administrator`);
 CREATE TABLE `Seen_List`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `user_id` BIGINT UNSIGNED NOT NULL,
