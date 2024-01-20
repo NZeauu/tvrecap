@@ -308,9 +308,55 @@ function getSerieDetails($db, $serieId){
     }
 }
 
+// Get the number of seasons of a serie "OK"
+function getNumberOfSeasons($conn, $id_serie){
+    try{
+        $sql = "SELECT nb_saisons FROM Séries WHERE id = '$id_serie'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+
+            return $row["nb_saisons"];
+        }
+        else {
+            return null;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
 // ------------------------------------ //
 // -------------- EPISODES ------------ //
 // ------------------------------------ //
+
+// Get all the episodes of a serie "OK"
+function getSeasonEpisodes($conn, $id_serie, $season){
+    try{
+        $sql = "SELECT * FROM Episodes WHERE serie_id = '$id_serie' AND saison = '$season'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $episodes = array();
+
+            while($row = $result->fetch_assoc()) {
+                $episodes[] = $row;
+            }
+
+            return $episodes;
+        }
+        else {
+            return null;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+
+}
+
 
 
 
@@ -621,5 +667,51 @@ function checkSerieFullyWatched($conn, $email, $id_serie){
     }
     catch(PDOException $e) {
         echo "Error: " . $e->getMessage();
+    }
+}
+
+// Check if the episode is in the seen list "OK"
+function checkEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumber){
+    try{
+        $sql = "SELECT * FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND episode_id = (SELECT id FROM Episodes WHERE serie_id = '$serieId' AND num_ep = '$episodeNumber' AND saison = '$seasonNumber')";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            return true;
+        }
+        else {
+            return false;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+// Add the episode to the seen list "OK"
+function addEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumber){
+    try{
+        $sql = "INSERT INTO Seen_List (user_id, type, movie_id, episode_id) VALUES ((SELECT id FROM Accounts WHERE email = '$email'), 'serie', null, (SELECT id FROM Episodes WHERE serie_id = '$serieId' AND num_ep = '$episodeNumber' AND saison = '$seasonNumber'))";
+        $conn->query($sql);
+
+        return true;
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Delete the episode from the seen list "OK"
+function deleteEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumber){
+    try{
+        $sql = "DELETE FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND episode_id = (SELECT id FROM Episodes WHERE serie_id = '$serieId' AND num_ep = '$episodeNumber' AND saison = '$seasonNumber')";
+        $conn->query($sql);
+
+        return true;
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
     }
 }

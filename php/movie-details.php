@@ -45,9 +45,12 @@ if($requestResource == "addwatchlist"){
 
     $data = false;
     
-    if($requestMethod == "POST"){
-        $movieId = $_POST['movieId'];
-        $userMail = $_POST['userMail'];
+    if($requestMethod == "PUT"){
+
+        parse_str(file_get_contents('php://input'), $_PUT);
+
+        $movieId = $_PUT['movieId'];
+        $userMail = $_PUT['userMail'];
 
         $data = addMovieSeen($db, $userMail, $movieId);
 

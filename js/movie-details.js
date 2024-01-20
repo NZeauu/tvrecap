@@ -166,7 +166,7 @@ function addToWatchlist() {
 
     // Get the movie's details from the database
     $.ajax('../php/movie-details.php/addwatchlist', {
-        method: 'POST',
+        method: 'PUT',
         data: {
             movieId: movieId,
             userMail: userMail
@@ -220,3 +220,6 @@ $(document).ready(function () {
         removeFromWatchlist();
     });
 });
+
+
+

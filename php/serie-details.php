@@ -41,33 +41,77 @@ if($requestResource == "checkfullywatched"){
     }
 }
 
-if($requestResource == "addwatchlist"){
+if($requestResource == "checkepwatched"){
+        
+        $data = false;
+    
+        if($requestMethod == "GET"){
+            $serieId = $_GET['serieId'];
+            $userMail = $_GET['userMail'];
+            $episodeNumber = $_GET['episodeNumber'];
+            $seasonNumber = $_GET['seasonNumber'];
+    
+            $data = checkEpisodeSeen($db, $userMail, $serieId, $episodeNumber, $seasonNumber);
+    
+        }
+    
+}
+
+if($requestResource == "seasons"){
 
     $data = false;
-    
-    if($requestMethod == "POST"){
-        $serieId = $_POST['serieId'];
-        $userMail = $_POST['userMail'];
 
-        $data = addSerieSeen($db, $userMail, $serieId);
+    if($requestMethod == "GET"){
+        $serieId = $_GET['serieId'];
+
+        $data = getNumberOfSeasons($db, $serieId);
 
     }
 }
 
-if($requestResource == "removewatchlist"){
+if($requestResource == "seasonepisodes"){
+    
+    $data = false;
+
+    if($requestMethod == "GET"){
+        $serieId = $_GET['serieId'];
+        $seasonNumber = $_GET['seasonNumber'];
+
+        $data = getSeasonEpisodes($db, $serieId, $seasonNumber);
+
+    }
+}
+
+if($requestResource == "updateepstatus"){
 
     $data = false;
     
+    if($requestMethod == "PUT"){
+
+        parse_str(file_get_contents('php://input'), $_PUT);
+
+        $episodeNumber = $_PUT['episodeNumber'];
+        $seasonNumber = $_PUT['seasonNumber'];
+        $userMail = $_PUT['userMail'];
+        $serieId = $_PUT['serieId'];
+       
+        $data = addEpisodeSeen($db, $userMail, $serieId, $episodeNumber, $seasonNumber);
+
+    }
+
     if($requestMethod == "DELETE"){
 
         parse_str(file_get_contents('php://input'), $_DELETE);
 
-        $serieId = $_DELETE['serieId'];
+        $episodeNumber = $_DELETE['episodeNumber'];
+        $seasonNumber = $_DELETE['seasonNumber'];
         $userMail = $_DELETE['userMail'];
+        $serieId = $_DELETE['serieId'];
 
-        $data = deleteSerieSeen($db, $userMail, $serieId);
+        $data = deleteEpisodeSeen($db, $userMail, $serieId, $episodeNumber, $seasonNumber);
 
     }
+
 }
 
 
