@@ -1,0 +1,264 @@
+#details-page{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin-top: 8%;
+}
+
+/* --------------------------------- */
+/* ------------ RETURN ------------- */
+/* --------------------------------- */
+
+#return{
+    display: inline-flex;
+    padding: 12px 16px;
+    align-items: center;
+    gap: 12px;
+    border-radius: 4px;
+    background: var(--red-title, #F20000);
+    height: fit-content;
+}
+
+#return a{
+    text-decoration: none;
+    width: 156px;
+    height: 24px;
+    color: var(--White, #FFF);
+
+    /* Semibold 16-24 */
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px; /* 150% */
+    
+}
+
+#return:hover{
+    background: var(--red-title-hover, #D60000);
+    cursor: pointer;
+}
+
+/* --------------------------------- */
+/* --------- DETAILS FRAME --------- */
+/* --------------------------------- */
+
+#details-frame{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: fit-content;
+    padding: 10px;
+    align-items: flex-start;
+    gap: 10px;
+    margin-left: 2%;
+    font-family: Inter;
+}
+
+#main-frame{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    
+}
+
+#infos{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
+}
+
+#picture{
+    display: flex;
+    width: 55%;
+    height: 500px;
+    border-radius: 10px;
+    margin: 2%;
+}
+
+#picture-img{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #000;
+}
+
+#header-details{
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #000;
+}
+
+#title-serie{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#title-text{
+    color: var(--Gray-02, #878787);
+    font-family: Inter;
+    font-size: 50px;
+    font-weight: 700;
+}
+
+#year-text{
+    color: var(--Gray-01, #666);
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+#not-seen-button{
+    display: flex;
+    padding: 8px 20px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background: var(--buttons-red, rgba(255, 0, 0, 0.58));
+    border-style: none;
+    width: max-content;
+    height: 35px;
+}
+
+#seen-button{
+    display: flex;
+    padding: 8px 20px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 4px;
+    background: var(--viewed-content, #11D100);
+    border-style: none;
+    width: 100px;
+    height: 35px;
+}
+
+#details{
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    padding-left: 20px;
+    padding-top: 10px;
+    gap: 15px;
+}
+
+#category-value{
+    font-style: italic;
+}
+
+#duration-value{
+    font-style: italic;
+}
+
+#actors-value{
+    font-style: italic;
+}
+
+#real-value{
+    font-style: italic;
+}
+
+#synopsis-frame{
+    border-bottom: 2px solid #000;
+}
+
+#episodes-frame{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
+    gap: 20px;
+}
+
+#seasons{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: fit-content;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+}
+
+.season-button{
+    display: flex;
+    padding: 8px 20px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 4px;
+    background: var(--buttons-red, rgba(255, 0, 0, 0.3));
+    border-style: none;
+    width: 100px;
+    height: 35px;
+}
+
+.season-button:hover{
+    background: var(--buttons-red, rgba(255, 0, 0, 0.58));
+    cursor: pointer;
+}
+
+/* --------------------- */
+/* ----- EPISODES ------ */
+/* --------------------- */
+
+#episodes{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#episode-card{
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    height: fit-content;
+    border-bottom: solid 2px #000;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.ep-seen{
+    background-color: #11D100;
+    border-radius: 4px;
+    width: 100px;
+    height: 35px;
+    border-style: none;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 20px;
+}
+
+.ep-seen:hover{
+    background-color: #0EB000;
+    cursor: pointer;
+}
+
+.ep-not-seen{
+    background-color: rgba(255, 0, 0, 0.58);
+    border-radius: 4px;
+    width: 100px;
+    height: 35px;
+    border-style: none;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 20px;
+}
+
+.ep-not-seen:hover{
+    background-color: rgba(255, 0, 0, 0.8);
+    cursor: pointer;
+}

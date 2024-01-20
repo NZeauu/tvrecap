@@ -1,0 +1,130 @@
+/* ----------------------------------------- */
+/* ----------------- BODY ------------------ */
+/* ----------------------------------------- */
+
+/* Complete block */
+#register{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10vh;
+}
+
+/* Login form part */
+#form{
+    font-family: Inter;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+/* Login inputs part */
+#inputs{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+/* Button block part */
+#button{
+    display: flex;
+    padding: 10px 0px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+}
+
+/* ----------------------------------------- */
+/* ---------------- TEXTS ------------------ */
+/* ----------------------------------------- */
+
+/* TVRecap title */
+#title{
+    font-family: Ubuntu;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+#subtitle{
+    font-family: Inter;
+    font-weight: bold;
+    font-size: 18px;
+    padding-bottom: 20px;
+}
+
+/* Inputs heading */
+#descrtext{
+    font-size: normal; 
+    color: black;
+    padding-bottom: 5px;
+}
+
+/* ----------------------------------------- */
+/* --------------- INPUTS ------------------ */
+/* ----------------------------------------- */
+
+/* Username input */
+#usernameinput{
+    width: 400px;
+    height: 40px;
+    border-radius: 10px;
+    border-style: solid;
+    padding-left: 20px;
+    border-color: #ccc;
+}
+
+/* Mail input */
+#mailinput{
+    width: 400px;
+    height: 40px;
+    border-radius: 10px;
+    border-style: solid;
+    padding-left: 20px;
+    border-color: #ccc;
+}
+
+/* Password input */
+#passwordinput{
+    width: 400px;
+    height: 40px;
+    border-radius: 10px;
+    border-style: solid;
+    padding-left: 20px;
+    border-color: #ccc;
+}
+
+/* ----------------------------------------- */
+/* ------------ REGISTER BUTTON ------------ */
+/* ----------------------------------------- */
+
+#registerbutton{
+    display: flex;
+    width: 100%;
+    height: 48px;
+    padding: 16px 12px;
+    margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: Inter;
+    font-size: 16px;
+
+    border-radius: 4px;
+    background: var(--red-title, #F20000);
+    border-style: none;
+}
+
+
+/* Dynamic options */
+#registerbutton:hover{
+    cursor: pointer;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-style: solid;
+}
+#registerbutton:active{
+    background-color: #ff0000bc;
+}
