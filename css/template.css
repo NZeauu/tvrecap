@@ -34,7 +34,7 @@ body{
     padding: 10px;
     color: white;
     position: fixed;
-    z-index: 2;
+    z-index: 7;
 }
 
 /* Main toolbar (top) */
@@ -50,7 +50,7 @@ body{
     color: black;
     font-size: 25px;
     gap: 30px;
-    z-index: 1;
+    z-index: 6;
 }
 
 /* Menu list */

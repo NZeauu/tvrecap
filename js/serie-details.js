@@ -59,8 +59,31 @@ function setUserName() {
 // ---------------------- SERIE --------------------------
 // -------------------------------------------------------
 
+// Return back button
+$("#return").on("click", function () {
+
+    // Get the previous page's url
+    var previousPage = document.referrer;
+    console.log(previousPage);
+
+    // If the previous page is the history page redirect to it else go back to the previous page
+    if(previousPage == "https://epeigne.frstud.fr/tvrecap/html/history.html"){
+        window.location.replace("history.html");
+    }
+    else{
+        window.history.back();
+    }
+
+    // window.history.back();
+});
+
 // Get the serie's details
 function getSerieDetails(){
+
+    // Display the loading animation
+    $('#details-frame').attr('style', 'display: none;');
+    $('#loading').attr('style', 'display: flex; text-align: center; font-size: 2em; margin-top: 50px; font-family: Inter; justify-content: center; align-items: center; width: 100%; height: 100%;');
+
 
     // Get the serie's id from the url
     const queryString = window.location.search;
@@ -133,6 +156,13 @@ function getSerieDetails(){
 
         // Check if the serie is in the user's watchlist
         checkWatchlist();
+
+        // Wait 1 second and display the movie's details
+        setTimeout(function () {
+            $('#details-frame').fadeIn(1000);
+            $('#loading').attr('style', 'display: none;');
+        }, 1000);
+        
     });
 
 }
@@ -142,13 +172,13 @@ function getImage(id) {
 
     var imageId = id;
 
-    // Faites une requête AJAX pour récupérer l'image
+    // AJAX request to get the image 
     $.ajax({
         url: '../php/cover.php/cover',
         type: 'GET',
         data: { id_cover: imageId },
         success: function (data) {
-            // Mettez à jour le contenu de l'élément avec l'image récupérée
+            // Create the image tag with the base64 data
             $('#picture').html('<img src="data:image/jpeg;base64,' + data + '" alt="Image" id="picture-img">');
 
         },

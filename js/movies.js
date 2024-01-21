@@ -180,13 +180,13 @@ function getImage(id, imgNumber) {
 
     var imageId = id;
 
-    // Faites une requête AJAX pour récupérer l'image
+    // AJAX request to get the image
     $.ajax({
         url: '../php/cover.php/cover',
         type: 'GET',
         data: { id_cover: imageId },
         success: function (data) {
-            // Mettez à jour le contenu de l'élément avec l'image récupérée
+            // Create the image tag with the base64 data
             $('#movie-card-img' + imgNumber).html('<img src="data:image/jpeg;base64,' + data + '" alt="Image">');
 
         },
@@ -208,6 +208,9 @@ function createCard(data){
     // Empty the list
     $('#list').empty();
 
+    $('#list').html('<h1 id="loading" > Loading... </h1>');
+    $('#loading').attr('style', 'text-align: center; font-size: 2em; margin-top: 50px; font-family: Inter;');
+
     // If the data is empty or null print a message
     if (data === null || data === "") {
         const message = $('<p>').text('Aucun film à afficher !');
@@ -216,6 +219,8 @@ function createCard(data){
         // Create style for the message
         const style = $('<style>').text('#list p {text-align: center; font-size: 2em; margin-top: 50px; font-family: Inter}');
         $('head').append(style);
+
+        $('#loading').remove();
 
         return;
     }
@@ -298,8 +303,21 @@ function createCard(data){
 
         movieCard.append(cardContent);
 
+        movieCard.attr('style', 'display: none;');
+
         // Append the movie card to the body of the document
         $('#list').append(movieCard);
+
+        // Wait for the image to be loaded
+        // $('#movie-card-img' + i).ready(function () {
+        //     $('#loading').remove();
+        //     movieCard.fadeIn(500);
+        // });
+
+        setTimeout(function () {
+            $('#loading').remove();
+            movieCard.fadeIn(500);
+        }, 1000);
     }
 }
 

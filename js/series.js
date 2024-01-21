@@ -168,6 +168,7 @@ $("#reset-button").click(function () {
     $("#category").val("all");
     $("#duration").val("all");
     $("#year").val("all");
+    $("#seasons").val("all");
     getAllSeries();
 });
 
@@ -178,13 +179,13 @@ function getImage(id, imgNumber) {
 
     var imageId = id;
 
-    // Faites une requête AJAX pour récupérer l'image
+    // AJAX request to get the image
     $.ajax({
         url: '../php/cover.php/cover',
         type: 'GET',
         data: { id_cover: imageId },
         success: function (data) {
-            // Mettez à jour le contenu de l'élément avec l'image récupérée
+            // Create the image tag with the base64 data
             $('#serie-card-img' + imgNumber).html('<img src="data:image/jpeg;base64,' + data + '" alt="Image">');
 
         },
@@ -206,6 +207,9 @@ function createCard(data){
     // Empty the list
     $('#list').empty();
 
+    $('#list').html('<h1 id="loading" style="font-size: 50px"> Loading... </h1>');
+    $('#loading').attr('style', 'text-align: center; font-size: 2em; margin-top: 50px; font-family: Inter;');
+
     // If the data is empty or null print a message
     if (data === null || data === "") {
         const message = $('<p>').text('Aucune série à afficher !');
@@ -214,6 +218,8 @@ function createCard(data){
         // Create style for the message
         const style = $('<style>').text('#list p {text-align: center; font-size: 2em; margin-top: 50px; font-family: Inter}');
         $('head').append(style);
+
+        $('#loading').remove();
 
         return;
     }
@@ -231,7 +237,22 @@ function createCard(data){
         const serieCardImg = $('<div>').attr('id', 'serie-card-img' + i);
         serieCardImg.attr('class', 'serie-card-img');
 
-        getImage(data[i].image_id, i);
+        // getImage(data[i].image_id, i);
+
+        $.ajax({
+            url: '../php/cover.php/cover',
+            type: 'GET',
+            data: { id_cover: data[i].image_id },
+            success: function (data) {
+                // Create the image tag with the base64 data
+                const img = $('<img>').attr('src', 'data:image/jpeg;base64,' + data);
+                serieCardImg.append(img);
+    
+            },
+            error: function () {
+                console.error('Erreur lors de la récupération de l\'image');
+            }
+        });
 
         const serieCardInfo = $('<div>').attr('id', 'serie-card-info');
 
@@ -340,8 +361,22 @@ function createCard(data){
 
         serieCard.append(cardContent);
 
+        serieCard.attr('style', 'display: none;');
+
         // Append the serie card to the body of the document
         $('#list').append(serieCard);
+
+        // Wait for the image to be loaded
+        // $('#serie-card-img' + i).ready(function () {
+        //     $('#loading').remove();
+        //     serieCard.fadeIn(500);
+        // });
+
+        setTimeout(function () {
+            $('#loading').remove();
+            serieCard.fadeIn(500);
+        }, 1000);
+
     }
 }
 

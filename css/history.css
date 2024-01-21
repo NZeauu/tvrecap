@@ -8,6 +8,7 @@
     height: 100%;
     width: 90%;
     align-self: center;
+    background-color: white;
 }
 
 #history{
@@ -21,35 +22,290 @@
     align-items: center;
     margin-top: 100px;
     font-family: Inter;
-    font-size: 30px;
+    gap: 20px;
 }
 
-#type{
+#history h2{
+    font-size: 40px;
+}
+  
+.main-container {
+    position: relative;
     display: flex;
-    flex-direction: row;
+    overflow: hidden;
+    width: 100%; /* Ajuster la largeur du conteneur principal selon vos besoins */
+    height: 50px; /* Ajuster la hauteur du conteneur principal selon vos besoins */
+    border: #000 solid 3px; 
+    border-radius: 20px;
+}
+
+.movies-content,
+.series-content {
+    flex: 1;
+    background-color: white;
+    color: #000;
+    text-align: center;
+    /* z-index: 1; */
+}
+
+.diagonal-separator {
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    transform: skewX(-30deg); /* Inclinaison en diagonale */
+    background-color: #000; /* Couleur du trait en diagonale */
+    z-index: 4;
+    margin-left: 50%;
+}
+
+.series-content {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.movies-content {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.movies-content:hover, 
+.series-content:hover {
+    cursor: pointer;
+}
+
+
+/* ---------------------------- */
+/* -------- CARD DESIGN ------- */
+/* ---------------------------- */
+
+#history-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+/* Card base */
+#card-content{
+    display: flex;
+    padding: 24px;
+    align-items: flex-start;
+    gap: 16px;
+    align-self: stretch;
+    background: #E2E2E2;
+    border-radius: 10px;
+    font-family: Inter;
+    width: 100%;
+}
+
+/* Bottom part of the card */
+#bottom-card{
+    display: flex;
+    align-items: flex-end;
+    align-self: stretch;
+    justify-content: space-between;
+}
+
+#duration-title{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* ---------------------------- */
+/* -------- MOVIE CARD -------- */
+/* ---------------------------- */
+
+/* Card root */
+#movie-card{
+    display: flex;
     height: fit-content;
     width: 100%;
-    justify-content: center;
-    border: #000000 1px solid;
+    align-items: flex-start;
+    gap: 32px;
+    align-self: stretch;
+}
+
+/* Movie picture */
+.movie-card-img{
+    display: flex;
+    width: 110px;
+    height: 150px;
+}
+.movie-card-img img{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    /* object-fit: cover; */
     border-radius: 10px;
 }
 
-#type button{
+/* Contains all the infos about the movie */
+#movie-card-info{
     display: flex;
-    flex-direction: row;
-    height: 100%;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    font-family: Inter;
-    font-size: 30px;
-    cursor: pointer;
-    border: none;
-    background-color: #FFFFFF;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 80%;
+    gap: 25px;
 }
 
-#type button:hover{
-    background-color: #000000;
-    color: #FFFFFF;
+/* Top part of the card */
+/*Contains the title and the year of the movie */
+#movie-card-title{
+    display: flex;
+    width: 100%;
+    padding-bottom: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    flex: 1 0 0;
+    font-weight: bold;
 }
-  
+
+/* Contains the category and the duration of the movie */
+#movie-card-details{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-self: stretch;
+}
+
+/* Category and duration blocs */
+#movie-card-category, #movie-card-duration{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Details button */
+#movie-details-button{
+    display: flex;
+    padding: 8px 20px;
+    align-items: center;
+    gap: 8px;
+    border-style: none;
+    border-radius: 4px;
+    background: var(--buttons-red, rgba(255, 0, 0, 0.58));
+}
+#movie-details-button:hover{
+    background: var(--buttons-red-hover, rgba(255, 0, 0, 0.8));
+    cursor: pointer;
+}
+
+/* ---------------------------- */
+/* -------- CARD TEXTS -------- */
+/* ---------------------------- */
+#movie-title{
+    font-size: 24px;
+}
+#movie-year{
+    font-size: small;
+}
+
+/* ---------------------------- */
+/* -------- SERIE CARD -------- */
+/* ---------------------------- */
+
+/* Card root */
+#serie-card{
+    display: flex;
+    height: fit-content;
+    width: 100%;
+    align-items: flex-start;
+    gap: 32px;
+    align-self: stretch;
+}
+
+/* serie picture */
+.serie-card-img{
+    display: flex;
+    width: 110px;
+    height: 150px;
+}
+.serie-card-img img{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    /* object-fit: cover; */
+    border-radius: 10px;
+}
+
+/* Contains all the infos about the serie */
+#serie-card-info{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 80%;
+    gap: 25px;
+}
+
+/* Top part of the card */
+/*Contains the title and the year of the serie */
+#serie-card-title{
+    display: flex;
+    width: 100%;
+    padding-bottom: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    flex: 1 0 0;
+    font-weight: bold;
+}
+
+
+
+/* Contains the category and the duration of the serie */
+#serie-card-details{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-self: stretch;
+}
+
+/* Category and duration blocs */
+#serie-card-category, #serie-card-duration, #serie-card-watched{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Details button */
+#serie-details-button{
+    display: flex;
+    padding: 8px 20px;
+    align-items: center;
+    gap: 8px;
+    border-style: none;
+    border-radius: 4px;
+    background: var(--buttons-red, rgba(255, 0, 0, 0.58));
+}
+#serie-details-button:hover{
+    background: var(--buttons-red-hover, rgba(255, 0, 0, 0.8));
+    cursor: pointer;
+}
+
+/* Separator line between top and bottom part of the card */
+#separator-line{
+    display: flex;
+    width: 100%;
+    height: 2px;
+    background: #000000;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* ---------------------------- */
+/* -------- CARD TEXTS -------- */
+/* ---------------------------- */
+#serie-title{
+    font-size: 24px;
+}
+#serie-year{
+    font-size: small;
+}
+#watched-title{
+    font-size: 16px;
+    font-weight: bold;
+}

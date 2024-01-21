@@ -715,3 +715,74 @@ function deleteEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumbe
         return false;
     }
 }
+
+// Get the list of movies seen by the user "OK"
+function getMoviesSeen($conn, $email){
+    try{
+        $sql = "SELECT * FROM Films WHERE id IN (SELECT movie_id FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND type = 'movie')";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $movies = array();
+
+            while($row = $result->fetch_assoc()) {
+                $movies[] = $row;
+            }
+
+            return $movies;
+        }
+        else {
+            return null;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+
+}
+
+// Get the list of series seen by the user "OK"
+function getSeriesSeen($conn, $email){
+    try{
+        $sql = "SELECT * FROM Séries WHERE id IN (SELECT serie_id FROM Episodes WHERE id IN (SELECT episode_id FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND type = 'serie'))";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $series = array();
+
+            while($row = $result->fetch_assoc()) {
+                $series[] = $row;
+            }
+
+            return $series;
+        }
+        else {
+            return null;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+
+}
+
+// Get the number of episodes of a serie seen by the user "OK"
+function getNumberOfEpisodesSeen($conn, $email, $id_serie){
+    try{
+        $sql = "SELECT COUNT(*) AS nb_episodes_seen FROM Episodes WHERE id IN (SELECT episode_id FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND type = 'serie') AND serie_id = '$id_serie'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+
+            return $row["nb_episodes_seen"];
+        }
+        else {
+            return null;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+
+}

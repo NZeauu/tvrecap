@@ -59,8 +59,17 @@ function setUserName() {
 // ---------------------- MOVIE --------------------------
 // -------------------------------------------------------
 
+// Return back button
+$("#return").on("click", function () {
+    window.history.back();
+});
+
 // Get the movie's details
 function getMovieDetails(){
+
+    // Display the loading animation
+    $('#details-frame').attr('style', 'display: none;');
+    $('#loading').attr('style', 'display: flex; text-align: center; font-size: 2em; margin-top: 50px; font-family: Inter; justify-content: center; align-items: center; width: 100%; height: 100%;');
 
     // Get the movie's id from the url
     const queryString = window.location.search;
@@ -97,6 +106,13 @@ function getMovieDetails(){
 
         // Check if the movie is in the user's watchlist
         checkWatchlist();
+
+        // Wait 1 second and display the movie's details
+        setTimeout(function () {
+            $('#details-frame').fadeIn(1000);
+            $('#loading').attr('style', 'display: none;');
+        }, 1000);
+
     });
 
 }
@@ -106,13 +122,13 @@ function getImage(id) {
 
     var imageId = id;
 
-    // Faites une requête AJAX pour récupérer l'image
+    // AJAX request to get the image
     $.ajax({
         url: '../php/cover.php/cover',
         type: 'GET',
         data: { id_cover: imageId },
         success: function (data) {
-            // Mettez à jour le contenu de l'élément avec l'image récupérée
+            // Create the image tag with the base64 data
             $('#picture').html('<img src="data:image/jpeg;base64,' + data + '" alt="Image" id="picture-img">');
 
         },
