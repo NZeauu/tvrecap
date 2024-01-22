@@ -1,0 +1,239 @@
+/* ---------------------------------- */
+/* --------- ADDING SECTION --------- */
+/* ---------------------------------- */
+
+#content-purpose{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 90%;
+    border-radius: 10px;
+    align-self: center;
+    margin-top: 100px;
+    gap: 20px;
+    font-family: Inter;
+}
+
+#content-purpose h2{
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+
+  
+.main-container {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    width: 100%; /* Ajuster la largeur du conteneur principal selon vos besoins */
+    height: 50px; /* Ajuster la hauteur du conteneur principal selon vos besoins */
+    border: #000 solid 3px; 
+    border-radius: 20px;
+}
+
+.movies-content,
+.series-content {
+    flex: 1;
+    background-color: white;
+    color: #000;
+    text-align: center;
+    /* z-index: 1; */
+}
+
+.diagonal-separator {
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    transform: skewX(-30deg); /* Inclinaison en diagonale */
+    background-color: #000; /* Couleur du trait en diagonale */
+    z-index: 4;
+    margin-left: 50%;
+}
+
+.series-content {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.movies-content {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.movies-content:hover, 
+.series-content:hover {
+    cursor: pointer;
+}
+
+#form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ---------------------------------- */
+/* ------------ ADD FORM ------------ */
+/* ---------------------------------- */
+
+#movie-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    align-items: center;
+}
+
+#serie-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    align-items: center;
+}
+
+.form-content{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+.left-form{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 100%;
+    gap: 20px;
+}
+
+.right-form{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 100%;
+    gap: 20px;
+}
+
+.content-title, .content-year,
+.content-duration, 
+.synopsis, .submit {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+}
+
+.seasons{
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+}
+
+.content-title input, .content-year input,
+.content-duration input{
+    width: 100%;
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+    padding: 10px 20px 10px 20px;
+    font-family: Inter;
+    font-size: 1em;
+    border: #000 solid 1px;
+}
+
+.input-nb-seasons{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 3em;
+    border-radius: 10px;
+    border: none;
+    /* padding: 10px 20px 10px 20px; */
+    border: #000 solid 1px;
+    font-family: Inter;
+    font-size: 1em;
+}
+
+.input-nb-seasons input{
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-family: Inter;
+    font-size: 1em;
+    text-align: center;
+}
+
+.input-nb-seasons #button-more{
+    width: 20%;
+    height: 100%;
+    border-radius: 0px 10px 10px 0px;
+    border: none;
+    border-left: solid #000 1px;
+    font-family: Inter;
+    font-size: 1em;
+}
+
+.input-nb-seasons #button-less{
+    width: 20%;
+    height: 100%;
+    border-radius: 10px 0px 0px 10px;
+    border: none;
+    border-right: solid #000 1px;
+    font-family: Inter;
+    font-size: 1em;
+}
+
+.input-nb-seasons #button-more:hover, .input-nb-seasons #button-less:hover{
+    cursor: pointer;
+    background-color: rgba(255, 0, 0, 0.70);
+}
+
+.input-nb-seasons #button-more:active, .input-nb-seasons #button-less:active{
+    background-color: rgba(255, 0, 0, 0.90);
+}
+
+.synopsis textarea{
+    width: 100%;
+    height: 100px;
+    border-radius: 10px;
+    border: none;
+    padding: 10px 20px 10px 20px;
+    font-family: Inter;
+    font-size: 1em;
+    border: #000 solid 1px;
+}
+
+.submit{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 10%;
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+    font-family: Inter;
+    font-size: 1em;
+    color: white;
+    margin-left: 1.5em;
+}
+
+.submit button{
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+    font-family: Inter;
+    font-size: 1em;
+    background-color: #F20000;
+    color: white;
+
+}
+
+.submit button:hover{
+    cursor: pointer;
+} 
