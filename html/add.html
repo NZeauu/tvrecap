@@ -47,6 +47,91 @@
             </div>
         </div>
         <!-- Content -->
+        <div id="content-purpose">
+            <h2>Proposer un ajout</h2>
+            <!-- Content type choice -->
+            <div class="main-container">
+                <div class="movies-content">
+                  <p>Film</p>
+                </div>
+                <div id="movies-content-border"></div>
+                <div class="diagonal-separator"></div>
+                <div id="series-content-border"></div>
+                <div class="series-content">
+                  <p>Série</p>
+                </div>
+            </div>
+
+
+            <div id="form">
+            <!-- Movies form -->
+                <div id="movie-form" style="display: none;">
+                    <div class="form-content">
+                        <div class="left-form">
+                            <div class="content-title">
+                                <h3>Titre</h3>
+                                <input type="text" id="movie-title" placeholder="Titre du film">
+                            </div>
+                            <div class="content-year">
+                                <h3>Année</h3>
+                                <input type="text" id="movie-year" placeholder="Année de sortie">
+                            </div>
+                            <div class="content-duration">
+                                <h3>Durée</h3>
+                                <input type="text" id="movie-duration" placeholder="Durée du film">
+                            </div>
+                        </div>
+                        <div class="right-form">
+                            <div class="synopsis">
+                                <h3>Synopsis</h3>
+                                <textarea id="movie-synopsis" placeholder="Synopsis du film"></textarea>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="submit">
+                        <button id="submit-movie">Proposer</button>
+                    </div>
+                </div>
+                   
+
+                <!-- Series form -->
+                <div id="serie-form" style="display: none;">
+                    <div class="form-content">
+                        <div class="left-form">
+                            <div class="content-title">
+                                <h3>Titre</h3>
+                                <input type="text" id="serie-title" placeholder="Titre de la série">
+                            </div>
+                            <div class="content-year">
+                                <h3>Année</h3>
+                                <input type="text" id="serie-year" placeholder="Année de sortie">
+                            </div>
+                            <div class="seasons">
+                                <h3>Nombre de saisons</h3>
+                                <div class="input-nb-seasons">
+                                    <button type="button" id="button-less" onclick="if($('#serie-seasons').val()>1){$('#serie-seasons').val(parseInt($('#serie-seasons').val()) - 1)}">  -  </button>
+                                    <input type="number" id="serie-seasons" value="1" min="1" disabled>
+                                    <button type="button" id="button-more" onclick="$('#serie-seasons').val(parseInt($('#serie-seasons').val()) + 1)">  +  </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="right-form">
+                            <div class="synopsis">
+                                <h3>Synopsis</h3>
+                                <textarea id="serie-synopsis" placeholder="Synopsis de la série"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit">
+                        <button id="submit-serie">Proposer</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
         <script src="../js/add.js"></script>
     </body>
 </html>
