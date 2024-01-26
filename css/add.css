@@ -9,14 +9,14 @@
     width: 90%;
     border-radius: 10px;
     align-self: center;
-    margin-top: 100px;
-    gap: 20px;
+    margin-top: 5%;
+    gap: 10px;
     font-family: Inter;
 }
 
 #content-purpose h2{
     text-align: center;
-    font-size: 2em;
+    font-size: 3em;
     margin-bottom: 20px;
 }
 
@@ -108,7 +108,6 @@
     flex-direction: column;
     width: 50%;
     height: 100%;
-    gap: 20px;
 }
 
 .right-form{
@@ -116,7 +115,6 @@
     flex-direction: column;
     width: 50%;
     height: 100%;
-    gap: 20px;
 }
 
 .content-title, .content-year,

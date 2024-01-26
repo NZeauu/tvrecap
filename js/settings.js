@@ -16,7 +16,7 @@ function cookieCheck() {
 // cookieCheck();
 
 // Check if the cookie is set every second
-setInterval(cookieCheck, 1000);
+// setInterval(cookieCheck, 1000);
 
 // Get the user's name from the cookie
 function getCookie(cookieName) {

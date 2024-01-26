@@ -47,6 +47,63 @@
             </div>
         </div>
         <!-- Content -->
+        <div id="user-settings">
+            <div id="user-infos">
+                <h2>Informations Personnelles</h2>
+                <div id="infos-content">
+                    <div id="infos-left">
+                        <div id="infos-avatar">
+                            <img id="circle-image" src="../img/avatars/default.svg">
+                            <div id="avatar-modify">
+                                <img src="../img/edit.svg" class="edit-ico">
+                                <!-- X -->
+                            </div> 
+                        </div>
+                    </div>
+                    <div id="infos-right">
+                        <div id="infos-username">
+                            <section>Nom</section>
+                            <div id="username-modify">
+                                <img src="../img/edit.svg" class="edit-ico" id="username-but">
+                                <!-- <span id="username-but">X</span> -->
+                                <input type="text" id="username-input" placeholder="Nouveau nom d'utilisateur" disabled>
+                            </div>
+                        </div>
+                        <div id="infos-birthday">
+                            <section>Date de naissance</section>
+                            <div id="birthday-modify">
+                                <img src="../img/edit.svg" class="edit-ico" id="birthday-but">
+                                <!-- <span id="birthday-but">X</span> -->
+                                <input type="date" id="birthday-input" disabled>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div id="user-login">
+                <h2>Informations de Connexion</h2>
+                <div id="login-content">
+                    <div id="login-mail">
+                        <section>Adresse mail</section>
+                        <div id="mail-modify">
+                            <input type="text" id="mail-input" placeholder="example@template.com" disabled>
+                        </div>
+                        <span id="update-mail">Contactez-nous pour changer de mail</span>
+                    </div>
+                    <div id="login-password">
+                        <section>Mot de passe</section>
+                        <div id="password-modify">
+                            <img src="../img/edit.svg" class="edit-ico" id="password-but">
+                            <!-- <span id="password-but">X</span> -->
+                            <input type="password" id="password-input" placeholder="●●●●●●●●" disabled>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
         <script src="../js/settings.js"></script>
     </body>
 </html>

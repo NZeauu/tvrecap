@@ -17,8 +17,6 @@ $requestResource = array_shift($request);
 
 if($requestResource == "sendmail"){
 
-    echo "sendmail";
-
     $data = false;
 
     if($requestMethod == "POST"){
@@ -49,7 +47,7 @@ if($requestResource == "sendmail"){
                         Synopsis: $synopsis";
         }
 
-        $to = "tvrecap.informations@gmail.com";
+        $to = "tvrecap.noreply@epeigne.frstud.fr";
         $subject = "TVRecap - Add new $type";
 
         $header = "From: tvrecap.informations@gmail.com";
