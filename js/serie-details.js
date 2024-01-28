@@ -1,59 +1,7 @@
-// -------------------------------------------------------
-// --------------------- COOKIES -------------------------
-// -------------------------------------------------------
-
-// Cookie check
-function cookieCheck() {
-
-    if(document.cookie.indexOf("user_mail") === -1) {
-
-        // Redirect to the login page
-        window.location.replace("login.html");
-    }
-}
-
-// Check if the cookie is set and redirect to the login page if not
-// cookieCheck();
+import { getCookie, cookieCheck, setUserName, getAvatar } from "./mainContent.js";
 
 // Check if the cookie is set every second
 setInterval(cookieCheck, 1000);
-
-// Get the user's name from the cookie
-function getCookie(cookieName) {
-    const name = cookieName + "=";
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const cookieArray = decodedCookie.split(';');
-
-    for (let i = 0; i < cookieArray.length; i++) {
-        let cookie = cookieArray[i].trim();
-        if (cookie.indexOf(name) === 0) {
-            return cookie.substring(name.length, cookie.length);
-        }
-    }
-}
-
-
-// -------------------------------------------------------
-// --------------------- NAVBAR -------------------------
-// -------------------------------------------------------
-
-// Set the user's name in the navbar
-function setUserName() {
-    var email = getCookie("user_mail");
-
-    if (email === null) {
-        $("#username").text("User not found");
-    }
-
-    $.ajax('../php/home.php/username', {
-        method: 'GET',
-        data: {
-            email: email
-        },
-    }).done(function (data) {
-        $("#username").text(data);
-    });
-}
 
 // -------------------------------------------------------
 // ---------------------- SERIE --------------------------
@@ -332,15 +280,15 @@ function createSerieCards(data) {
     for (var i = 0; i < data.length; i++) {
 
         // Card base
-        const serieCard = $('<div>').attr('id', 'episode-card');
+        const serieCard = $('<div>').attr('class', 'episode-card');
 
         // Card main blocks
-        const episodeNumber = $('<div>').attr('id', 'episode-number');
-        const episodeSeen = $('<div>').attr('id', 'episode-seen');
+        const episodeNumber = $('<div>').attr('class', 'episode-number');
+        const episodeSeen = $('<div>').attr('class', 'episode-seen');
 
         // Card episodeNumber content
         const episodeTitle = $('<h3>').text('Episode ' + data[i].num_ep + ' : "' + data[i].nom + '"');
-        const episodeDuration = $('<div>').attr('id', 'episode-duration');
+        const episodeDuration = $('<div>').attr('class', 'episode-duration');
         const episodeDurationValue = $('<p>');
 
         // Duration of the episode
@@ -483,6 +431,7 @@ $("#seasons").on("click", ".season-button", function () {
 // When the page is loaded
 $(document).ready(function () {
     setUserName();
+    getAvatar("#avatar-header");
 
     // Get the movie's details
     getSerieDetails();
@@ -491,12 +440,12 @@ $(document).ready(function () {
     createSeasonButtons();
 
     // When the user clicks on the "seen" button
-    $("#not-seen-button").click(function () {
+    $(".not-seen-button").click(function () {
         addToWatchlist();
     });
 
     // When the user clicks on the "seen" button
-    $("#seen-button").click(function () {
+    $(".seen-button").click(function () {
         removeFromWatchlist();
     });
 });

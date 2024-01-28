@@ -114,6 +114,102 @@ function getUsername($conn, $email){
     }
 }
 
+// Get the user's avatar from the email "OK"
+function getAvatar($conn, $email){
+    try{
+        $sql = "SELECT avatar FROM Accounts WHERE email = '$email'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+
+            return $row["avatar"];
+        }
+        else {
+            return "User not found";
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+// Get user's information "OK"
+function getUserInfo($conn, $email){
+    try{
+        $sql = "SELECT * FROM Accounts WHERE email = '$email'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+
+            return $row;
+        }
+        else {
+            return "User not found";
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+// Update user's username "OK"
+function updateUsername($conn, $email, $username){
+    try{
+        $sql = "UPDATE Accounts SET username = '$username' WHERE email = '$email'";
+        $conn->query($sql);
+
+        return true;
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Update user's birthday "OK"
+function updateBirthday($conn, $email, $birthday){
+    try{
+        $sql = "UPDATE Accounts SET birthday = '$birthday' WHERE email = '$email'";
+        $conn->query($sql);
+
+        return true;
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Update user's password "OK"
+function updatePassword($conn, $email, $password){
+    try{
+        $sql = "UPDATE Accounts SET password = '$password' WHERE email = '$email'";
+        $conn->query($sql);
+
+        return true;
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Update user's avatar "OK"
+function updateAvatar($conn, $email, $avatar){
+    try{
+        $sql = "UPDATE Accounts SET avatar = '$avatar' WHERE email = '$email'";
+        $conn->query($sql);
+
+        return true;
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
 
 // ------------------------------------ //
 // -------------- SERIES -------------- //

@@ -15,46 +15,16 @@ $request =substr($_SERVER['PATH_INFO'], 1);
 $request = explode('/', $request);
 $requestResource = array_shift($request);
 
-if($requestResource == "totaltime"){
+if($requestResource == 'username'){
 
     $data = false;
 
-    if($requestMethod == "GET"){
-        
-        $email = $_GET['email'];
+    if($requestMethod == 'GET'){
+        $userMail = $_GET['userMail'];
 
-        $data = getTotalTime($db, $email);
-
-    }
-
-}
-
-if($requestResource == "movieswatched"){
-    $data = false;
-
-    if($requestMethod == "GET"){
-        
-        $email = $_GET['email'];
-
-        $data = getMoviesWatched($db, $email);
-
+        $data = getUsername($db, $userMail);
     }
 }
-
-if($requestResource == "episodeswatched"){
-    $data = false;
-
-    if($requestMethod == "GET"){
-        
-        $email = $_GET['email'];
-
-        $data = getEpisodesWatched($db, $email);
-
-    }
-}
-
-
-
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-control: no-store, no-cache, must-revalidate');
 header('Pragma: no-cache');

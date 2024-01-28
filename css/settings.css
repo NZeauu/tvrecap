@@ -15,7 +15,7 @@
 #infos-content{
     display: flex;
     flex-direction: row;
-    border: #000000 solid 1px;
+    border: #000000 solid 2px;
     padding: 30px 0px 30px 0px;
     border-radius: 10px;
     gap: 50px;
@@ -29,19 +29,24 @@
 #login-content{
     display: flex;
     flex-direction: column;
-    border: #000000 solid 1px;
+    border: #000000 solid 2px;
     padding: 30px 0px 30px 0px;
     border-radius: 10px;
     gap: 35px;
     width: 90%;
 }
 
-.edit-ico{
+.edit-ico, .save-ico{
     width: 1.3em;
     height: 1.3em;
 }
 
-.edit-ico:hover{
+.save-ico{
+    background-color: rgb(56, 176, 0, 0.8); 
+    border-radius: 10px 0px 0px 10px;
+}
+
+.edit-ico:hover, .save-ico:hover{
     cursor: pointer;
 }
 
@@ -68,7 +73,7 @@
     border: solid 1px #000000;
 }
 
-#circle-image{
+#avatar-setting{
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -104,7 +109,21 @@
     align-items: center;
 }
 
-#username-but, #birthday-but, #mail-but, #password-but{
+#update-mail{
+    margin-top: 5px;
+    font-size: smaller;
+    font-style: italic;
+    color: gray;
+}
+
+#update-mail a{
+    text-decoration: none;
+    color: gray;
+    text-decoration: underline;
+}
+
+#username-but, #birthday-but, #mail-but, #password-but,
+#username-save, #birthday-save, #mail-save, #password-save{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -122,7 +141,7 @@
     background-color: transparent;
 }
 
-#username-input:focus, #birthday-input:focus{
+#username-input:focus, #birthday-input:focus, #mail-input:focus, #password-input:focus{
     outline: none;
 }
 
@@ -133,9 +152,120 @@
     margin: 0px 30px;
 }
 
-#login-mail span{
-    margin-top: 5px;
-    font-size: smaller;
-    font-style: italic;
-    color: gray;
+/* ------------------------------------------------- */
+/* --------------------- POPUP --------------------- */
+/* ------------------------------------------------- */
+.popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+    z-index: 1000;
+    font-family: Inter;
+}
+
+.popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.popup-content h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.popup-content h2::after{
+    content: "";
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #000;
+    margin-top: 10px;
+}
+
+#avatars-list{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.but-choice{
+    border: none;
+    background-color: transparent;
+}
+
+.but-choice:focus{
+    outline: none;
+    background-color: rgb(56, 176, 0, 0.8);
+    border-radius: 10px;
+}
+
+#default{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: solid 1px #000000;
+}
+
+#default img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+#avatar-buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    margin-top: 30px;
+    gap: 10px;
+}
+
+#avatar-save{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    border-radius:5px;
+    padding: 10px;
+}
+
+#avatar-save:hover{
+    cursor: pointer;
+    background-color: rgb(56, 176, 0, 0.8);
+    color: #ffffff;
+}
+
+#avatar-cancel{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    border-radius:5px;
+    padding: 10px;
+}
+
+#avatar-cancel:hover{
+    cursor: pointer;
+    background-color: rgb(255, 0, 0, 0.8);
+    color: #ffffff;
 }

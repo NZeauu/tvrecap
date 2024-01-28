@@ -20,16 +20,20 @@
                 <h1><span style="color: #F20000;">TV</span>Recap </h1>
             </div>
             <div id="menu-links">
-                <a href="home.html" id="link"><img style="padding-right: 10px;" src="../img/home.svg"><span>Accueil</span></a>
-                <a href="movies.html" id="link"><img style="padding-right: 10px;" src="../img/movie.svg"><span>Films</span></a>
-                <a href="series.html" id="link"><img style="padding-right: 10px;" src="../img/series.svg"><span>Séries</span></a>
-                <a href="history.html" id="link"><img style="padding-right: 10px;" src="../img/history.svg"><span>Mon historique</span></a>
-                <a href="add.html" id="link"><img style="padding-right: 10px;" src="../img/add.svg"><span>Proposer un ajout</span></a>
-                <a href="settings.html" id="link" style="background-color: #F20000;"><img style="padding-right: 10px;" src="../img/settings.svg"><span>Paramètres</span></a>
+                <a href="home.html" class="link"><img style="padding-right: 10px;" src="../img/home.svg"><span>Accueil</span></a>
+                <a href="movies.html" class="link"><img style="padding-right: 10px;" src="../img/movie.svg"><span>Films</span></a>
+                <a href="series.html" class="link"><img style="padding-right: 10px;" src="../img/series.svg"><span>Séries</span></a>
+                <a href="history.html" class="link"><img style="padding-right: 10px;" src="../img/history.svg"><span>Mon historique</span></a>
+                <a href="add.html" class="link"><img style="padding-right: 10px;" src="../img/add.svg"><span>Proposer un ajout</span></a>
+                <a href="settings.html" class="link" style="background-color: #F20000;"><img style="padding-right: 10px;" src="../img/settings.svg"><span>Paramètres</span></a>
             </div>
             <div id="disconnect">
                 <button id="logout"><img style="padding-right: 10px;" src="../img/logout.svg"><span>Déconnexion</span></button>
             </div>
+            <footer id="footer">
+                <span>Copyright © 2024 TVRecap </span>
+                <a href="contact.html" class="link"><span>Nous contacter</span></a>
+            </footer>
         </div>
         <div id="content">
             <!-- Header bar -->
@@ -39,71 +43,116 @@
                     <input type="text" id="search" placeholder="Rechercher une série, un film...">
                     <button id="search-button"><img src="../img/search.svg"></button>
             </div> -->
-            <div id="user">
-                <span id="username"></span>
-                <div id="avatar">
-                    <img src="../img/avatars/default.svg">
+                <div id="user">
+                    <span id="username"></span>
+                    <div id="avatar">
+                        <img id="avatar-header" src="#">
+                    </div>
                 </div>
             </div>
-        </div>
+
         <!-- Content -->
-        <div id="user-settings">
-            <div id="user-infos">
-                <h2>Informations Personnelles</h2>
-                <div id="infos-content">
-                    <div id="infos-left">
-                        <div id="infos-avatar">
-                            <img id="circle-image" src="../img/avatars/default.svg">
-                            <div id="avatar-modify">
-                                <img src="../img/edit.svg" class="edit-ico">
-                                <!-- X -->
-                            </div> 
+            <div id="user-settings">
+                <div id="user-infos">
+                    <h2>Informations Personnelles</h2>
+                    <div id="infos-content">
+                        <div id="infos-left">
+                            <div id="infos-avatar">
+                                <img id="avatar-setting" src="#">
+                                <div id="avatar-modify">
+                                    <img src="../img/edit.svg" class="edit-ico" id="avatar-but">
+                                </div> 
+                            </div>
+                        </div>
+                        <div id="infos-right">
+                            <div id="infos-username">
+                                <section>Nom</section>
+                                <div id="username-modify">
+                                    <img src="../img/edit.svg" class="edit-ico" id="username-but">
+                                    <img src="../img/save.svg" class="save-ico" id="username-save" style="display: none;">
+                                    <input type="text" id="username-input" disabled>
+                                </div>
+                            </div>
+                            <div id="infos-birthday">
+                                <section>Date de naissance</section>
+                                <div id="birthday-modify">
+                                    <img src="../img/edit.svg" class="edit-ico" id="birthday-but">
+                                    <img src="../img/save.svg" class="save-ico" id="birthday-save" style="display: none;">
+                                    <input type="date" id="birthday-input" disabled>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div id="infos-right">
-                        <div id="infos-username">
-                            <section>Nom</section>
-                            <div id="username-modify">
-                                <img src="../img/edit.svg" class="edit-ico" id="username-but">
-                                <!-- <span id="username-but">X</span> -->
-                                <input type="text" id="username-input" placeholder="Nouveau nom d'utilisateur" disabled>
+                </div>
+                <div id="user-login">
+                    <h2>Informations de Connexion</h2>
+                    <div id="login-content">
+                        <div id="login-mail">
+                            <section>Adresse mail</section>
+                            <div id="mail-modify">
+                                <input type="text" id="mail-input" disabled>
+                            </div>
+                            <span id="update-mail"><a href="contact.html">Contactez-nous</a> pour changer de mail</span>
+                        </div>
+                        <div id="login-password">
+                            <section>Mot de passe</section>
+                            <div id="password-modify">
+                                <img src="../img/edit.svg" class="edit-ico" id="password-but">
+                                <img src="../img/save.svg" class="save-ico" id="password-save" style="display: none;">
+                                <input type="password" id="password-input" placeholder="Changer de mot de passe" disabled>
                             </div>
                         </div>
-                        <div id="infos-birthday">
-                            <section>Date de naissance</section>
-                            <div id="birthday-modify">
-                                <img src="../img/edit.svg" class="edit-ico" id="birthday-but">
-                                <!-- <span id="birthday-but">X</span> -->
-                                <input type="date" id="birthday-input" disabled>
-                            </div>
-                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="user-login">
-                <h2>Informations de Connexion</h2>
-                <div id="login-content">
-                    <div id="login-mail">
-                        <section>Adresse mail</section>
-                        <div id="mail-modify">
-                            <input type="text" id="mail-input" placeholder="example@template.com" disabled>
+
+            <!-- Popup avatar modification -->
+            <div id="popup" class="popup-container">
+                <div class="popup-content">
+                    <h2>Modifier votre avatar</h2>
+                    <div id="avatars-list">
+                        <div class="avatar-choice">
+                            <button class="but-choice" id="default"><img src="../img/avatars/default.svg" class="avatar-choice-img"></button>
                         </div>
-                        <span id="update-mail">Contactez-nous pour changer de mail</span>
+                        <div class="avatar-choice">
+                            <button class="but-choice" id="avatar1"><img src="../img/avatars/avatar1.png" class="avatar-choice-img"></button>
+                        </div>
+                        <div class="avatar-choice">
+                            <button class="but-choice" id="avatar2"><img src="../img/avatars/avatar2.png" class="avatar-choice-img"></button>
+                        </div>
+                        <div class="avatar-choice">
+                            <button class="but-choice" id="avatar3"><img src="../img/avatars/avatar3.png" class="avatar-choice-img"></button>
+                        </div>
+                        <div class="avatar-choice">
+                            <button class="but-choice" id="avatar4"><img src="../img/avatars/avatar4.png" class="avatar-choice-img"></button>
+                        </div>
+                        <div class="avatar-choice">
+                            <button class="but-choice" id="avatar5"><img src="../img/avatars/avatar5.png" class="avatar-choice-img"></button>
+                        </div>
+                        <div class="avatar-choice">
+                            <button class="but-choice" id="avatar6"><img src="../img/avatars/avatar6.png" class="avatar-choice-img"></button>
+                        </div>
+                        <div class="avatar-choice">
+                            <button class="but-choice" id="avatar7"><img src="../img/avatars/avatar7.png" class="avatar-choice-img"></button>
+                        </div>
+                        <div class="avatar-choice">
+                            <button class="but-choice" id="avatar8"><img src="../img/avatars/avatar8.png" class="avatar-choice-img"></button>
+                        </div>
+                        <div class="avatar-choice">
+                            <button class="but-choice" id="avatar9"><img src="../img/avatars/avatar9.png" class="avatar-choice-img"></button>
+                        </div>
+                        <div class="avatar-choice">
+                            <button class="but-choice" id="avatar10"><img src="../img/avatars/avatar10.png" class="avatar-choice-img"></button>
+                        </div>
                     </div>
-                    <div id="login-password">
-                        <section>Mot de passe</section>
-                        <div id="password-modify">
-                            <img src="../img/edit.svg" class="edit-ico" id="password-but">
-                            <!-- <span id="password-but">X</span> -->
-                            <input type="password" id="password-input" placeholder="●●●●●●●●" disabled>
-                        </div>
+                    <div id="avatar-buttons">
+                        <button id="avatar-save">Enregistrer</button>
+                        <button id="avatar-cancel">Annuler</button>
                     </div>
                 </div>
-
             </div>
         </div>
 
-
-
-        <script src="../js/settings.js"></script>
+        <script type="module" src="../js/settings.js"></script>
     </body>
 </html>

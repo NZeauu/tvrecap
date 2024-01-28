@@ -15,7 +15,7 @@ $request =substr($_SERVER['PATH_INFO'], 1);
 $request = explode('/', $request);
 $requestResource = array_shift($request);
 
-if($requestResource == "totaltime"){
+if($requestResource == "avatar"){
 
     $data = false;
 
@@ -23,37 +23,24 @@ if($requestResource == "totaltime"){
         
         $email = $_GET['email'];
 
-        $data = getTotalTime($db, $email);
-
+        $data = getAvatar($db, $email);
     }
 
 }
 
-if($requestResource == "movieswatched"){
+if($requestResource == "username"){
+
     $data = false;
 
     if($requestMethod == "GET"){
         
         $email = $_GET['email'];
 
-        $data = getMoviesWatched($db, $email);
+        $data = getUsername($db, $email);
 
     }
+
 }
-
-if($requestResource == "episodeswatched"){
-    $data = false;
-
-    if($requestMethod == "GET"){
-        
-        $email = $_GET['email'];
-
-        $data = getEpisodesWatched($db, $email);
-
-    }
-}
-
-
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-control: no-store, no-cache, must-revalidate');

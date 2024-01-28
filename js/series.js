@@ -1,59 +1,8 @@
-// -------------------------------------------------------
-// --------------------- COOKIES -------------------------
-// -------------------------------------------------------
-
-// Cookie check
-function cookieCheck() {
-
-    if(document.cookie.indexOf("user_mail") === -1) {
-
-        // Redirect to the login page
-        window.location.replace("login.html");
-    }
-}
-
-// Check if the cookie is set and redirect to the login page if not
-// cookieCheck();
+import { getCookie, cookieCheck, setUserName, getAvatar, disconnect } from "./mainContent.js";
 
 // Check if the cookie is set every second
 setInterval(cookieCheck, 1000);
 
-// Get the user's name from the cookie
-function getCookie(cookieName) {
-    const name = cookieName + "=";
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const cookieArray = decodedCookie.split(';');
-
-    for (let i = 0; i < cookieArray.length; i++) {
-        let cookie = cookieArray[i].trim();
-        if (cookie.indexOf(name) === 0) {
-            return cookie.substring(name.length, cookie.length);
-        }
-    }
-}
-
-
-// -------------------------------------------------------
-// --------------------- NAVBAR -------------------------
-// -------------------------------------------------------
-
-// Set the user's name in the navbar
-function setUserName() {
-    var email = getCookie("user_mail");
-
-    if (email === null) {
-        $("#username").text("User not found");
-    }
-
-    $.ajax('../php/home.php/username', {
-        method: 'GET',
-        data: {
-            email: email
-        },
-    }).done(function (data) {
-        $("#username").text(data);
-    });
-}
 
 // -------------------------------------------------------
 // -------------------- FILTERS --------------------------
@@ -230,8 +179,8 @@ function createCard(data){
     for(let i = 0; i < data.length; i++){
 
         // Create the serie card
-        const serieCard = $('<div>').attr('id', 'serie-card');
-        const cardContent = $('<div>').attr('id', 'card-content');
+        const serieCard = $('<div>').attr('class', 'serie-card');
+        const cardContent = $('<div>').attr('class', 'card-content');
 
         // Get the serie image
         const serieCardImg = $('<div>').attr('id', 'serie-card-img' + i);
@@ -254,36 +203,36 @@ function createCard(data){
             }
         });
 
-        const serieCardInfo = $('<div>').attr('id', 'serie-card-info');
+        const serieCardInfo = $('<div>').attr('class', 'serie-card-info');
 
-        const serieCardTitle = $('<div>').attr('id', 'serie-card-title');
+        const serieCardTitle = $('<div>').attr('class', 'serie-card-title');
 
-        const serieTitle = $('<div>').attr('id', 'serie-title');
+        const serieTitle = $('<div>').attr('class', 'serie-title');
         const titleSection = $('<section>').text(data[i].nom);
         serieTitle.append(titleSection);
 
-        const serieYear = $('<div>').attr('id', 'serie-year');
+        const serieYear = $('<div>').attr('class', 'serie-year');
         const yearSection = $('<section>').text(data[i].date_sortie);
         serieYear.append(yearSection);
 
         serieCardTitle.append(serieTitle);
         serieCardTitle.append(serieYear);
 
-        const separatorLine = $('<div>').attr('id', 'separator-line');
+        const separatorLine = $('<div>').attr('class', 'separator-line');
 
-        const bottomCard = $('<div>').attr('id', 'bottom-card');
+        const bottomCard = $('<div>').attr('class', 'bottom-card');
 
-        const serieCardDetails1 = $('<div>').attr('id', 'serie-card-details');
+        const serieCardDetails1 = $('<div>').attr('class', 'serie-card-details');
 
-        const serieCardCategory = $('<div>').attr('id', 'serie-card-category');
-        const categoryTitleSection = $('<section>').attr('id', 'category-title').text('Catégorie(s)');
-        const serieCategorySection = $('<section>').attr('id', 'serie-category').text(data[i].categorie);
+        const serieCardCategory = $('<div>').attr('class', 'serie-card-category');
+        const categoryTitleSection = $('<section>').attr('class', 'category-title').text('Catégorie(s)');
+        const serieCategorySection = $('<section>').attr('class', 'serie-category').text(data[i].categorie);
         serieCardCategory.append(categoryTitleSection);
         serieCardCategory.append(serieCategorySection);
 
-        const serieCardDuration = $('<div>').attr('id', 'serie-card-duration');
-        const durationTitleSection = $('<section>').attr('id', 'duration-title').text('Durée moyenne d\'un épisode');
-        const serieDurationSection = $('<section>').attr('id', 'serie-duration');
+        const serieCardDuration = $('<div>').attr('class', 'serie-card-duration');
+        const durationTitleSection = $('<section>').attr('class', 'duration-title').text('Durée moyenne d\'un épisode');
+        const serieDurationSection = $('<section>').attr('class', 'serie-duration');
 
         // Get the average duration of an episode
         $.ajax('../php/series.php/duration', {
@@ -309,7 +258,7 @@ function createCard(data){
                     minutes = Math.round(minutes);
                 }
 
-                $('#serie-duration').text(hours + 'h' + minutes);
+                $('.serie-duration').text(hours + 'h' + minutes);
             }
             else{
 
@@ -323,7 +272,7 @@ function createCard(data){
                     duration = Math.round(duration);
                 }
 
-                $('#serie-duration').text(duration + 'min');
+                $('.serie-duration').text(duration + 'min');
             }
         });
         serieCardDuration.append(durationTitleSection);
@@ -332,18 +281,18 @@ function createCard(data){
         serieCardDetails1.append(serieCardCategory);
         serieCardDetails1.append(serieCardDuration);
 
-        const serieCardDetails2 = $('<div>').attr('id', 'serie-card-details');
+        const serieCardDetails2 = $('<div>').attr('class', 'serie-card-details');
 
-        const serieCardSeasons = $('<div>').attr('id', 'serie-card-seasons');
-        const seasonsTitleSection = $('<section>').attr('id', 'seasons-title').text('Nombre de saison(s)');
-        const serieSeasonsSection = $('<section>').attr('id', 'serie-category').text(data[i].nb_saisons);
+        const serieCardSeasons = $('<div>').attr('class', 'serie-card-seasons');
+        const seasonsTitleSection = $('<section>').attr('class', 'seasons-title').text('Nombre de saison(s)');
+        const serieSeasonsSection = $('<section>').attr('class', 'serie-category').text(data[i].nb_saisons);
         serieCardSeasons.append(seasonsTitleSection);
         serieCardSeasons.append(serieSeasonsSection);
 
         serieCardDetails2.append(serieCardSeasons);
 
-        const serieDetailsButton = $('<div>').attr('id', 'serie-details-but');
-        const detailsButton = $('<button>').attr('id', 'serie-details-button').text('Détails');
+        const serieDetailsButton = $('<div>').attr('class', 'serie-details-but');
+        const detailsButton = $('<button>').attr('class', 'serie-details-button').text('Détails');
         detailsButton.attr('onclick', 'window.location.href = "serie-details.html?id=' + data[i].id + '";');
         detailsButton.attr('value', data[i].id);
         serieDetailsButton.append(detailsButton);
@@ -385,14 +334,6 @@ function createCard(data){
 // ---------------------- LOGOUT -------------------------
 // -------------------------------------------------------
 
-// Disconnect the user
-function disconnect() {
-    // Delete the cookie
-    document.cookie = "user_mail=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    // Redirect to the login page
-    window.location.replace("login.html");
-}
-
 // Disconnect the user when he clicks on the logout button
 $("#logout").click(function () {
     alert("Vous êtes déconnecté"); // Alert the user that he is disconnected
@@ -407,6 +348,7 @@ $("#logout").click(function () {
 // When the page is loaded
 $(document).ready(function () {
     setUserName();
+    getAvatar("#avatar-header");
 
     // Get all the series from the database
     getAllSeries();

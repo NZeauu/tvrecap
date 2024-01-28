@@ -20,16 +20,20 @@
                 <h1><span style="color: #F20000;">TV</span>Recap </h1>
             </div>
             <div id="menu-links">
-                <a href="home.html" id="link"><img style="padding-right: 10px;" src="../img/home.svg"><span>Accueil</span></a>
-                <a href="movies.html" id="link"><img style="padding-right: 10px;" src="../img/movie.svg"><span>Films</span></a>
-                <a href="series.html" id="link"><img style="padding-right: 10px;" src="../img/series.svg"><span>Séries</span></a>
-                <a href="history.html" id="link"><img style="padding-right: 10px;" src="../img/history.svg"><span>Mon historique</span></a>
-                <a href="add.html" id="link" style="background-color: #F20000;"><img style="padding-right: 10px;" src="../img/add.svg"><span>Proposer un ajout</span></a>
-                <a href="settings.html" id="link"><img style="padding-right: 10px;" src="../img/settings.svg"><span>Paramètres</span></a>
+                <a href="home.html" class="link"><img style="padding-right: 10px;" src="../img/home.svg"><span>Accueil</span></a>
+                <a href="movies.html" class="link"><img style="padding-right: 10px;" src="../img/movie.svg"><span>Films</span></a>
+                <a href="series.html" class="link"><img style="padding-right: 10px;" src="../img/series.svg"><span>Séries</span></a>
+                <a href="history.html" class="link"><img style="padding-right: 10px;" src="../img/history.svg"><span>Mon historique</span></a>
+                <a href="add.html" class="link" style="background-color: #F20000;"><img style="padding-right: 10px;" src="../img/add.svg"><span>Proposer un ajout</span></a>
+                <a href="settings.html" class="link"><img style="padding-right: 10px;" src="../img/settings.svg"><span>Paramètres</span></a>
             </div>
             <div id="disconnect">
                 <button id="logout"><img style="padding-right: 10px;" src="../img/logout.svg"><span>Déconnexion</span></button>
             </div>
+            <footer id="footer">
+                <span>Copyright © 2024 TVRecap </span>
+                <a href="contact.html" class="link"><span>Nous contacter</span></a>
+            </footer>
         </div>
         <div id="content">
             <!-- Header bar -->
@@ -42,7 +46,7 @@
             <div id="user">
                 <span id="username"></span>
                 <div id="avatar">
-                    <img src="../img/avatars/default.svg">
+                    <img id="avatar-header" src="#">
                 </div>
             </div>
         </div>
@@ -129,9 +133,8 @@
                 </div>
 
             </div>
-
+            
         </div>
-
-        <script src="../js/add.js"></script>
+        <script type="module" src="../js/add.js"></script>
     </body>
 </html>

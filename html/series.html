@@ -20,16 +20,20 @@
                 <h1><span style="color: #F20000;">TV</span>Recap </h1>
             </div>
             <div id="menu-links">
-                <a href="home.html" id="link"><img style="padding-right: 10px;" src="../img/home.svg"><span>Accueil</span></a>
-                <a href="movies.html" id="link"><img style="padding-right: 10px;" src="../img/movie.svg"><span>Films</span></a>
-                <a href="series.html" id="link" style="background-color: #F20000;"><img style="padding-right: 10px;" src="../img/series.svg"><span>Séries</span></a>
-                <a href="history.html" id="link"><img style="padding-right: 10px;" src="../img/history.svg"><span>Mon historique</span></a>
-                <a href="add.html" id="link"><img style="padding-right: 10px;" src="../img/add.svg"><span>Proposer un ajout</span></a>
-                <a href="settings.html" id="link"><img style="padding-right: 10px;" src="../img/settings.svg"><span>Paramètres</span></a>
+                <a href="home.html" class="link"><img style="padding-right: 10px;" src="../img/home.svg"><span>Accueil</span></a>
+                <a href="movies.html" class="link"><img style="padding-right: 10px;" src="../img/movie.svg"><span>Films</span></a>
+                <a href="series.html" class="link" style="background-color: #F20000;"><img style="padding-right: 10px;" src="../img/series.svg"><span>Séries</span></a>
+                <a href="history.html" class="link"><img style="padding-right: 10px;" src="../img/history.svg"><span>Mon historique</span></a>
+                <a href="add.html" class="link"><img style="padding-right: 10px;" src="../img/add.svg"><span>Proposer un ajout</span></a>
+                <a href="settings.html" class="link"><img style="padding-right: 10px;" src="../img/settings.svg"><span>Paramètres</span></a>
             </div>
             <div id="disconnect">
                 <button id="logout"><img style="padding-right: 10px;" src="../img/logout.svg"><span>Déconnexion</span></button>
             </div>
+            <footer id="footer">
+                <span>Copyright © 2024 TVRecap </span>
+                <a href="contact.html" class="link"><span>Nous contacter</span></a>
+            </footer>
         </div>
         <div id="content">
             <!-- Header bar -->
@@ -39,65 +43,64 @@
                     <input type="text" id="search" placeholder="Rechercher une série, un film...">
                     <button id="search-button"><img src="../img/search.svg"></button>
             </div> -->
-            <div id="user">
-                <span id="username"></span>
-                <div id="avatar">
-                    <img src="../img/avatars/default.svg">
+                <div id="user">
+                    <span id="username"></span>
+                    <div id="avatar">
+                        <img id="avatar-header" src="#">
+                    </div>
                 </div>
             </div>
-        </div>
         
         <!-- Content -->
-        <div id="series-page">
-            <div id="filters">
-                <div id="filter">
-                    <section id="filter-title">Saisons: </section>
-                    <select id="seasons">
-                        <option value="all">Toutes</option>
-                        <option value="2">Moins de 2 saisons</option>
-                        <option value="5">Entre 2 et 5 saisons</option>
-                        <option value="999">Plus de 5 saisons</option>
-                    </select> 
-                </div>
-                <div id="filter">
-                    <section id="filter-title">Année: </section>
-                    <select id="year">
-                        <option value="all">Toutes</option>
-                    </select>   
-                </div>
-                <div id="filter">
-                    <section id="filter-title">Durée Épisode: </section>
-                    <select id="duration">
-                        <option value="all">Tous</option>
-                        <option value="30">Moins de 30min</option>
-                        <option value="60">Moins d'une heure</option>
-                        <option value="999">Plus d'une heure</option>
-                    </select>
-                </div>
-                <div id="filter">
-                    <section id="filter-title">Catégorie: </section>
-                    <select id="category">
-                        <option value="all">Toutes</option>
-                    </select>
-                </div>
-                <div id="buttons">
-                    <div id="button">
-                        <button id="filter-button">Filtrer</button>
+            <div id="series-page">
+                <div id="filters">
+                    <div class="filter">
+                        <section class="filter-title">Saisons: </section>
+                        <select id="seasons">
+                            <option value="all">Toutes</option>
+                            <option value="2">Moins de 2 saisons</option>
+                            <option value="5">Entre 2 et 5 saisons</option>
+                            <option value="999">Plus de 5 saisons</option>
+                        </select> 
                     </div>
-                    <div id="button">
-                        <button id="reset-button">Réinitialiser</button>
+                    <div class="filter">
+                        <section class="filter-title">Année: </section>
+                        <select id="year">
+                            <option value="all">Toutes</option>
+                        </select>   
+                    </div>
+                    <div class="filter">
+                        <section class="filter-title">Durée Épisode: </section>
+                        <select id="duration">
+                            <option value="all">Tous</option>
+                            <option value="30">Moins de 30min</option>
+                            <option value="60">Moins d'une heure</option>
+                            <option value="999">Plus d'une heure</option>
+                        </select>
+                    </div>
+                    <div class="filter">
+                        <section class="filter-title">Catégorie: </section>
+                        <select id="category">
+                            <option value="all">Toutes</option>
+                        </select>
+                    </div>
+                    <div id="buttons">
+                        <div class="button">
+                            <button id="filter-button">Filtrer</button>
+                        </div>
+                        <div class="button">
+                            <button id="reset-button">Réinitialiser</button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
 
-            <!-- Series list -->
-            <div id="list">
-                <!-- Auto generate cards with database content -->
+                <!-- Series list -->
+                <div id="list">
+                    <!-- Auto generate cards with database content -->
+                </div>
             </div>
         </div>
-
-
-        <script src="../js/series.js"></script>
+        <script type="module" src="../js/series.js"></script>
     </body>
 </html>

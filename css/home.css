@@ -20,7 +20,7 @@
     gap: 20px;
 }
 
-#card-item{
+.card-item{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -28,13 +28,13 @@
     margin-top: 20px;
 }
 
-#card-title{
+.card-title{
     font-family: Inter;
     padding-left: 10%;
     color: #000000;
 }
 
-#card-content{
+.card-content{
     width: 279px;
     height: 178px;
     margin: 20px;
@@ -63,7 +63,7 @@
     padding: 20px;
 }
 
-#card-content section{
+.card-content section{
     display: flex;
     flex-direction: column;
     font-family: Inter;

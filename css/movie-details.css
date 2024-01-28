@@ -17,6 +17,8 @@
     border-radius: 4px;
     background: var(--red-title, #F20000);
     height: fit-content;
+    position: fixed;
+    z-index: 1;
 }
 
 #return section{
@@ -51,7 +53,8 @@
     padding: 10px;
     align-items: flex-start;
     gap: 10px;
-    margin-left: 2%;
+    margin-left: 20vw;
+    margin-right: 5vw;
     font-family: Inter;
 }
 
