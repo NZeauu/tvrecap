@@ -44,5 +44,22 @@
             </div>
         </div>
 
+        <!-- Popups -->
+        <div id="popup" class="popup-container">
+            <div class="popup-content">
+                <span onclick="closePopup()" class="close-button">&times;</span>
+                <h2 id="popupTitle"></h2>
+                <div id="popupText"></div>
+            </div>
+        </div>
+
+        <footer>
+            <nav>
+                <button onclick="openPopup('about')">À propos</button>
+                <span>Copyright © 2024 TVRecap </span>
+                <button  onclick="openPopup('contact')">Contact</button>
+            </nav>
+        </footer>
+
         <script src="../js/login.js"></script>
     </body>

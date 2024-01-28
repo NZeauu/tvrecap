@@ -14,6 +14,7 @@
 
         <div id="register">
             <h1 id="title"><span style="color: #F20000;">TV</span>Recap</h1>
+
             <h2 id="subtitle">Créer un compte</h2>
             <div id="form">
                 <div id="inputs">
@@ -43,8 +44,30 @@
                 <div id="button">
                     <button id="registerbutton">S'inscrire</button>
                 </div>
+
+                <div id="login">
+                    <span>Déjà inscrit ?</span>
+                    <a href="login.html">Connectez-vous !</a>
+                </div>
             </div>
         </div>
+
+        <!-- Popups -->
+        <div id="popup" class="popup-container">
+            <div class="popup-content">
+                <span onclick="closePopup()" class="close-button">&times;</span>
+                <h2 id="popupTitle"></h2>
+                <div id="popupText"></div>
+            </div>
+        </div>
+
+        <footer>
+            <nav>
+                <button onclick="openPopup('about')">À propos</button>
+                <span>Copyright © 2024 TVRecap </span>
+                <button  onclick="openPopup('contact')">Contact</button>
+            </nav>
+        </footer>
 
         <script src="../js/register.js"></script>
     </body>
