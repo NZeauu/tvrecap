@@ -7,6 +7,7 @@ TVRecap is a web application that allows users to search for TV shows and movies
 - [MySQL](https://www.mysql.com/)
 - [Jquery](https://jquery.com/)
 - AJAX
+- [TMDB API](https://developer.themoviedb.org/docs/getting-started) (Content for sql files) 
 
 ## Installation
 1. Clone the repository to your local machine or server
