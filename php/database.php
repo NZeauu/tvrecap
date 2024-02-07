@@ -23,14 +23,14 @@ function dbconnect() {
 function connectionAccount($conn, $mail, $password) {
 
     try{
-        $sql = "SELECT password FROM Accounts WHERE email = '$mail'";
+        $sql = "SELECT * FROM Accounts WHERE email = '$mail'";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
 
             if (password_verify($password, $row["password"])) {
-                return true;
+                return $row["administrator"]? "admin" : "user";
             } else {
                 return false;
             }
@@ -464,7 +464,7 @@ function getSeasonEpisodes($conn, $id_serie, $season){
 // Get all the movies "OK"
 function getAllMovies($conn){
     try{
-        $sql = "SELECT * FROM Films";
+        $sql = "SELECT * FROM Films ORDER BY date_sortie DESC";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {

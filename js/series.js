@@ -122,31 +122,6 @@ $("#reset-button").click(function () {
 });
 
 
-
-// Get the image of the serie
-function getImage(id, imgNumber) {
-
-    var imageId = id;
-
-    // AJAX request to get the image
-    $.ajax({
-        url: '../php/cover.php/cover',
-        type: 'GET',
-        data: { id_cover: imageId },
-        success: function (data) {
-            // Create the image tag with the base64 data
-            $('#serie-card-img' + imgNumber).html('<img src="data:image/jpeg;base64,' + data + '" alt="Image">');
-
-        },
-        error: function () {
-            console.error('Erreur lors de la récupération de l\'image');
-        }
-    });
-
-}
-
-
-
 // -------------------------------------------------------
 // ------------------ CARD CREATION ----------------------
 // -------------------------------------------------------
@@ -186,22 +161,9 @@ function createCard(data){
         const serieCardImg = $('<div>').attr('id', 'serie-card-img' + i);
         serieCardImg.attr('class', 'serie-card-img');
 
-        // getImage(data[i].image_id, i);
-
-        $.ajax({
-            url: '../php/cover.php/cover',
-            type: 'GET',
-            data: { id_cover: data[i].image_id },
-            success: function (data) {
-                // Create the image tag with the base64 data
-                const img = $('<img>').attr('src', 'data:image/jpeg;base64,' + data);
-                serieCardImg.append(img);
-    
-            },
-            error: function () {
-                console.error('Erreur lors de la récupération de l\'image');
-            }
-        });
+        // Get the image from the database
+        const image = $('<img>').attr('src', data[i].image);
+        serieCardImg.append(image);
 
         const serieCardInfo = $('<div>').attr('class', 'serie-card-info');
 

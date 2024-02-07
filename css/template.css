@@ -104,6 +104,14 @@ body{
     text-decoration: underline;
 }
 
+#disconnect{
+    display: flex;
+    position: absolute;
+    bottom: 20vh;
+    right: 0;
+    width: 100%;
+}
+
 
 /* -------------------------- */
 /* ---------- TEXT ---------- */

@@ -4,16 +4,8 @@ DROP TABLE IF EXISTS `Accounts`;
 DROP TABLE IF EXISTS `Films`;
 DROP TABLE IF EXISTS `Episodes`;
 DROP TABLE IF EXISTS `Séries`;
-DROP TABLE IF EXISTS `Covers`;
 
--- CREATE DATABASE
-CREATE TABLE `Covers`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `nom` VARCHAR(255) NOT NULL,
-    `image` MEDIUMBLOB NOT NULL
-);
-ALTER TABLE
-    `Covers` ADD INDEX `covers_id_index`(`id`);
+
 CREATE TABLE `Episodes`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `nom` VARCHAR(255) NOT NULL,
@@ -35,16 +27,16 @@ CREATE TABLE `Séries`(
     `synopsis` VARCHAR(1000) NOT NULL,
     `actors` VARCHAR(255) NOT NULL,
     `realisator` VARCHAR(255) NOT NULL,
-    `image_id` BIGINT UNSIGNED NOT NULL
+    `image` VARCHAR(150) NOT NULL COMMENT 'path to image'
 );
 ALTER TABLE
     `Séries` ADD INDEX `séries_id_index`(`id`);
 ALTER TABLE 
-    `Séries` ADD CONSTRAINT `unique_serie_entered` UNIQUE (`nom`, `nb_saisons`, `image_id`);
+    `Séries` ADD CONSTRAINT `unique_serie_entered` UNIQUE (`nom`, `nb_saisons`, `image`);
 CREATE TABLE `Films`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `nom` VARCHAR(255) NOT NULL,
-    `image_id` BIGINT UNSIGNED NOT NULL,
+    `image` VARCHAR(150) NOT NULL COMMENT 'path to image',
     `duree` BIGINT NOT NULL,
     `date_sortie` YEAR NOT NULL,
     `categorie` VARCHAR(255) NOT NULL,
@@ -55,7 +47,7 @@ CREATE TABLE `Films`(
 ALTER TABLE
     `Films` ADD INDEX `films_id_index`(`id`);
 ALTER TABLE 
-    `Films` ADD CONSTRAINT `unique_film_entered` UNIQUE (`nom`, `image_id`, `date_sortie`);
+    `Films` ADD CONSTRAINT `unique_film_entered` UNIQUE (`nom`, `image`, `date_sortie`);
 CREATE TABLE `Accounts`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `username` VARCHAR(255) NOT NULL,
@@ -88,10 +80,6 @@ ALTER TABLE
     `Seen_List` ADD CONSTRAINT `seen_list_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Accounts`(`id`);
 ALTER TABLE
     `Seen_List` ADD CONSTRAINT `seen_list_episode_id_foreign` FOREIGN KEY(`episode_id`) REFERENCES `Episodes`(`id`);
-ALTER TABLE
-    `Séries` ADD CONSTRAINT `séries_image_id_foreign` FOREIGN KEY(`image_id`) REFERENCES `Covers`(`id`);
-ALTER TABLE
-    `Films` ADD CONSTRAINT `films_image_id_foreign` FOREIGN KEY(`image_id`) REFERENCES `Covers`(`id`);
 ALTER TABLE
     `Episodes` ADD CONSTRAINT `episodes_serie_id_foreign` FOREIGN KEY(`serie_id`) REFERENCES `Séries`(`id`);
 ALTER TABLE

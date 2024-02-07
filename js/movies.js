@@ -119,32 +119,6 @@ $("#reset-button").click(function () {
     getAllMovies();
 });
 
-
-
-
-
-// Get the image of the movie
-function getImage(id, imgNumber) {
-
-    var imageId = id;
-
-    // AJAX request to get the image
-    $.ajax({
-        url: '../php/cover.php/cover',
-        type: 'GET',
-        data: { id_cover: imageId },
-        success: function (data) {
-            // Create the image tag with the base64 data
-            $('#movie-card-img' + imgNumber).html('<img src="data:image/jpeg;base64,' + data + '" alt="Image">');
-
-        },
-        error: function () {
-            console.error('Erreur lors de la récupération de l\'image');
-        }
-    });
-
-}
-
 // -------------------------------------------------------
 // ------------------ CARD CREATION ----------------------
 // -------------------------------------------------------
@@ -195,7 +169,10 @@ function createCard(data){
         const movieCardImg = $('<div>').attr('id', 'movie-card-img' + i);
         movieCardImg.attr('class', 'movie-card-img');
 
-        getImage(data[i].image_id, i);
+        console.log(data[i].image);
+
+        const image = $('<img>').attr('src', data[i].image);
+        movieCardImg.append(image);
 
         const movieCardInfo = $('<div>').attr('class', 'movie-card-info');
 

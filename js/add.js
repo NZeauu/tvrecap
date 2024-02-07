@@ -17,7 +17,7 @@ $(".series-content").on("click", function () {
     $("#serie-synopsis").val("");
     
     
-    seriesChoice(this);
+    seriesChoice();
 
 });
 
@@ -29,17 +29,17 @@ $(".movies-content").on("click", function () {
     $("#movie-duration").val("");
     $("#movie-synopsis").val("");
     
-    moviesChoice(this);
+    moviesChoice();
 });
 
-function moviesChoice(element) {
+function moviesChoice() {
 
     $("#movies-content-border").attr("style", "")
     $("#series-content-border").attr("style", "")
     $(".series-content").attr("style", "")
-    $(element).attr("style", "")
+    $(".movies-content").attr("style", "")
 
-    $(element).css({
+    $(".movies-content").css({
                     "background-color" : "rgba(255, 0, 0, 0.70)",
                     "padding-right" : "10%",
                     "z-index" : "3"
@@ -65,14 +65,14 @@ function moviesChoice(element) {
     getMovieForm();
 }
 
-function seriesChoice(element) {
+function seriesChoice() {
 
     $("#movies-content-border").attr("style", "")
     $("#series-content-border").attr("style", "")
     $(".movies-content").attr("style", "")
-    $(element).attr("style", "")
+    $(".series-content").attr("style", "")
 
-    $(element).css({
+    $(".series-content").css({
         "background-color" : "rgba(255, 0, 0, 0.70)",
         "padding-left" : "10%",
         // "padding-right" : "1%",
@@ -189,5 +189,5 @@ $(document).ready(function () {
     getAvatar("#avatar-header");
 
     // Select "Films" by default
-    moviesChoice($(".movies-content"));
+    moviesChoice();
 });

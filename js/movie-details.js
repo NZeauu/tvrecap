@@ -48,9 +48,7 @@ function getMovieDetails(){
         $("#actors-value").text(data.actors);
         $("#real-value").text(data.realisator);
         $("#synopsis").text(data.synopsis);
-
-        // Get the movie's picture
-        getImage(data.image_id);
+        $('#picture').html('<img src="' + data.image + '" alt="Image" id="picture-img">');
 
         // Check if the movie is in the user's watchlist
         checkWatchlist();
@@ -61,28 +59,6 @@ function getMovieDetails(){
             $('#loading').attr('style', 'display: none;');
         }, 1000);
 
-    });
-
-}
-
-// Get the movie's picture
-function getImage(id) {
-
-    var imageId = id;
-
-    // AJAX request to get the image
-    $.ajax({
-        url: '../php/cover.php/cover',
-        type: 'GET',
-        data: { id_cover: imageId },
-        success: function (data) {
-            // Create the image tag with the base64 data
-            $('#picture').html('<img src="data:image/jpeg;base64,' + data + '" alt="Image" id="picture-img">');
-
-        },
-        error: function () {
-            console.error('Erreur lors de la récupération de l\'image');
-        }
     });
 
 }

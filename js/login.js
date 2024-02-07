@@ -71,8 +71,13 @@ function login(){
                         password : password
                     }
                 }).done(function(data){
-                    if(data){
-                        window.location.href = "../html/home.html";
+                    if(data == "admin" || data == "user"){
+                        if(data == "admin"){
+                            window.location.href = "../ad/html/adhome.html";
+                        }
+                        if(data == "user"){
+                            window.location.href = "../html/home.html";
+                        }
                     }else{
                         $("#passwordinput").css("border-color", "#ff0000");
                         $("#passwordInvalid").css("display", "block");

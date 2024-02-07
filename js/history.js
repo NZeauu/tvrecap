@@ -170,19 +170,8 @@ function createMovieCard(data){
         const movieCardImg = $('<div>').attr('id', 'movie-card-img' + i);
         movieCardImg.attr('class', 'movie-card-img');
 
-        $.ajax({
-            url: '../php/cover.php/cover',
-            type: 'GET',
-            data: { id_cover: data[i].image_id },
-            success: function (data) {
-                // Create the image tag with the base64 data    
-                const img = $('<img>').attr('src', 'data:image/jpeg;base64,' + data);
-                movieCardImg.append(img);
-            },
-            error: function () {
-                console.error('Erreur lors de la récupération de l\'image');
-            }
-        });
+        const img = $('<img>').attr('src', data[i].image);
+        movieCardImg.append(img);
 
         const movieCardInfo = $('<div>').attr('class', 'movie-card-info');
 
@@ -284,19 +273,8 @@ function createSeriesCard(data){
         const serieCardImg = $('<div>').attr('id', 'serie-card-img' + i);
         serieCardImg.attr('class', 'serie-card-img');
 
-        $.ajax({
-            url: '../php/cover.php/cover',
-            type: 'GET',
-            data: { id_cover: data[i].image_id },
-            success: function (data) {
-                // Create the image tag with the base64 data    
-                const img = $('<img>').attr('src', 'data:image/jpeg;base64,' + data);
-                serieCardImg.append(img);
-            },
-            error: function () {
-                console.error('Erreur lors de la récupération de l\'image');
-            }
-        });
+        const img = $('<img>').attr('src', data[i].image);
+        serieCardImg.append(img);
 
         const serieCardInfo = $('<div>').attr('class', 'serie-card-info');
 
