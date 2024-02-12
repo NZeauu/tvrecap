@@ -1,0 +1,2 @@
+# Ignore constants.php in php/ folder
+php/constants.php
