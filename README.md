@@ -13,6 +13,17 @@ TVRecap is a web application that allows users to search for TV shows and movies
 1. Clone the repository to your local machine or server
 2. Create a new database and import the `model.sql` file to create the tables.
 ${\textcolor{red}{WARNING}}$: This will overwrite any existing tables with the same name. This is a MariaDB database, so it may not work with other SQL databases.
+3. PLEASE A `constants.php` FILE INTO THE PHP DIRECTORY WITH THIS CONTENT:
+```
+// Change the values with your login informations
+<?php
+    const DB_USER = "your user name";
+    const DB_PASSWORD = "your password";
+    const DB_NAME = "tvrecap";
+    const DB_SERVER = "127.0.0.1";
+    const DB_PORT = 3306;
+?>
+```
 
 ## Features to add
 - [ ] Add SMTP functionality to send verification email on account creation
