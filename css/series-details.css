@@ -186,9 +186,10 @@
     width: 100%;
     height: fit-content;
     justify-content: center;
-    align-items: center;
+    align-items: center; 
     padding: 20px;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .season-button{

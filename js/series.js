@@ -195,6 +195,7 @@ function createCard(data){
         const serieCardDuration = $('<div>').attr('class', 'serie-card-duration');
         const durationTitleSection = $('<section>').attr('class', 'duration-title').text('Durée moyenne d\'un épisode');
         const serieDurationSection = $('<section>').attr('class', 'serie-duration');
+        serieDurationSection.attr('id', 'serie-duration' + data[i].id);
 
         // Get the average duration of an episode
         $.ajax('../php/series.php/duration', {
@@ -204,37 +205,37 @@ function createCard(data){
             },
         }).done(function (data) {
             // console.log(data);
-            var duration = data;
+            var duration = data['average_duration'];
 
             if(duration > 60){
                 var hours = Math.floor(duration / 60);
                 var minutes = duration % 60;
-
-                // Add a 0 if the minutes are less than 10
-                if (minutes < 10) {
-                    minutes = '0' + minutes;
-                }
 
                 // If the minutes are a float, round them
                 if (minutes % 1 !== 0) {
                     minutes = Math.round(minutes);
                 }
 
-                $('.serie-duration').text(hours + 'h' + minutes);
+                // Add a 0 if the minutes are less than 10
+                if (minutes < 10) {
+                    minutes = '0' + minutes;
+                }
+
+                $('#serie-duration' + data.serie_id).text(hours + 'h' + minutes);
             }
             else{
-
-                // Add a 0 if the minutes are less than 10
-                if (duration < 10) {
-                    duration = '0' + duration;
-                }
 
                 // If the minutes are a float, round them
                 if (duration % 1 !== 0) {
                     duration = Math.round(duration);
                 }
 
-                $('.serie-duration').text(duration + 'min');
+                // Add a 0 if the minutes are less than 10
+                if (duration < 10) {
+                    duration = '0' + duration;
+                }
+
+                $('#serie-duration' + data.serie_id).text(duration + 'min');
             }
         });
         serieCardDuration.append(durationTitleSection);

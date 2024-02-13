@@ -54,38 +54,35 @@ function getSerieDetails(){
             },
         }).done(function (data) {
             // console.log(data);
-            var duration = data;
+            var duration = data['average_duration'];
 
             if(duration > 60){
                 var hours = Math.floor(duration / 60);
                 var minutes = duration % 60;
+
+                // If the minutes are a float, round them
+                if (minutes % 1 !== 0) {
+                    minutes = Math.round(minutes);
+                }
 
                 // Add a 0 if the minutes are less than 10
                 if (minutes < 10) {
                     minutes = '0' + minutes;
                 }
 
-                // If the minutes are a float, round them
-                if (minutes % 1 !== 0) {
-                    minutes = Math.round(minutes);
-                }
-                console.log(hours + "h" + minutes);
-
                 $("#duration-value").text(hours + "h" + minutes);
             }
             else{
-
-                // Add a 0 if the minutes are less than 10
-                if (duration < 10) {
-                    minutes = '0' + duration;
-                }
 
                 // If the minutes are a float, round them
                 if (duration % 1 !== 0) {
                     minutes = Math.round(duration);
                 }
 
-                // console.log(duration + "min");
+                // Add a 0 if the minutes are less than 10
+                if (duration < 10) {
+                    minutes = '0' + duration;
+                }
 
                 $("#duration-value").text(minutes + "min");
             }

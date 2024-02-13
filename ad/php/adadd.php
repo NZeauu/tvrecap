@@ -51,6 +51,12 @@ if($requestResource == "addmovie"){
         $duration = $_POST['duration'];
         $realisator = $_POST['realisator'];
         $actors = $_POST['actors'];
+
+        $title = str_replace('"', '\"', $title);
+        $synopsis = str_replace('"', '\"', $synopsis);
+        $realisator = str_replace('"', '\"', $realisator);
+        $actors = str_replace('"', '\"', $actors);
+        
         
         $filename = $title . "-" . $year;
         $filename = str_replace(' ', '', $filename);

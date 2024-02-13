@@ -9,6 +9,7 @@
             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap');
         </style>
         <link href="../css/adadd.css" rel="stylesheet">
+        <link href="../css/validation.css" rel="stylesheet">
         <link href="../../css/template.css" rel="stylesheet">
         <link rel="icon" href="../../img/icon.ico">
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -63,73 +64,46 @@
                 <div id="forms">
                     <!-- Movie form -->
                     <div id="movie-form" style="display: none;">
-                        <div class="form-content">
-                            <div class="left-form">
-                                <div class="content-title">
-                                    <section>Titre</section>
-                                    <input type="text" id="movie-title" placeholder="Titre du film">
-                                </div>
-                                <div class="content-year">
-                                    <section>Année de sortie</section>
-                                    <input type="number" id="movie-year" min="0">
-                                </div>
-                                <div class="content-duration">
-                                    <section>Durée (en minutes)</section>
-                                    <input type="number" id="movie-duration" min="0" value="0">
-                                </div>
-                                <div class="content-director">
-                                    <section>Réalisateur</section>
-                                    <input type="text" id="movie-director" placeholder="Réalisateur du film">
-                                </div>
+                        <div class="form-content" style="flex-direction: column;">
+                            <div class="content-title">
+                                <section>Titre</section>
+                                <input type="text" id="movie-title" placeholder="Titre du film">
                             </div>
-                            <div class="right-form">
-                                <div class="content-actors">
-                                    <section>Acteurs</section>
-                                    <input type="text" id="movie-actors" placeholder="Acteurs du film">
-                                </div>
-                                <div class="synopsis">
-                                    <section>Synopsis</section>
-                                    <textarea id="movie-synopsis" placeholder="Synopsis du film"></textarea>
-                                </div>
-                                <div class="content-genre">
-                                    <section>Genre</section>
-                                    <input type="text" id="movie-genre" placeholder="Genre du film">
-                                </div>  
-                                <div class="content-image">
-                                    <section>Image</section>
-                                    <input type="file" id="movie-image" accept="image/jpeg, image/png">
-                                </div>                              
+                            <div class="content-year">
+                                <section>Année de sortie</section>
+                                <input type="number" id="movie-year" min="0">
                             </div>
-                        </div>
-                        <div class="submit">
-                            <button id="submit-movie">Ajouter un film</button>
+                            <div class="search">
+                                <button id="search-movie">Rechercher un film</button>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Series form -->
                     <div id="serie-form" style="display: none;">
-                        <div class="form-content">
+                        <div class="form-content" style="flex-direction: column;">
                             <div class="content-title">
-                                <h3>Titre</h3>
+                                <section>Titre</section>
                                 <input type="text" id="serie-title" placeholder="Titre de la série">
                             </div>
                             <div class="content-year">
-                                <h3>Année</h3>
-                                <input type="text" id="serie-year" placeholder="Année de sortie">
-                            </div>   
-                        </div>
-                        <div class="submit">
-                            <button id="submit-serie">Chercher une série</button>
+                                <section>Année de sortie</section>
+                                <input type="number" id="serie-year" min="0">
+                            </div>
+                            <div class="search">
+                                <button id="search-series">Rechercher une série</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                
+                <div id="results">
+                </div>                
             </div>
 
         </div>
         
 
         <script type="module" src="../js/adadd.js"></script>
+        <!-- <script type="module" src="../js/test.js"></script> -->
     </body>
 </html>

@@ -342,13 +342,13 @@ function getFilteredSeries($conn, $seasons, $category, $duration, $year){
 // Get average duration of the episodes of a serie "OK"
 function getAverageDuration($conn, $id_serie){
     try{
-        $sql = "SELECT AVG(duree) AS average_duration FROM Episodes WHERE serie_id = '$id_serie'";
+        $sql = "SELECT serie_id, AVG(duree) AS average_duration FROM Episodes WHERE serie_id = '$id_serie'";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
 
-            return $row["average_duration"];
+            return $row;
         }
         else {
             return null;

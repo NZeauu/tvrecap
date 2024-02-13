@@ -22,7 +22,7 @@ function dbconnect() {
 
 // Get the number of users in the database "OK"
 function getNumUsers($conn) {
-    $sql = "SELECT COUNT(*) FROM Accounts WHERE administrator = 0";
+    $sql = "SELECT COUNT(*) FROM Accounts WHERE administrator IS NULL";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
     $conn->close();
@@ -31,7 +31,7 @@ function getNumUsers($conn) {
 
 // Get the last user registered in the database "OK"
 function getLastUser($conn) {
-    $sql = "SELECT username FROM Accounts WHERE administrator = 0 ORDER BY id DESC LIMIT 1";
+    $sql = "SELECT username FROM Accounts WHERE administrator IS NULL ORDER BY id DESC LIMIT 1";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
     $conn->close();
