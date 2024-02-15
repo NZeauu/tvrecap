@@ -47,10 +47,10 @@ if($requestResource == "sendmail"){
                         Synopsis: $synopsis";
         }
 
-        $to = "tvrecap.noreply@epeigne.frstud.fr";
+        $to = "tvrecap@epeigne.fr";
         $subject = "TVRecap - Add new $type";
 
-        $header = "From: tvrecap.informations@gmail.com";
+        $header = "From: tvrecap.noreply@epeigne.fr";
 
         // Send email
         mail($to, $subject, $message, $header);

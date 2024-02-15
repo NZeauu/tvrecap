@@ -109,7 +109,7 @@ function getSerieForm() {
 // -------------------------------------------------------
 
 
-$("#submit-movie").click(function () {
+$("#search-movie").click(function () {
     var title = $("#movie-title").val();
     var year = $("#movie-year").val();
 
@@ -309,8 +309,6 @@ $(document).ready(function () {
     $("#movie-year").val(year);
     $("#serie-year").val(year);
 
-    // Create the episode form
-    createEpisode();
 });
 
 // -------------------------------------------------------

@@ -4,7 +4,7 @@
     error_reporting(E_ALL);
 
 
-    $to = "tvrecap.noreply@epeigne.frstud.fr";
+    $to = "tvrecap@epeigne.fr";
     $from = $_POST['userMail'];
     $username = $_POST['username'];
     $contactSubject = $_POST['subject'];
