@@ -7,7 +7,9 @@ TVRecap is a web application that allows users to search for TV shows and movies
 - [MySQL](https://www.mysql.com/)
 - [Jquery](https://jquery.com/)
 - AJAX
-- [TMDB API](https://developer.themoviedb.org/docs/getting-started) (Content for sql files) 
+- [TMDB API](https://developer.themoviedb.org/docs/getting-started) (Content for sql files)
+- Postfix / Dovecot (mail server) (following this [debian tutorial](https://www.linuxbabe.com/mail-server/build-email-server-from-scratch-debian-postfix-smtp) Part 1, 2 and 3)
+- Certbot (SSL certificate)
 
 ## Installation
 1. Clone the repository to your local machine or server
@@ -24,6 +26,8 @@ ${\textcolor{red}{WARNING}}$: This will overwrite any existing tables with the s
     const DB_PORT = 3306;
 ?>
 ```
+4. Add your TMDB API key to the python file in `ad/scripts/` folder to get the data from the API.
+5. Configure your mail server to send emails. I used Postfix and Dovecot on a Debian server. You can follow the tutorial linked above to set up your mail server.
 
 ## Features to add
 - [ ] Add SMTP functionality to send verification email on account creation
