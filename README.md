@@ -8,7 +8,7 @@ TVRecap is a web application that allows users to search for TV shows and movies
 - [Jquery](https://jquery.com/)
 - AJAX
 - [TMDB API](https://developer.themoviedb.org/docs/getting-started) (Content for sql files)
-- Postfix / Dovecot (mail server) (following this [debian tutorial](https://www.linuxbabe.com/mail-server/build-email-server-from-scratch-debian-postfix-smtp) Part 1, 2 and 3)
+- Postfix / Dovecot (mail server) (following this [debian tutorial](https://www.linuxbabe.com/mail-server/build-email-server-from-scratch-debian-postfix-smtp) Part 1, 2 and 4)
 - Certbot (SSL certificate)
 
 ## Installation
