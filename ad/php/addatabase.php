@@ -109,3 +109,61 @@ function addSerie($db, $title, $year, $genre, $synopsis, $realisator, $actors, $
         return false;
     }
 }
+
+// ------------------------------------------------------
+// -------------------- USERS PAGE ----------------------
+// ------------------------------------------------------
+
+// Get the list of users in the database "OK"
+function getUsers($conn) {
+    try{
+        $sql = "SELECT * FROM Accounts WHERE administrator IS NULL";
+        $result = $conn->query($sql);
+        $conn->close();
+
+        if ($result->num_rows > 0) {
+            $users = array();
+            while($row = $result->fetch_assoc()) {
+                $users[] = $row;
+            }
+            return $users;
+        } else {
+            return "No users found";
+        }
+        
+
+    } catch(Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Delete a user from the database "OK"
+function deleteUser($conn, $email) {
+    try{
+        $sql = "DELETE FROM Accounts WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->close();
+        return true;
+    } catch(Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Update a user in the database "OK"
+function updateUser($conn, $userId, $email, $username) {
+    try{
+        $sql = "UPDATE Accounts SET email = ?, username = ? WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssi", $email, $username, $userId);
+        $stmt->execute();
+        $stmt->close();
+        return true;
+    } catch(Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
