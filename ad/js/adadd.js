@@ -316,7 +316,7 @@ function createValidForm(title, year, duration, synopsis, coverURL) {
             },
         }).done(function (data) {
             alert("Film ajouté");
-            // location.reload();
+            location.reload();
         });
     });
 

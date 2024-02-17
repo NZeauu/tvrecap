@@ -67,13 +67,9 @@ if($requestResource == "addmovie"){
         // Delete spaces in the URL
         $coverURL = str_replace(' ', '', $coverURL);
 
-        $command = 'python3 ../scripts/genImg.py ' . $coverURL . ' ' . $filename . ' movie';
-        echo $command;
+        exec("python3 ../scripts/genImg.py " . escapeshellarg($coverURL) . " " . escapeshellarg($filename) . " movie");
 
-        // Download image from URL and save it to the server
-        echo exec($command);
-
-        // $data = addMovie($db, $title, $year, $genre, $synopsis, $duration, $realisator, $actors, $coverpath);
+        $data = addMovie($db, $title, $year, $genre, $synopsis, $duration, $realisator, $actors, $coverpath);
     }
 
 }
