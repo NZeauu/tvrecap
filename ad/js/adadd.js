@@ -12,6 +12,9 @@ $(".series-content").on("click", function () {
     // Empty the form
     $("#serie-title").val("");
     $("#serie-year").val("2024");
+    $("#results").empty();
+    $("#no-results").css("display", "none");
+    $("#loading").css("display", "none");
    
     seriesChoice();
 
@@ -21,6 +24,9 @@ $(".movies-content").on("click", function () {
     // Empty the form
     $("#movie-title").val("");
     $("#movie-year").val("2024");
+    $("#results").empty();
+    $("#no-results").css("display", "none");
+    $("#loading").css("display", "none");
     
     moviesChoice();
 });
@@ -113,7 +119,11 @@ $("#search-movie").click(function () {
     var title = $("#movie-title").val();
     var year = $("#movie-year").val();
 
-    $.ajax('../php/test.php', {
+    $("#results").css("display", "none");
+    $("#no-results").css("display", "none");
+    $("#loading").css("display", "block");
+
+    $.ajax('../php/adsearchcontent.php', {
         method: 'GET',
         data: {
             title: title,
@@ -121,7 +131,14 @@ $("#search-movie").click(function () {
             type: "movie"
         },
     }).done(function (data) {
-        console.log(data);
+
+        if (data == "No results") {
+            $("#loading").fadeOut(500);
+            setTimeout(function () {
+                $("#no-results").css("display", "block");
+            }, 500);
+            return;
+        }
 
         const resultsDiv = $("#results");
         resultsDiv.empty();
@@ -134,6 +151,7 @@ $("#search-movie").click(function () {
             const resultDuration = result.duration;
             const resultSynopsis = result.overview;
             const coverURL = result.poster_path;
+            const resultGenre = result.genres;
 
             let movie = $("<div></div>");
             movie.attr("class", "movie");
@@ -165,7 +183,7 @@ $("#search-movie").click(function () {
             
             let durationDiv = $("<div></div>");
             durationDiv.attr("class", "duration");
-            durationDiv.append("<p>Durée: " + resultDuration + " min</p>");
+            durationDiv.append("<section>Durée: " + resultDuration + " min</section>");
             rightContent.append(durationDiv);
 
             let actorsDiv = $("<div></div>");
@@ -181,12 +199,28 @@ $("#search-movie").click(function () {
                 }
             }
 
-            actorsDiv.append("<p>Acteurs: " + actors + "</p>");
+            actorsDiv.append("<section>Acteurs: " + actors + "</section>");
             rightContent.append(actorsDiv);
+
+            let genreDiv = $("<div></div>");
+            genreDiv.attr("class", "genre");
+
+            let genres = "";
+
+            for (let j = 0; j < resultGenre.length; j++) {
+                genres += resultGenre[j];
+
+                if (j < resultGenre.length - 1) {
+                    genres += ", ";
+                }
+            }
+
+            genreDiv.append("<section>Genre: " + genres + "</section>");
+            rightContent.append(genreDiv);
 
             let synopsisDiv = $("<div></div>");
             synopsisDiv.attr("class", "synopsis");
-            synopsisDiv.append("<p>" + resultSynopsis + "</p>");
+            synopsisDiv.append("<section>" + resultSynopsis + "</section>");
             rightContent.append(synopsisDiv);
             content.append(rightContent);
 
@@ -196,7 +230,7 @@ $("#search-movie").click(function () {
 
             button.click(function () {
                 $("#results").empty();
-                createValidForm(resultTitle, resultYear, resultDuration, resultSynopsis, coverURL);
+                createValidForm(resultTitle, resultYear, resultDuration, resultSynopsis, coverURL, actors, genres, "movie");
             });
 
             content.append(button);
@@ -205,12 +239,152 @@ $("#search-movie").click(function () {
 
             resultsDiv.append(movie);
         }
+
+        // Wait for the results to be displayed before hiding the loading icon
+        // Do a fade in effect to make the results appear smoothly
+        $("#loading").fadeOut(500);
+        setTimeout(function () {
+            $("#results").fadeIn(500);
+        }, 500);
+
     });
+});
+
+$("#search-serie").click(function () {
+    var title = $("#serie-title").val();
+    var year = $("#serie-year").val();
+
+    $("#results").css("display", "none");
+    $("#no-results").css("display", "none");
+    $("#loading").css("display", "block");
+
+    $.ajax('../php/adsearchcontent.php', {
+        method: 'GET',
+        data: {
+            title: title,
+            year: year,
+            type: "serie"
+        },
+    }).done(function (data) {
+
+        if (data == "No results") {
+            $("#loading").fadeOut(500);
+            setTimeout(function () {
+                $("#no-results").css("display", "block");
+            }, 500);
+            return;           
+        }
+
+        for (let i = 0; i < data.length; i++) {
+            const result = data[i];
+
+            const resultsDiv = $("#results");
+            resultsDiv.empty();
+
+            const resultTitle = result.name;
+            const resultYear = new Date(result.first_air_date).getFullYear();
+            const resultSynopsis = result.overview;
+            const coverURL = result.poster_path;
+            const resultGenre = result.genres;
+
+            let serie = $("<div></div>");
+            serie.attr("class", "serie");
+            serie.attr("id", "serie" + i);
+
+            let title = $("<section>" + resultTitle + " (" + resultYear + ")</section>");
+            serie.append(title);
+
+            let content = $("<div></div>");
+            content.attr("class", "content");
+
+            if (coverURL == '../img/noimg.png') {
+                let img = $("<img>");
+                img.attr("src", "../img/noimg.png");
+                img.attr("alt", "cover");
+                img.attr("class", "cover");
+                content.append(img);
+            }
+            else {
+                let img = $("<img>");
+                img.attr("src", "https://" + coverURL);
+                img.attr("alt", "cover");
+                img.attr("class", "cover");
+                content.append(img);                
+            }
+
+            const rightContent = $("<div></div>");
+            rightContent.attr("class", "right-content");
+            
+
+            let actorsDiv = $("<div></div>");
+            actorsDiv.attr("class", "actors");
+
+            let actors = "";
+
+            for (let j = 0; j < result.actors.length; j++) {
+                actors += result.actors[j];
+
+                if (j < result.actors.length - 1) {
+                    actors += ", ";
+                }
+            }
+
+            actorsDiv.append("<section>Acteurs: " + actors + "</section>");
+            rightContent.append(actorsDiv);
+
+            let genreDiv = $("<div></div>");
+            genreDiv.attr("class", "genre");
+
+            let genres = "";
+
+            for (let j = 0; j < resultGenre.length; j++) {
+                genres += resultGenre[j];
+
+                if (j < resultGenre.length - 1) {
+                    genres += ", ";
+                }
+            }
+
+            genreDiv.append("<section>Genre: " + genres + "</section>");
+            rightContent.append(genreDiv);
+
+            let synopsisDiv = $("<div></div>");
+            synopsisDiv.attr("class", "synopsis");
+            synopsisDiv.append("<section>" + resultSynopsis + "</section>");
+            rightContent.append(synopsisDiv);
+            content.append(rightContent);
+
+            let button = $("<button>Ajouter</button>");
+            button.attr("class", "valid-button");
+            button.attr("id", "valid-button" + data[i].id);
+
+            button.click(function () {
+                $("#results").empty();
+                createValidForm(resultTitle, resultYear, null, resultSynopsis, coverURL, actors, genres, "serie", result.id, result.nb_seasons);
+            });
+
+            content.append(button);
+            serie.append(content);
+            resultsDiv.append(serie);
+
+        }
+
+        // Wait for the results to be displayed before hiding the loading icon
+        // Do a fade in effect to make the results appear smoothly
+        $("#loading").fadeOut(500);
+        setTimeout(function () {
+            $("#results").fadeIn(500);
+        }, 500);
+
+
+    });
+
 });
 
 // Take informations from the movie card and create a validation form
 // Use to add a movie to the database
-function createValidForm(title, year, duration, synopsis, coverURL) {
+function createValidForm(title, year, duration, synopsis, coverURL, actors, genres, type, contentID = null, nbSeasons = null) {
+
     $("#results").empty();
     let dataContent = $("<div></div>");
     dataContent.attr("class", "valid-form");
@@ -220,10 +394,12 @@ function createValidForm(title, year, duration, synopsis, coverURL) {
     titleDiv.append("<section><span id='mov-title'>" + title + "</span> (<span id='mov-year'>" + year + "</span>)</section>");
     dataContent.append(titleDiv);
 
-    let durationDiv = $("<div></div>");
-    durationDiv.attr("class", "valid-duration");
-    durationDiv.append("<section>Durée: <span id='mov-duration'>" + duration + "</span> min</section>");
-    dataContent.append(durationDiv);
+    if (duration != null) {
+        let durationDiv = $("<div></div>");
+        durationDiv.attr("class", "valid-duration");
+        durationDiv.append("<section>Durée: <span id='mov-duration'>" + duration + "</span> min</section>");
+        dataContent.append(durationDiv);
+    }
 
     let synopsisDiv = $("<div></div>");
     synopsisDiv.attr("class", "valid-synopsis");
@@ -253,15 +429,32 @@ function createValidForm(title, year, duration, synopsis, coverURL) {
 
     let genreDiv = $("<div></div>");
     genreDiv.attr("class", "valid-genre");
-    genreDiv.append("<label for='mov-genre'>Genre: </label>");
-    genreDiv.append("<input type='text' id='mov-genre' name='mov-genre' required>");
-    rightContent.append(genreDiv);
+
+    if (genres == "") {
+        genreDiv.append("<label for='mov-genre'>Genre: </label>");
+        genreDiv.append("<input type='text' id='mov-genre' name='mov-genre' required>");
+        rightContent.append(genreDiv);
+    }
+    else {
+        genreDiv.append("<label for='mov-genre'>Genre: </label>");
+        genreDiv.append("<input type='text' id='mov-genre' name='mov-genre' value='" + genres + "' required disabled>");
+        rightContent.append(genreDiv);
+    }
 
     let actorsDiv = $("<div></div>");
-    actorsDiv.attr("class", "valid-actors");
-    actorsDiv.append("<label for='mov-actors'>Acteurs: </label>");
-    actorsDiv.append("<input type='text' id='mov-actors' name='mov-actors' required>");
-    rightContent.append(actorsDiv);
+
+    if (actors == "") {
+        actorsDiv.attr("class", "valid-actors");
+        actorsDiv.append("<label for='mov-actors'>Acteurs: </label>");
+        actorsDiv.append("<input type='text' id='mov-actors' name='mov-actors' required>");
+        rightContent.append(actorsDiv);
+    }
+    else {
+        actorsDiv.attr("class", "valid-actors");
+        actorsDiv.append("<label for='mov-actors'>Acteurs: </label>");
+        actorsDiv.append("<input type='text' id='mov-actors' name='mov-actors' value='" + actors + "' required disabled>");
+        rightContent.append(actorsDiv);
+    }
 
     let directorDiv = $("<div></div>");
     directorDiv.attr("class", "valid-director");
@@ -301,23 +494,56 @@ function createValidForm(title, year, duration, synopsis, coverURL) {
         var movieGenre = $("#mov-genre").val();
         var movieActors = $("#mov-actors").val();
 
-
-        $.ajax('../php/adadd.php/addmovie', {
-            method: 'POST',
-            data: {
-                title: movieTitle,
-                year:  movieYear,
-                duration: movieDuration,
-                synopsis: movieSynopsis,
-                realisator: movieRealisator,
-                coverURL: movieCover,
-                genre: movieGenre,
-                actors: movieActors
-            },
-        }).done(function (data) {
-            alert("Film ajouté");
-            location.reload();
-        });
+        if (type == "movie"){
+            $.ajax('../php/adadd.php/addmovie', {
+                method: 'POST',
+                data: {
+                    title: movieTitle,
+                    year:  movieYear,
+                    duration: movieDuration,
+                    synopsis: movieSynopsis,
+                    realisator: movieRealisator,
+                    coverURL: movieCover,
+                    genre: movieGenre,
+                    actors: movieActors
+                },
+            }).done(function (data) {
+    
+                if (data == "already exists") {
+                    alert("Le film est déjà dans la base de données");
+                    location.reload();
+                    return;
+                }
+                alert("Film ajouté");
+                location.reload();
+            });
+        }
+        else if (type == "serie"){
+            $.ajax('../php/adadd.php/addserie', {
+                method: 'POST',
+                data: {
+                    title: movieTitle,
+                    year:  movieYear,
+                    synopsis: movieSynopsis,
+                    realisator: movieRealisator,
+                    coverURL: movieCover,
+                    genre: movieGenre,
+                    actors: movieActors,
+                    contentID: contentID,
+                    nbSeasons: nbSeasons
+                },
+            }).done(function (data) {
+    
+                if (data == "already exists") {
+                    alert("La série est déjà dans la base de données");
+                    location.reload();
+                    return;
+                }
+                alert("Série ajoutée");
+                location.reload();
+            });
+        }
+        
     });
 
     buttonDiv.append(button);

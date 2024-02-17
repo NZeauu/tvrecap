@@ -17,9 +17,8 @@ if($requestMethod == 'GET'){
     $year = $_GET['year'];
     $type = $_GET['type'];
 
-    $command = 'python3 ../scripts/searchMov.py';
+    $output = exec("python3 ../scripts/searchMov.py " . escapeshellarg($type) . " " . escapeshellarg($title) . " " . escapeshellarg($year));
 
-    $output = exec($command . ' ' . $type . ' "' . $title . '" ' . $year);
 }
 
 header('Content-Type: application/json; charset=utf-8');

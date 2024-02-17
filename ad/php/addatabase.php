@@ -42,12 +42,65 @@ function getLastUser($conn) {
 // --------------------- ADD PAGE -----------------------
 // ------------------------------------------------------
 
+// Check if the content is already in the database "OK"
+function checkContent($conn, $title, $year, $type) {
+    if ($type == "movie") {
+        $sql = "SELECT COUNT(*) FROM Films WHERE nom = ? AND date_sortie = ?";
+    }
+    if ($type == "serie"){
+        $sql = "SELECT COUNT(*) FROM Séries WHERE nom = ? AND date_sortie = ?";
+    }
+
+    try{
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $title, $year);
+        $stmt->execute();
+        $stmt->bind_result($count);
+        $stmt->fetch();
+        $stmt->close();
+
+        return $count;
+    } catch(Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    
+    }
+
+}
+
 // Add a movie to the database "OK"
 function addMovie($db, $title, $year, $genre, $synopsis, $duration, $realisator, $actors, $coverpath) {
+
+    // Check if the movie is already in the database before adding it
+    if (checkContent($db, $title, $year, "movie") > 0) {
+        return "already exists";
+    }
+
     try {
         $sql = "INSERT INTO Films (nom, image, duree, date_sortie, categorie, synopsis, actors, realisator) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $db->prepare($sql);
         $stmt->bind_param("ssisssss", $title, $coverpath, $duration, $year, $genre, $synopsis, $actors, $realisator);
+        $stmt->execute();
+        $stmt->close();
+        return true;
+    } catch(Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// add a serie to the database "OK"
+function addSerie($db, $title, $year, $genre, $synopsis, $realisator, $actors, $coverpath, $seasons) {
+
+    // Check if the serie is already in the database before adding it
+    if (checkContent($db, $title, $year, "serie") > 0) {
+        return "already exists";
+    }
+
+    try {
+        $sql = "INSERT INTO Séries (nom, nb_saisons, date_sortie, categorie, synopsis, actors, realisator, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("siisssss", $title, $seasons, $year, $genre, $synopsis, $actors, $realisator, $coverpath);
         $stmt->execute();
         $stmt->close();
         return true;

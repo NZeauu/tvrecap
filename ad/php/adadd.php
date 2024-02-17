@@ -67,11 +67,62 @@ if($requestResource == "addmovie"){
         // Delete spaces in the URL
         $coverURL = str_replace(' ', '', $coverURL);
 
+        // Save the image from the URL
         exec("python3 ../scripts/genImg.py " . escapeshellarg($coverURL) . " " . escapeshellarg($filename) . " movie");
 
         $data = addMovie($db, $title, $year, $genre, $synopsis, $duration, $realisator, $actors, $coverpath);
     }
 
+}
+
+if ($requestResource == "addserie"){
+    $data = false;
+
+    if ($requestMethod == "POST"){
+        $title = $_POST['title'];
+        $year = $_POST['year'];
+        $genre = $_POST['genre'];
+        $synopsis = $_POST['synopsis'];
+        $realisator = $_POST['realisator'];
+        $actors = $_POST['actors'];
+        $coverURL = $_POST['coverURL'];
+        $contentID = $_POST['contentID'];
+        $nbSeasons = $_POST['nbSeasons'];
+
+        $title = str_replace('"', '\"', $title);
+        $synopsis = str_replace('"', '\"', $synopsis);
+        $realisator = str_replace('"', '\"', $realisator);
+        $actors = str_replace('"', '\"', $actors);
+
+        $filename = $title . "-" . $year;
+        $filename = str_replace(' ', '', $filename);
+        $filename = strtolower($filename);
+        $coverpath = "../img/Covers/series/" . $filename . ".jpg";
+
+        // Delete spaces in the URL
+        $coverURL = str_replace(' ', '', $coverURL);
+
+        // Save the image from the URL
+        exec("python3 ../scripts/genImg.py " . escapeshellarg($coverURL) . " " . escapeshellarg($filename) . " serie");
+
+        $data = addSerie($db, $title, $year, $genre, $synopsis, $realisator, $actors, $coverpath, $nbSeasons);
+
+        // Add all the episodes of the serie if it's not already in the database
+        if ($data != "already exists"){
+             // Add all the episodes of the serie
+            exec("python3 ../scripts/getEpisodes.py " . escapeshellarg($contentID) . " " . escapeshellarg($title) . " 2>&1", $output, $return_var);
+            // Afficher la sortie
+            foreach ($output as $line) {
+                echo $line . "\n";
+            }
+
+            // Afficher le code de retour
+            echo "Code de retour: " . $return_var . "\n";
+        }
+
+       
+
+    }
 }
 
 
