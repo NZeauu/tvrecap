@@ -139,6 +139,35 @@ function openPopup(type) {
         document.getElementById('popupText').appendChild(form);
     }
 
+    if (type == 'password') {
+        document.getElementById('popupTitle').innerText = 'Mot de passe oublié';
+
+        var form = document.createElement('div');
+        form.setAttribute('id', 'passwordForm');
+
+        var contentTitle = document.createElement('p');
+        contentTitle.innerText = 'Entrez votre adresse mail pour recevoir un lien de réinitialisation de mot de passe.';
+        form.appendChild(contentTitle);
+        
+        var mailInput = document.createElement('input');
+        mailInput.setAttribute('type', 'email');
+        mailInput.setAttribute('name', 'mail');
+        mailInput.setAttribute('placeholder', 'Email');
+        mailInput.setAttribute('id', 'mailInput');
+
+        var submit = document.createElement('button');
+        submit.setAttribute('type', 'submit');
+        submit.setAttribute('value', 'Envoyer');
+        submit.setAttribute('id', 'submit');
+        submit.setAttribute('onclick', 'sendMail()');
+        submit.innerText = 'Envoyer';
+
+        form.appendChild(mailInput);
+        form.appendChild(submit);
+
+        document.getElementById('popupText').appendChild(form);
+    }
+
 
 }
 
@@ -196,4 +225,47 @@ function submit(){
             }
         }
     });
+}
+
+function sendMail(){
+    var email = $("#mailInput").val();
+
+    if(email == '' || !email.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)){
+        $("#passwordForm").empty();
+        $("#passwordForm").append("<p>Veuillez remplir correctement tous les champs.</p>");
+        $("#passwordForm").append("<button onclick=\"openPopup('password')\">Ok</button>");
+        return;
+    }
+
+    // Check if the email exists in the database
+    $.ajax('../php/connect.php/mail', {
+        method : 'GET', data : {
+            email : email
+        }
+    }).done(function(data){
+        if(!data){
+            $("#passwordForm").empty();
+            $("#passwordForm").append("<p>Cette adresse mail n'existe pas.</p>");
+            $("#passwordForm").append("<button onclick=\"openPopup('password')\">Ok</button>");
+        }else{
+
+            $.ajax('../php/connect.php/resetPass', {
+                method : 'POST', 
+                data : {
+                    email : email
+                },
+                success: function(data){
+                    if(data){
+                        $("#passwordForm").empty();
+                        $("#passwordForm").append("<p>" + data.msg + "</p>");
+                    }else{
+                        $("#passwordForm").empty();
+                        $("#passwordForm").append("<p>Une erreur est survenue lors de l'envoi du message.</p>");
+                    }
+                }
+            });
+
+        }
+    });
+
 }

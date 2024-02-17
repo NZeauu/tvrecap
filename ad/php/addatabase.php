@@ -45,11 +45,13 @@ function getLastUser($conn) {
 // Add a movie to the database "OK"
 function addMovie($db, $title, $year, $genre, $synopsis, $duration, $realisator, $actors, $coverpath) {
     try {
-        $sql = "INSERT INTO Films (nom, image, duree, date_sortie, categorie, synopsis, actors, realisator) VALUES (\"$title\", \"$coverpath\", \"$duration\", \"$year\", \"$genre\", \"$synopsis\", \"$actors\", \"$realisator\")";
-        $db->query($sql);
-        $db->close();
+        $sql = "INSERT INTO Films (nom, image, duree, date_sortie, categorie, synopsis, actors, realisator) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("ssisssss", $title, $coverpath, $duration, $year, $genre, $synopsis, $actors, $realisator);
+        $stmt->execute();
+        $stmt->close();
         return true;
-    } catch(PDOException $e) {
+    } catch(Exception $e) {
         echo "Error: " . $e->getMessage();
         return false;
     }

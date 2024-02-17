@@ -51,6 +51,7 @@ if($requestResource == "addmovie"){
         $duration = $_POST['duration'];
         $realisator = $_POST['realisator'];
         $actors = $_POST['actors'];
+        $coverURL = $_POST['coverURL'];
 
         $title = str_replace('"', '\"', $title);
         $synopsis = str_replace('"', '\"', $synopsis);
@@ -61,9 +62,18 @@ if($requestResource == "addmovie"){
         $filename = $title . "-" . $year;
         $filename = str_replace(' ', '', $filename);
         $filename = strtolower($filename);
-        $coverpath = "../img/Covers/" . $filename . ".jpg";
+        $coverpath = "../img/Covers/movies/" . $filename . ".jpg";
 
-        $data = addMovie($db, $title, $year, $genre, $synopsis, $duration, $realisator, $actors, $coverpath);
+        // Delete spaces in the URL
+        $coverURL = str_replace(' ', '', $coverURL);
+
+        $command = 'python3 ../scripts/genImg.py ' . $coverURL . ' ' . $filename . ' movie';
+        echo $command;
+
+        // Download image from URL and save it to the server
+        echo exec($command);
+
+        // $data = addMovie($db, $title, $year, $genre, $synopsis, $duration, $realisator, $actors, $coverpath);
     }
 
 }

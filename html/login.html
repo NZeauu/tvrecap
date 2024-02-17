@@ -17,19 +17,23 @@
             <div id="form">
                 <div id="inputs">
                     <div id="mail">
-                        <section id="descrtext">Adresse mail</section>
+                        <section class="descrtext">Adresse mail</section>
                         <input type="text" id="mailinput" placeholder="johndoe@gmail.com">
                         <!-- Error section -->
                         <section id="mailInvalid" style="display: none; color: red;">Adresse mail inexistante</section>
                         <section id="mailEmpty" style="display: none; color: red;">Veuillez entrer une adresse mail</section>
                     </div>
                     <div id="password">
-                        <section id="descrtext">Mot de passe</section>
+                        <section class="descrtext">Mot de passe</section>
                         <input type="password" id="passwordinput" placeholder="●●●●●●●●●●">
                         <!-- Error section -->
                         <section id="passwordInvalid" style="display: none; color: red;">Mot de passe incorrect</section>
                         <section id="passwordEmpty" style="display: none; color: red;">Veuillez entrer un mot de passe</section>
                     </div>
+                    <div id="forgotpassword">
+                        <section onclick="openPopup('password')">Mot de passe oublié ?</section>
+                    </div>
+                    
                 </div>
                 <div id="button">
                     <div id="remember">

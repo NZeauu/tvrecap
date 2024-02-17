@@ -23,8 +23,12 @@ function dbconnect() {
 function connectionAccount($conn, $mail, $password) {
 
     try{
-        $sql = "SELECT * FROM Accounts WHERE email = '$mail'";
-        $result = $conn->query($sql);
+        $sql = "SELECT * FROM Accounts WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $mail);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -47,8 +51,10 @@ function connectionAccount($conn, $mail, $password) {
 // User registration "OK"
 function registerAccount($conn, $username, $email, $password){
     try{
-        $sql = "INSERT INTO Accounts (username, email, password) VALUES ('$username', '$email', '$password')";
-        $conn->query($sql);
+        $sql = "INSERT INTO Accounts (username, email, password) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sss", $username, $email, $password);
+        $stmt->execute();
 
         return true;
     }
@@ -61,8 +67,12 @@ function registerAccount($conn, $username, $email, $password){
 // Check if the email is already used "OK"
 function checkMail($conn, $email){
     try{
-        $sql = "SELECT * FROM Accounts WHERE email = '$email'";
-        $result = $conn->query($sql);
+        $sql = "SELECT * FROM Accounts WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             return true;
@@ -79,8 +89,12 @@ function checkMail($conn, $email){
 // Check if the username is already used "OK"
 function checkUsername($conn, $username){
     try{
-        $sql = "SELECT * FROM Accounts WHERE username = '$username'";
-        $result = $conn->query($sql);
+        $sql = "SELECT * FROM Accounts WHERE username = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             return true;
@@ -97,8 +111,11 @@ function checkUsername($conn, $username){
 // Get the user name from the email "OK"
 function getUsername($conn, $email){
     try{
-        $sql = "SELECT username FROM Accounts WHERE email = '$email'";
-        $result = $conn->query($sql);
+        $sql = "SELECT username FROM Accounts WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -117,8 +134,11 @@ function getUsername($conn, $email){
 // Get the user's avatar from the email "OK"
 function getAvatar($conn, $email){
     try{
-        $sql = "SELECT avatar FROM Accounts WHERE email = '$email'";
-        $result = $conn->query($sql);
+        $sql = "SELECT avatar FROM Accounts WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -137,8 +157,11 @@ function getAvatar($conn, $email){
 // Get user's information "OK"
 function getUserInfo($conn, $email){
     try{
-        $sql = "SELECT * FROM Accounts WHERE email = '$email'";
-        $result = $conn->query($sql);
+        $sql = "SELECT * FROM Accounts WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -157,8 +180,10 @@ function getUserInfo($conn, $email){
 // Update user's username "OK"
 function updateUsername($conn, $email, $username){
     try{
-        $sql = "UPDATE Accounts SET username = '$username' WHERE email = '$email'";
-        $conn->query($sql);
+        $sql = "UPDATE Accounts SET username = ? WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $username, $email);
+        $stmt->execute();
 
         return true;
     }
@@ -171,8 +196,10 @@ function updateUsername($conn, $email, $username){
 // Update user's birthday "OK"
 function updateBirthday($conn, $email, $birthday){
     try{
-        $sql = "UPDATE Accounts SET birthday = '$birthday' WHERE email = '$email'";
-        $conn->query($sql);
+        $sql = "UPDATE Accounts SET birthday = ? WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $birthday, $email);
+        $stmt->execute();
 
         return true;
     }
@@ -185,8 +212,10 @@ function updateBirthday($conn, $email, $birthday){
 // Update user's password "OK"
 function updatePassword($conn, $email, $password){
     try{
-        $sql = "UPDATE Accounts SET password = '$password' WHERE email = '$email'";
-        $conn->query($sql);
+        $sql = "UPDATE Accounts SET password = ? WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $password, $email);
+        $stmt->execute();
 
         return true;
     }
@@ -199,8 +228,96 @@ function updatePassword($conn, $email, $password){
 // Update user's avatar "OK"
 function updateAvatar($conn, $email, $avatar){
     try{
-        $sql = "UPDATE Accounts SET avatar = '$avatar' WHERE email = '$email'";
-        $conn->query($sql);
+        $sql = "UPDATE Accounts SET avatar = ? WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $avatar, $email);
+        $stmt->execute();
+        
+        return true;
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Insert a token in the database "OK"
+function insertToken($conn, $email, $token, $expiration_date){
+    try{
+        $sql = "UPDATE Accounts
+                SET reset_token_hash = ?, reset_token_expiration = ?
+                WHERE email = ?";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sss", $token, $expiration_date, $email);
+        $stmt->execute();
+
+        return true;
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Check if the token is valid "OK"
+function checkToken($conn, $token){
+    try{
+        $sql = "SELECT * FROM Accounts 
+                WHERE reset_token_hash = ?";
+                
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        if ($result->num_rows > 0) {
+            if($user['reset_token_expiration'] > date("Y-m-d H:i:s", time())){
+                return $user['email'];
+            }
+            else{
+                // removeToken($conn, $user['email']);
+                return false;
+            }
+        }
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+// Reset the user's password "OK"
+function resetPass($conn, $token, $password, $email){
+    try{
+        $sql = "UPDATE Accounts
+                SET password = ?
+                WHERE reset_token_hash = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $password, $token);
+        $stmt->execute();
+
+        removeToken($conn, $email);
+
+        return true;
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Remove the token and the expiration date from the database "OK"
+function removeToken($conn, $email){
+    try{
+        $sql = "UPDATE Accounts
+                SET reset_token_hash = NULL, reset_token_expiration = NULL
+                WHERE email = ?";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
 
         return true;
     }
@@ -218,7 +335,7 @@ function updateAvatar($conn, $email, $avatar){
 // Get all the series "OK"
 function getAllSeries($conn){
     try{
-        $sql = "SELECT * FROM Séries";
+        $sql = "SELECT * FROM Séries ORDER BY date_sortie DESC";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
@@ -342,8 +459,11 @@ function getFilteredSeries($conn, $seasons, $category, $duration, $year){
 // Get average duration of the episodes of a serie "OK"
 function getAverageDuration($conn, $id_serie){
     try{
-        $sql = "SELECT serie_id, AVG(duree) AS average_duration FROM Episodes WHERE serie_id = '$id_serie'";
-        $result = $conn->query($sql);
+        $sql = "SELECT serie_id, AVG(duree) AS average_duration FROM Episodes WHERE serie_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $id_serie);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -359,36 +479,14 @@ function getAverageDuration($conn, $id_serie){
     }
 }
 
-// Filter the series by average duration of the episodes "OK"
-function filterSeriesByAverageDuration($conn, $average_duration){
-    try{
-
-        
-        $result = $conn->query($sql);
-
-        if ($result->num_rows > 0) {
-            $series = array();
-
-            while($row = $result->fetch_assoc()) {
-                $series[] = $row;
-            }
-
-            return $series;
-        }
-        else {
-            return null;
-        } 
-    }
-    catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
-}
-
 // Get the serie details "OK"
 function getSerieDetails($db, $serieId){
     try{
-        $sql = "SELECT * FROM Séries WHERE id = '$serieId'";
-        $result = $db->query($sql);
+        $sql = "SELECT * FROM Séries WHERE id = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("s", $serieId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -407,8 +505,11 @@ function getSerieDetails($db, $serieId){
 // Get the number of seasons of a serie "OK"
 function getNumberOfSeasons($conn, $id_serie){
     try{
-        $sql = "SELECT nb_saisons FROM Séries WHERE id = '$id_serie'";
-        $result = $conn->query($sql);
+        $sql = "SELECT nb_saisons FROM Séries WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $id_serie);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -431,8 +532,11 @@ function getNumberOfSeasons($conn, $id_serie){
 // Get all the episodes of a serie "OK"
 function getSeasonEpisodes($conn, $id_serie, $season){
     try{
-        $sql = "SELECT * FROM Episodes WHERE serie_id = '$id_serie' AND saison = '$season'";
-        $result = $conn->query($sql);
+        $sql = "SELECT * FROM Episodes WHERE serie_id = ? AND saison = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $id_serie, $season);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $episodes = array();
@@ -452,9 +556,6 @@ function getSeasonEpisodes($conn, $id_serie, $season){
     }
 
 }
-
-
-
 
 
 // ------------------------------------ //
@@ -566,8 +667,11 @@ function getFilteredMovies($conn, $category, $duration, $year){
 // Get the movie details "OK"
 function getMovieDetails($conn, $id_movie){
     try{
-        $sql = "SELECT * FROM Films WHERE id = '$id_movie'";
-        $result = $conn->query($sql);
+        $sql = "SELECT * FROM Films WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $id_movie);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -608,11 +712,14 @@ function getTotalTime($conn, $email){
                 LEFT JOIN
                     `Episodes` ON `Seen_List`.`episode_id` = `Episodes`.`id`
                 WHERE
-                    `Accounts`.`email` = '$email'
+                    `Accounts`.`email` = ?
                 GROUP BY
-                    `Accounts`.`email`;"; 
+                    `Accounts`.`email`;";
 
-        $result = $conn->query($sql);
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -645,11 +752,14 @@ function getMoviesWatched($conn, $email){
                 LEFT JOIN
                     `Films` ON `Seen_List`.`movie_id` = `Films`.`id`
                 WHERE
-                    `Accounts`.`email` = '$email'
+                    `Accounts`.`email` = ?
                 GROUP BY
                     `Accounts`.`email`;"; 
 
-        $result = $conn->query($sql);
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -682,11 +792,14 @@ function getEpisodesWatched($conn, $email){
                 LEFT JOIN
                     `Episodes` ON `Seen_List`.`episode_id` = `Episodes`.`id`
                 WHERE
-                    `Accounts`.`email` = '$email'
+                    `Accounts`.`email` = ?
                 GROUP BY
                     `Accounts`.`email`;"; 
 
-        $result = $conn->query($sql);
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -705,8 +818,11 @@ function getEpisodesWatched($conn, $email){
 // Check if the movie is in the seen list "OK"
 function checkMovieSeen($conn, $email, $id_movie){
     try{
-        $sql = "SELECT * FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND movie_id = '$id_movie'";
-        $result = $conn->query($sql);
+        $sql = "SELECT * FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = ?) AND movie_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $email, $id_movie);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             return true;
@@ -723,8 +839,10 @@ function checkMovieSeen($conn, $email, $id_movie){
 // Add the movie to the seen list "OK"
 function addMovieSeen($conn, $email, $id_movie){
     try{
-        $sql = "INSERT INTO Seen_List (user_id, type, movie_id, episode_id) VALUES ((SELECT id FROM Accounts WHERE email = '$email'), 'movie', '$id_movie', null)";
-        $conn->query($sql);
+        $sql = "INSERT INTO Seen_List (user_id, type, movie_id, episode_id) VALUES ((SELECT id FROM Accounts WHERE email = ?), 'movie', ?, null)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $email, $id_movie);
+        $stmt->execute();
 
         return true;
     }
@@ -737,8 +855,10 @@ function addMovieSeen($conn, $email, $id_movie){
 // Delete the movie from the seen list "OK"
 function deleteMovieSeen($conn, $email, $id_movie){
     try{
-        $sql = "DELETE FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND movie_id = '$id_movie'";
-        $conn->query($sql);
+        $sql = "DELETE FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = ?) AND movie_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $email, $id_movie);
+        $stmt->execute();
 
         return true;
     }
@@ -751,8 +871,11 @@ function deleteMovieSeen($conn, $email, $id_movie){
 // Check if a serie is fully watched "OK"
 function checkSerieFullyWatched($conn, $email, $id_serie){
     try{
-        $sql = "SELECT * FROM Episodes WHERE id NOT IN (SELECT episode_id FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND type = 'serie') AND serie_id = '$id_serie';";
-        $result = $conn->query($sql);
+        $sql = "SELECT * FROM Episodes WHERE id NOT IN (SELECT episode_id FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = ?) AND type = 'serie') AND serie_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $email, $id_serie);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             return false;
@@ -769,8 +892,11 @@ function checkSerieFullyWatched($conn, $email, $id_serie){
 // Check if the episode is in the seen list "OK"
 function checkEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumber){
     try{
-        $sql = "SELECT * FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND episode_id = (SELECT id FROM Episodes WHERE serie_id = '$serieId' AND num_ep = '$episodeNumber' AND saison = '$seasonNumber')";
-        $result = $conn->query($sql);
+        $sql = "SELECT * FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = ?) AND episode_id = (SELECT id FROM Episodes WHERE serie_id = ? AND num_ep = ? AND saison = ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssss", $email, $serieId, $episodeNumber, $seasonNumber);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             return true;
@@ -787,8 +913,10 @@ function checkEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumber
 // Add the episode to the seen list "OK"
 function addEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumber){
     try{
-        $sql = "INSERT INTO Seen_List (user_id, type, movie_id, episode_id) VALUES ((SELECT id FROM Accounts WHERE email = '$email'), 'serie', null, (SELECT id FROM Episodes WHERE serie_id = '$serieId' AND num_ep = '$episodeNumber' AND saison = '$seasonNumber'))";
-        $conn->query($sql);
+        $sql = "INSERT INTO Seen_List (user_id, type, movie_id, episode_id) VALUES ((SELECT id FROM Accounts WHERE email = ?), 'serie', null, (SELECT id FROM Episodes WHERE serie_id = ? AND num_ep = ? AND saison = ?))";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssss", $email, $serieId, $episodeNumber, $seasonNumber);
+        $stmt->execute();
 
         return true;
     }
@@ -801,8 +929,10 @@ function addEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumber){
 // Delete the episode from the seen list "OK"
 function deleteEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumber){
     try{
-        $sql = "DELETE FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND episode_id = (SELECT id FROM Episodes WHERE serie_id = '$serieId' AND num_ep = '$episodeNumber' AND saison = '$seasonNumber')";
-        $conn->query($sql);
+        $sql = "DELETE FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = ?) AND episode_id = (SELECT id FROM Episodes WHERE serie_id = ? AND num_ep = ? AND saison = ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssss", $email, $serieId, $episodeNumber, $seasonNumber);
+        $stmt->execute();
 
         return true;
     }
@@ -815,8 +945,11 @@ function deleteEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumbe
 // Get the list of movies seen by the user "OK"
 function getMoviesSeen($conn, $email){
     try{
-        $sql = "SELECT * FROM Films WHERE id IN (SELECT movie_id FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND type = 'movie')";
-        $result = $conn->query($sql);
+        $sql = "SELECT * FROM Films WHERE id IN (SELECT movie_id FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = ?) AND type = 'movie')";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $movies = array();
@@ -840,8 +973,11 @@ function getMoviesSeen($conn, $email){
 // Get the list of series seen by the user "OK"
 function getSeriesSeen($conn, $email){
     try{
-        $sql = "SELECT * FROM Séries WHERE id IN (SELECT serie_id FROM Episodes WHERE id IN (SELECT episode_id FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND type = 'serie'))";
-        $result = $conn->query($sql);
+        $sql = "SELECT * FROM Séries WHERE id IN (SELECT serie_id FROM Episodes WHERE id IN (SELECT episode_id FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = ?) AND type = 'serie'))";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $series = array();
@@ -865,8 +1001,11 @@ function getSeriesSeen($conn, $email){
 // Get the number of episodes of a serie seen by the user "OK"
 function getNumberOfEpisodesSeen($conn, $email, $id_serie){
     try{
-        $sql = "SELECT COUNT(*) AS nb_episodes_seen FROM Episodes WHERE id IN (SELECT episode_id FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = '$email') AND type = 'serie') AND serie_id = '$id_serie'";
-        $result = $conn->query($sql);
+        $sql = "SELECT COUNT(*) AS nb_episodes_seen FROM Episodes WHERE id IN (SELECT episode_id FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = ?) AND type = 'serie') AND serie_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $email, $id_serie);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();

@@ -14,7 +14,7 @@ body{
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    padding-top: 15vh;
+    padding-top: 10vh;
 }
 
 /* Login form part */
@@ -65,7 +65,7 @@ body{
 }
 
 /* Inputs heading */
-#descrtext{
+.descrtext{
     font-size: normal; 
     color: black;
     padding-bottom: 5px;
@@ -96,6 +96,25 @@ left: -80px; /* Gap from the text (to the left) */
 
 #noaccounttext::after {
 right: -80px; /* Gap from the text (to the right) */
+}
+
+#forgotpassword{
+    font-size: 14px;
+    font-family: Inter;
+    color: gray;
+    width: 100%;
+    text-align: right;
+    margin-top: -15px;
+}
+
+#forgotpassword section{
+    display: inline-block;
+}
+
+#forgotpassword section:hover{
+    cursor: pointer;
+    color: #F20000;
+    text-decoration: underline;
 }
   
 
@@ -272,14 +291,14 @@ footer nav button:focus{
     cursor: pointer;
 }
 
-#contactForm{
+#contactForm, #passwordForm{
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
 }
 
-#contactForm input{
+#contactForm input, #passwordForm input{
     width: 500px;
     height: 30px;
     border-radius: 10px;
@@ -297,7 +316,7 @@ footer nav button:focus{
     border-color: #ccc;
 }
 
-#contactForm button{
+#contactForm button, #passwordForm button{
     width: 100px;
     height: 40px;
     border-radius: 10px;
@@ -310,12 +329,13 @@ footer nav button:focus{
 
 }
 
-#contactForm button:hover{
+#contactForm button:hover, #passwordForm button:hover{
     cursor: pointer;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-style: solid;
 }
 
-#contactForm button:active{
+#contactForm button:active, #passwordForm button:active{
     background-color: #ff0000bc;
 }
+

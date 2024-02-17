@@ -19,7 +19,7 @@ if($requestMethod == 'GET'){
 
     $command = 'python3 ../scripts/searchMov.py';
 
-    $output = exec($command . ' ' . $type . ' ' . $title . ' ' . $year);
+    $output = exec($command . ' ' . $type . ' "' . $title . '" ' . $year);
 }
 
 header('Content-Type: application/json; charset=utf-8');

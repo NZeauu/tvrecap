@@ -55,7 +55,9 @@ CREATE TABLE `Accounts`(
     `password` VARCHAR(255) NOT NULL,
     `birthday` DATE DEFAULT NULL,
     `avatar` VARCHAR(50) NOT NULL DEFAULT '../img/avatars/default.svg',
-    `administrator` BOOLEAN NOT NULL DEFAULT FALSE
+    `administrator` BOOLEAN NOT NULL DEFAULT FALSE,*
+    `reset_token_hash` VARCHAR(64) DEFAULT NULL,
+    `reset_token_expiration` DATETIME DEFAULT NULL
 );
 ALTER TABLE
     `Accounts` ADD INDEX `accounts_id_index`(`id`);
@@ -63,6 +65,8 @@ ALTER TABLE
     `Accounts` ADD CONSTRAINT `unique_user` UNIQUE (`username`, `email`);
 ALTER TABLE 
     `Accounts` ADD UNIQUE(`administrator`);
+ALTER TABLE 
+    `Accounts` ADD UNIQUE(`reset_token_hash`);
 CREATE TABLE `Seen_List`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `user_id` BIGINT UNSIGNED NOT NULL,

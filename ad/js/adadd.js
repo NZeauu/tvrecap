@@ -217,17 +217,17 @@ function createValidForm(title, year, duration, synopsis, coverURL) {
 
     let titleDiv = $("<div></div>");
     titleDiv.attr("class", "valid-title");
-    titleDiv.append("<section>" + title + " (" + year + ")</section>");
+    titleDiv.append("<section><span id='mov-title'>" + title + "</span> (<span id='mov-year'>" + year + "</span>)</section>");
     dataContent.append(titleDiv);
 
     let durationDiv = $("<div></div>");
     durationDiv.attr("class", "valid-duration");
-    durationDiv.append("<section>Durée: " + duration + " min</section>");
+    durationDiv.append("<section>Durée: <span id='mov-duration'>" + duration + "</span> min</section>");
     dataContent.append(durationDiv);
 
     let synopsisDiv = $("<div></div>");
     synopsisDiv.attr("class", "valid-synopsis");
-    synopsisDiv.append("<section>" + synopsis + "</section>");
+    synopsisDiv.append("<section id='mov-synopsis'>" + synopsis + "</section>");
     dataContent.append(synopsisDiv);
 
     let addingDiv = $("<div></div>");
@@ -235,8 +235,9 @@ function createValidForm(title, year, duration, synopsis, coverURL) {
     
     if (coverURL == '../img/noimg.png') {
         let imgDiv = $("<div></div>");
-        imgDiv.append("<label for='movie-cover'>URL de la couverture: </label>");
-        imgDiv.append("<input type='text' id='movie-cover' name='movie-cover' required>");
+        imgDiv.attr("class", "valid-cover");
+        imgDiv.append("<label for='mov-cover'>URL de la couverture: </label>");
+        imgDiv.append("<input type='text' id='mov-cover' name='mov-cover' required>");
         addingDiv.append(imgDiv);
     }
     else {
@@ -247,11 +248,28 @@ function createValidForm(title, year, duration, synopsis, coverURL) {
         addingDiv.append(img);
     }
 
+    let rightContent = $("<div></div>");
+    rightContent.attr("class", "right-content");
+
+    let genreDiv = $("<div></div>");
+    genreDiv.attr("class", "valid-genre");
+    genreDiv.append("<label for='mov-genre'>Genre: </label>");
+    genreDiv.append("<input type='text' id='mov-genre' name='mov-genre' required>");
+    rightContent.append(genreDiv);
+
+    let actorsDiv = $("<div></div>");
+    actorsDiv.attr("class", "valid-actors");
+    actorsDiv.append("<label for='mov-actors'>Acteurs: </label>");
+    actorsDiv.append("<input type='text' id='mov-actors' name='mov-actors' required>");
+    rightContent.append(actorsDiv);
+
     let directorDiv = $("<div></div>");
-    directorDiv.attr("class", "director");
-    directorDiv.append("<label for='movie-director'>Réalisateur: </label>");
-    directorDiv.append("<input type='text' id='movie-director' name='movie-director' required>");
-    addingDiv.append(directorDiv);
+    directorDiv.attr("class", "valid-director");
+    directorDiv.append("<label for='mov-director'>Réalisateur: </label>");
+    directorDiv.append("<input type='text' id='mov-director' name='mov-director' required>");
+    rightContent.append(directorDiv);
+
+    addingDiv.append(rightContent);
 
     dataContent.append(addingDiv);
 
@@ -262,24 +280,43 @@ function createValidForm(title, year, duration, synopsis, coverURL) {
     button.attr("class", "add-button");
     button.on("click", function () {
 
-        if ($("#movie-director").val() === "" || ($("#movie-cover").val() === "" && coverURL == '../img/noimg.png')) {
+        if ($("#mov-director").val() === "" || ($("#mov-cover").val() === "" && coverURL == '../img/noimg.png')) {
             alert("Veuillez remplir tous les champs");
             return;
         }
 
+        // Get the movie's informations
+        var movieTitle = $("#mov-title").text();
+        var movieYear = $("#mov-year").text();
+        var movieDuration = $("#mov-duration").text();
+        var movieSynopsis = $("#mov-synopsis").text();
+
+        var movieCover = $(".cover").attr("src") || $("#mov-cover").val();
+        // Add the https:// to the cover URL if it's not already there
+        if (movieCover.substring(0, 8) !== "https://"){
+            movieCover = "https://" + movieCover;
+        }
+
+        var movieRealisator = $("#mov-director").val();
+        var movieGenre = $("#mov-genre").val();
+        var movieActors = $("#mov-actors").val();
+
+
         $.ajax('../php/adadd.php/addmovie', {
             method: 'POST',
             data: {
-                title: title,
-                year: year,
-                duration: duration,
-                synopsis: synopsis,
-                realisator: $("#movie-director").val(),
-                coverURL: "https://" + coverURL
+                title: movieTitle,
+                year:  movieYear,
+                duration: movieDuration,
+                synopsis: movieSynopsis,
+                realisator: movieRealisator,
+                coverURL: movieCover,
+                genre: movieGenre,
+                actors: movieActors
             },
         }).done(function (data) {
             alert("Film ajouté");
-            location.reload();
+            // location.reload();
         });
     });
 

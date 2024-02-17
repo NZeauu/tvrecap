@@ -1,0 +1,262 @@
+/* ----------------------------------------- */
+/* ----------------- BODY ------------------ */
+/* ----------------------------------------- */
+
+body{
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+#reset{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding-top: 5vh;
+}
+
+/* Login form part */
+#form{
+    font-family: Inter;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+/* Login inputs part */
+#inputs{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+/* Button block part */
+#button{
+    display: flex;
+    padding: 10px 0px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+}
+
+#tokenValid{
+    color: green;
+    padding: 10px;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: green;
+}
+
+/* ----------------------------------------- */
+/* ---------------- TEXTS ------------------ */
+/* ----------------------------------------- */
+
+/* TVRecap title */
+#title{
+    font-family: Ubuntu;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+/* Inputs heading */
+.descrtext{
+    font-size: normal; 
+    color: black;
+    padding-bottom: 5px;
+}
+
+/* Mail input */
+#mailinput{
+    width: 400px;
+    height: 40px;
+    border-radius: 10px;
+    border-style: solid;
+    padding-left: 20px;
+    border-color: #ccc;
+}
+
+#mailinput:hover{
+    cursor: not-allowed;
+}
+
+/* Password input */
+#passwordinput, #passwordinput2{
+    width: 400px;
+    height: 40px;
+    border-radius: 10px;
+    border-style: solid;
+    padding-left: 20px;
+    border-color: #ccc;
+    margin-bottom: 20px;
+}
+
+/* ----------------------------------------- */
+/* ------------- LOGIN BUTTON -------------- */
+/* ----------------------------------------- */
+
+#resetbutton{
+    display: flex;
+    width: 100%;
+    height: 48px;
+    padding: 16px 12px;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: Inter;
+    font-size: 16px;
+
+    border-radius: 4px;
+    background: var(--red-title, #F20000);
+    border-style: none;
+}
+
+
+/* Dynamic options */
+#resetbutton:hover{
+    cursor: pointer;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-style: solid;
+}
+#resetbutton:active{
+    background-color: #ff0000bc;
+}
+
+
+
+/* ----------------------------------------- */
+/* --------------- FOOTER ------------------ */
+/* ----------------------------------------- */
+
+footer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: black;
+    font-family: Inter;
+}
+
+footer nav{
+    /* gap: 20px; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 40%;
+    color: white;
+}
+
+footer nav button{
+    border-style: none;
+    background-color: transparent;
+    color: white;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+footer nav button:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+footer nav button:focus{
+    outline: none;
+}
+
+/* ----------------------------------------- */
+/* --------------- POPUP ------------------- */
+/* ----------------------------------------- */
+
+.popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+    z-index: 1000;
+}
+
+.popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    margin: auto;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    font-family: Inter;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#contactForm, #passwordForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#contactForm input, #passwordForm input{
+    width: 500px;
+    height: 30px;
+    border-radius: 10px;
+    border-style: solid;
+    padding-left: 20px;
+    border-color: #ccc;
+}
+
+#contactForm textarea{
+    width: 500px;
+    height: 100px;
+    border-radius: 10px;
+    border-style: solid;
+    padding: 10px 20px;
+    border-color: #ccc;
+}
+
+#contactForm button, #passwordForm button{
+    width: 100px;
+    height: 40px;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: #ccc;
+    background-color: #F20000;
+    color: white;
+    font-family: Inter;
+    font-size: 16px;
+
+}
+
+#contactForm button:hover, #passwordForm button:hover{
+    cursor: pointer;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-style: solid;
+}
+
+#contactForm button:active, #passwordForm button:active{
+    background-color: #ff0000bc;
+}
+

@@ -22,12 +22,20 @@
     height: 100%;
 }
 
-.valid-title p, .valid-duration p, .valid-synopsis p{
+.valid-title section, .valid-duration section, .valid-synopsis section{
     font-family: Inter;
     font-size: 1em;
+    font-weight: bold;
 }
 
-#movie-cover, #movie-director{
+.valid-cover, .valid-director, .valid-actors, .valid-genre{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 100%;
+}
+
+#mov-cover, #mov-director, #mov-actors, #mov-genre{
     border: solid #000 1px;
     border-radius: 10px;
     padding: 10px;
@@ -36,7 +44,7 @@
     width: 100%;     
 }
 
-#movie-cover label, #movie-director label{
+#mov-cover label, #mov-director label, #mov-actors label, #mov-genre label{
     font-family: Inter;
     font-size: 1em;
     font-weight: bold;
@@ -49,6 +57,14 @@
     width: 100%;
     height: 100%;
     align-items: center;
+}
+
+.right-content{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    height: 100%;
 }
 
 .valid-button{
