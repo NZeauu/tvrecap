@@ -1,0 +1,169 @@
+/* --------------------------------- */
+/* ----------- GENERAL ------------- */
+/* --------------------------------- */
+
+/* STYLES OF THE GENERAL ELEMENTS */
+
+#content-purpose{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 90%;
+    border-radius: 10px;
+    align-self: center;
+    margin-top: 5%;
+    gap: 10px;
+    font-family: Inter;
+}
+
+#content-purpose h2{
+    text-align: center;
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+/* --------------------------------- */
+/* ----------- CHOICE -------------- */
+/* --------------------------------- */
+
+/* STYLES OF THE CHOICE BETWEEN MOVIES AND SERIES */
+
+.main-container {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    width: 100%; /* Ajuster la largeur du conteneur principal selon vos besoins */
+    height: 50px; /* Ajuster la hauteur du conteneur principal selon vos besoins */
+    border: #000 solid 3px; 
+    border-radius: 20px;
+}
+
+.movies-content,
+.series-content {
+    flex: 1;
+    background-color: white;
+    color: #000;
+    text-align: center;
+    /* z-index: 1; */
+}
+
+.diagonal-separator {
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    transform: skewX(-30deg); /* Inclinaison en diagonale */
+    background-color: #000; /* Couleur du trait en diagonale */
+    z-index: 4;
+    margin-left: 50%;
+}
+
+.series-content {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.movies-content {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.movies-content:hover, 
+.series-content:hover {
+    cursor: pointer;
+}
+
+/* --------------------------------- */
+/* ----------- CONTENT ------------- */
+/* --------------------------------- */
+
+#results{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 3%;
+}
+
+#results::before{
+    content: "";
+    width: 80%;
+    height: 2px;
+    background-color: #000;
+    margin-bottom: 2%;
+}
+
+.db-data{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: center;
+    background-color: #ffebeb;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.serie-content, .movie-content{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.serie-content button, .movie-content button{
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: fit-content;
+    align-self: flex-end;
+}
+
+.serie-content button:hover, .movie-content button:hover{
+    background-color: #ff4d4d;
+}
+
+#search-content-div{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3%;
+}
+
+#search-content-div input{
+    width: 50%;
+    border-radius: 10px;
+    padding: 10px;
+    border: #000 solid 1px;
+}
+
+#pagination{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-top: 3%;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0px 20px 0px;
+}
+
+#pagination button{
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: fit-content;
+}
+
+#pagination button:hover{
+    background-color: #ff4d4d;
+}

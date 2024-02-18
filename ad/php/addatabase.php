@@ -167,3 +167,192 @@ function updateUser($conn, $userId, $email, $username) {
         return false;
     }
 }
+
+// ------------------------------------------------------
+// ------------------ CONTENT PAGE ----------------------
+// ------------------------------------------------------
+
+// Get the length of the list of movies in the database "OK"
+function getMoviesLength($conn) {
+    try{
+        $sql = "SELECT COUNT(*) FROM Films";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        $conn->close();
+        return $row['COUNT(*)'];
+    } catch(Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Get the length of the list of series in the database "OK"
+function getSeriesLength($conn) {
+    try{
+        $sql = "SELECT COUNT(*) FROM Séries";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        $conn->close();
+        return $row['COUNT(*)'];
+    } catch(Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+
+// Get the list of movies in the database between row 15 and 25 "OK"
+function getMovies($conn, $minRow, $maxRow) {
+    try{
+        $sql = "SELECT * FROM Films LIMIT ?, ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $minRow, $maxRow);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $movies = array();
+            while($row = $result->fetch_assoc()) {
+                $movies[] = $row;
+            }
+            return $movies;
+        } else {
+            return "No movies found";
+        }
+        
+
+    } catch(Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Get the list of series in the database "OK"
+function getSeries($conn, $minRow, $maxRow) {
+    try{
+        $sql = "SELECT * FROM Séries LIMIT ?, ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $minRow, $maxRow);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $series = array();
+            while($row = $result->fetch_assoc()) {
+                $series[] = $row;
+            }
+            return $series;
+        } else {
+            return "No series found";
+        }
+        
+
+    } catch(Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Delete a movie from the database "OK"
+function deleteMovie($conn, $id) {
+    try{
+        $sql = "DELETE FROM Films WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->close();
+
+        return true;
+    } catch(Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Delete a serie from the database "OK"
+function deleteSerie($conn, $id) {
+    try{
+        deleteEpisodes($conn, $id);
+        $sql = "DELETE FROM Séries WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->close();
+        return true;
+    } catch(Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Delete the episodes of a serie from the database "OK"
+function deleteEpisodes($conn, $id) {
+    try{
+        $sql = "DELETE FROM Episodes WHERE serie_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->close();
+
+        return true;
+    } catch(Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Search for a movie in the database "OK"
+function searchMovie($conn, $value) {
+    try{
+        $value = "%".$value."%";
+        $sql = "SELECT * FROM Films WHERE nom LIKE ? ORDER BY nom ASC";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $value);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+
+        if ($result->num_rows > 0) {
+            $movies = array();
+            while($row = $result->fetch_assoc()) {
+                $movies[] = $row;
+            }
+            return $movies;
+        } else {
+            return "No movies found";
+        }
+        
+
+    } catch(Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+// Search for a serie in the database "OK"
+function searchSerie($conn, $value) {
+    try{
+        $value = "%".$value."%";
+        $sql = "SELECT * FROM Séries WHERE nom LIKE ? ORDER BY nom ASC";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $value);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+
+        if ($result->num_rows > 0) {
+            $series = array();
+            while($row = $result->fetch_assoc()) {
+                $series[] = $row;
+            }
+            return $series;
+        } else {
+            return "No series found";
+        }
+        
+
+    } catch(Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}

@@ -8,7 +8,7 @@
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap');
         </style>
-        <link href="../css/adhome.css" rel="stylesheet">
+        <link href="../css/admanage.css" rel="stylesheet">
         <link href="../../css/template.css" rel="stylesheet">
         <link rel="icon" href="../../img/icon.ico">
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -43,7 +43,37 @@
                     </div>
                 </div>
             </div>
-        <!-- Content -->
+            <!-- Content -->
+            <div id="content-purpose">
+                <h2>Gérer le contenu du site</h2>
+                <!-- Content type choice -->
+                <div class="main-container">
+                    <div class="movies-content">
+                    <p>Film</p>
+                    </div>
+                    <div id="movies-content-border"></div>
+                    <div class="diagonal-separator"></div>
+                    <div id="series-content-border"></div>
+                    <div class="series-content">
+                    <p>Série</p>
+                    </div>
+                </div>
+
+                <h1 id="loading" style="display: none; text-align: center;">Chargement...</h1>
+                <h1 id="no-results" style="display: none; text-align: center;">Aucun résultat</h1>
+                <div id="search-content-div">
+                    <input type="text" id="search-content-bar" placeholder="Rechercher un film ou une série">
+                </div>
+                <div id="results">
+
+                </div>
+                <div id="pagination">
+                    <button id="previous-page">Précédent</button>
+                    <span id="page-number">1</span>
+                    <button id="next-page">Suivant</button>
+                </div>
+
+            </div>
 
         </div>  
     
