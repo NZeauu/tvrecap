@@ -34,7 +34,7 @@ ${\textcolor{red}{WARNING}}$: This will overwrite any existing tables with the s
 - [ ] Add SMTP functionality to send verification email on account creation
 - [X] Add SMTP functionality to send password reset email
 - [X] Avatar choice on account parameters
-- [ ] Content adding page for admin account
+- [X] Content adding page for admin account
 - [ ] Responsive website (for screen under 15")
 - [ ] Remember me functionality on login
 - [ ] Forget password

@@ -17,6 +17,8 @@ $(".series-content").on("click", function () {
     $("#results").empty();
     $("#no-results").css("display", "none");
     $("#search-content-bar").val("");
+    $("#pagination").css("display", "flex");
+    $("#sorting-section").css("display", "flex");
     window.page = 1;
    
     choice = "serie";
@@ -32,6 +34,8 @@ $(".movies-content").on("click", function () {
     $("#results").empty();
     $("#no-results").css("display", "none");
     $("#search-content-bar").val("");
+    $("#pagination").css("display", "flex");
+    $("#sorting-section").css("display", "flex");
     window.page = 1;
     
     choice = "movie";
@@ -195,7 +199,6 @@ function getSeriesLength() {
         var nbpages = Math.ceil(data / 25);
         // Create a global variable to store the number of pages
         window.nbpages = nbpages;
-        console.log(window.nbpages);
         pagination();
     });
 }
@@ -204,18 +207,36 @@ function getSeriesLength() {
 // Get the movies on the database
 function getMovies() {
 
-    var minRow = (window.page - 1) * 25;
-    var maxRow = window.page * 25;
+    var maxRow = (window.page - 1) * 25;
 
     // Scroll to the top of the page
     window.scrollTo(0, 0);
+
+    var sorting = $("#sorting-select").val();
+
+    switch (sorting) {
+        case "title_asc":
+            sorting = "nom ASC";
+            break;
+        case "title_desc":
+            sorting = "nom DESC";
+            break;
+        case "release_date_asc":
+            sorting = "date_sortie ASC";
+            break;
+        case "release_date_desc":
+            sorting = "date_sortie DESC";
+            break;
+        default:
+            break;
+    }
 
     $.ajax({
         url: "../php/admanage.php/getMovies",
         method: "GET",
         data: { 
-            minRow: minRow, 
-            maxRow: maxRow
+            maxRow: maxRow,
+            sorting: sorting
         },
         success: function (data) {
 
@@ -231,18 +252,36 @@ function getMovies() {
 // Get the series on the database
 function getSeries() {
 
-    var minRow = (window.page - 1) * 25;
-    var maxRow = window.page * 25;
+    var maxRow = (window.page - 1) * 25;
 
     // Scroll to the top of the page
     window.scrollTo(0, 0);
+
+    var sorting = $("#sorting-select").val();
+
+    switch (sorting) {
+        case "title_asc":
+            sorting = "nom ASC";
+            break;
+        case "title_desc":
+            sorting = "nom DESC";
+            break;
+        case "release_date_asc":
+            sorting = "date_sortie ASC";
+            break;
+        case "release_date_desc":
+            sorting = "date_sortie DESC";
+            break;
+        default:
+            break;
+    }
 
     $.ajax({
         url: "../php/admanage.php/getSeries",
         method: "GET",
         data: {
-            minRow: minRow,
-            maxRow: maxRow
+            maxRow: maxRow,
+            sorting: sorting
         },
         success: function (data) {
             displayContent(data, "serie");
@@ -301,6 +340,9 @@ function displayContent(data, type) {
 
 $("#results").on("click", ".delete-serie", function () {
     var id = $(this).attr("id");
+
+    var r = confirm("Voulez-vous vraiment supprimer cette série ?");
+    if (!r) return;
     
     $.ajax({
         url: "../php/admanage.php/deleteSerie",
@@ -317,6 +359,9 @@ $("#results").on("click", ".delete-serie", function () {
 
 $("#results").on("click", ".delete-movie", function () {
     var id = $(this).attr("id");
+
+    var r = confirm("Voulez-vous vraiment supprimer ce film ?");
+    if (!r) return;
     
     $.ajax({
         url: "../php/admanage.php/deleteMovie",
@@ -333,14 +378,36 @@ $("#results").on("click", ".delete-movie", function () {
 
 $("#search-content-bar").on("change", function () {
     var value = this.value;
+
+    console.log(value);
+
+    if (value != "") {
+        $("#sorting-section").css("display", "none");
+    } else {
+        $("#sorting-section").css("display", "flex");
+        if(choice == "serie"){
+            getSeries();
+            return;
+        }else{
+            getMovies();
+            return;
+        }
+    }
+
     if (choice == "serie") {
-        console.log("serie");
 
         $.ajax({
             url: "../php/admanage.php/searchSerie",
             method: "GET",
             data: { value: value },
             success: function (data) {
+
+                if (data == "No series found") {
+                    $("#results").empty();
+                    $("#no-results").css("display", "block");
+                    return;
+                }
+
                 displayContent(data, "serie");
             },
             error: function (error) {
@@ -350,13 +417,20 @@ $("#search-content-bar").on("change", function () {
 
     }
     if (choice == "movie") {
-        console.log("movie");
 
         $.ajax({
             url: "../php/admanage.php/searchMovie",
             method: "GET",
             data: { value: value },
             success: function (data) {
+
+                if (data == "No movies found") {
+                    $("#results").empty();
+                    $("#pagination").css("display", "none");
+                    $("#no-results").css("display", "block");
+                    return;
+                }
+
                 displayContent(data, "movie");
             },
             error: function (error) {
@@ -367,6 +441,15 @@ $("#search-content-bar").on("change", function () {
   
 });
 
+$("#sorting-select").on("change", function () {
+    if (choice == "serie") {
+        window.page = 1;
+        getSeries();
+    } else {
+        window.page = 1;
+        getMovies();
+    }
+});
 
 
 // -------------------------------------------------------
@@ -396,3 +479,20 @@ $("#logout").click(function () {
     alert("Vous êtes déconnecté"); // Alert the user that he is disconnected
     disconnect();
 });
+
+
+document.getElementById('sorting-select').addEventListener('click', function() {
+    var select = this;
+    var arrow = document.createElement('div');
+    arrow.className = 'select-arrow';
+    select.parentNode.insertBefore(arrow, select.nextSibling);
+  
+    select.addEventListener('blur', function() {
+      arrow.classList.remove('select-open');
+    });
+  
+    select.addEventListener('focus', function() {
+      arrow.classList.add('select-open');
+    });
+  });
+  

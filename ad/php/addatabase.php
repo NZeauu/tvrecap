@@ -202,11 +202,11 @@ function getSeriesLength($conn) {
 
 
 // Get the list of movies in the database between row 15 and 25 "OK"
-function getMovies($conn, $minRow, $maxRow) {
+function getMovies($conn, $maxRow, $sorting) {
     try{
-        $sql = "SELECT * FROM Films LIMIT ?, ?";
+        $sql = "SELECT * FROM Films ORDER BY $sorting LIMIT ?, 25";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ii", $minRow, $maxRow);
+        $stmt->bind_param("i", $maxRow);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -228,11 +228,11 @@ function getMovies($conn, $minRow, $maxRow) {
 }
 
 // Get the list of series in the database "OK"
-function getSeries($conn, $minRow, $maxRow) {
+function getSeries($conn, $maxRow, $sorting) {
     try{
-        $sql = "SELECT * FROM Séries LIMIT ?, ?";
+        $sql = "SELECT * FROM Séries ORDER BY $sorting LIMIT ?, 25";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ii", $minRow, $maxRow);
+        $stmt->bind_param("i", $maxRow);
         $stmt->execute();
         $result = $stmt->get_result();
 

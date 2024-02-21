@@ -84,14 +84,6 @@
     margin-top: 3%;
 }
 
-#results::before{
-    content: "";
-    width: 80%;
-    height: 2px;
-    background-color: #000;
-    margin-bottom: 2%;
-}
-
 .db-data{
     display: flex;
     flex-direction: row;
@@ -133,8 +125,9 @@
     gap: 10px;
     width: 100%;
     align-items: center;
-    justify-content: center;
-    margin-top: 3%;
+    justify-content: space-between;
+    /* margin-top: 3%; */
+    margin: 3% 15px 0px 15px;
 }
 
 #search-content-div input{
@@ -142,6 +135,18 @@
     border-radius: 10px;
     padding: 10px;
     border: #000 solid 1px;
+}
+
+#sep{
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+    align-self: center;
+    content: "";
+    width: 80%;
+    height: 2px;
+    background-color: #000;
+    margin: 20px 0px 20px 0px;
 }
 
 #pagination{
@@ -166,4 +171,31 @@
 
 #pagination button:hover{
     background-color: #ff4d4d;
+}
+
+#sorting-section{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#sorting-section section{
+    font-size: small;
+    padding: 10px;
+    color: #000;
+}
+
+#sorting-select{
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    outline: none;
+    font-style: italic;
+}
+
+#sorting-select option{
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: fit-content;
 }

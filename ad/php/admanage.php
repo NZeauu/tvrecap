@@ -38,10 +38,10 @@ if($requestResource == "getMovies"){
 
     if($requestMethod == 'GET'){
 
-        $minRow = $_GET['minRow'];
         $maxRow = $_GET['maxRow'];
+        $sorting = $_GET['sorting'];
 
-        $data = getMovies($db, $minRow, $maxRow);
+        $data = getMovies($db, $maxRow, $sorting);
     }
 }
 
@@ -50,10 +50,10 @@ if($requestResource == "getSeries"){
 
     if($requestMethod == 'GET'){
 
-        $minRow = $_GET['minRow'];
         $maxRow = $_GET['maxRow'];
+        $sorting = $_GET['sorting'];
 
-        $data = getSeries($db, $minRow, $maxRow);
+        $data = getSeries($db, $maxRow, $sorting);
     }
 }
 

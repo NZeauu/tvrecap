@@ -24,7 +24,7 @@
                 <a href="adadd.html" class="link"><img style="padding-right: 10px;" src="../img/add.svg"><span>Ajouter du contenu</span></a>
                 <a href="admanage.html" class="link" style="background-color: #F20000;"><img style="padding-right: 10px;" src="../img/manage.svg"><span>Gérer le contenu</span></a>
                 <a href="adusers.html" class="link"><img style="padding-right: 10px;" src="../img/users.svg"><span>Gérer les utilisateurs</span></a>
-                <a href="adsettings.html" class="link"><img style="padding-right: 10px;" src="../../img/settings.svg"><span>Paramètres</span></a>
+                <!-- <a href="adsettings.html" class="link"><img style="padding-right: 10px;" src="../../img/settings.svg"><span>Paramètres</span></a> -->
             </div>
             <div id="disconnect">
                 <button id="logout"><img style="padding-right: 10px;" src="../../img/logout.svg"><span>Déconnexion</span></button>
@@ -58,12 +58,21 @@
                     <p>Série</p>
                     </div>
                 </div>
-
-                <h1 id="loading" style="display: none; text-align: center;">Chargement...</h1>
-                <h1 id="no-results" style="display: none; text-align: center;">Aucun résultat</h1>
                 <div id="search-content-div">
                     <input type="text" id="search-content-bar" placeholder="Rechercher un film ou une série">
+                    <div id="sorting-section">
+                        <section>Trier par:</section>
+                        <select id="sorting-select">
+                            <option value="title_asc">Titre (croissant)</option>
+                            <option value="title_desc">Titre (décroissant)</option>
+                            <option value="release_date_asc">Date de sortie (croissante)</option>
+                            <option value="release_date_desc">Date de sortie (décroissante)</option>
+                        </select>
+                    </div>
                 </div>
+                <div id="sep"></div>
+                <h1 id="loading" style="display: none; text-align: center;">Chargement...</h1>
+                <h1 id="no-results" style="display: none; text-align: center;">Aucun résultat</h1>
                 <div id="results">
 
                 </div>
