@@ -1,6 +1,13 @@
-/* Define the main template of the website */
-/* Left menu and top toolbar */
-/* Used in every page */
+/*
+    Filename: template-details.css
+    Author: Enzo Peigné
+    Description: CSS file for the template of details pages (series, movies)
+                 Categorized by section: 
+                    - Body
+                    - Text
+                    - Search (search bar not used yet)
+                    - Profile
+*/
 
 
 /* ---------------------------- */

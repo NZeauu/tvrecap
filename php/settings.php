@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Filename: settings.php
+ * Author: Enzo Peigné
+ * Description: Display the user's information and update the user's information (username, password, birthday and avatar)
+ */
+
 require_once 'database.php';
 
 // Enable all warnings and errors

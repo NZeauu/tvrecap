@@ -67,13 +67,144 @@ function fillCategories() {
 }
 
 // -------------------------------------------------------
+// -------------------- PAGINATION -----------------------
+// -------------------------------------------------------
+
+window.page = 1;
+function getSeriesLength() {
+    $.ajax('../php/series.php/length', {
+        method: 'GET'
+    }).done(function (data) {
+        // console.log(data);
+        var nbpages = Math.ceil(data / 25);
+        window.nbpages = nbpages;
+        pagination();
+    });
+}
+
+function getSeriesFilteredLength(data) {
+    var data_length = data;
+
+    var nbpages = Math.ceil(data_length / 25);
+
+    window.nbpages = nbpages;
+
+    pagination();
+}
+
+
+// Create pagination
+function pagination() {
+
+    // Empty the pagination
+    $("#pagination").empty();
+
+    if (window.nbpages == 1) {
+        return;
+    }
+
+    // Create the pagination
+    if (window.page > 1 && window.page < window.nbpages) {
+        $("#pagination").append("<button id='previous-page'>Précédent</button>");
+
+        var previous = window.page - 1;
+        var next = window.page + 1;
+
+        $("#pagination").append("<section id='page-number'><span>" + previous + "</span> - <span style='text-decoration:underline; color:red'>" + window.page + "</span> - <span>" + next + "</span></section>");
+        $("#pagination").append("<button id='next-page'>Suivant</button>");
+    }
+    else{
+        if (window.page == 1) {
+        
+            var next = window.page + 1;
+
+            $("#pagination").append("<section id='page-number'><span style='text-decoration:underline; color:red'>" + window.page + "</span> - <span>" + next + "</span></section>");
+            $("#pagination").append("<button id='next-page'>Suivant</button>");
+        }
+        else{
+            $("#pagination").append("<button id='previous-page'>Précédent</button>");
+
+            var previous = window.page - 1;
+
+            $("#pagination").append("<section id='page-number'><span>" + previous + "</span> - <span style='text-decoration:underline; color:red'>" + window.page + "</span></section>");
+        }
+    }
+
+}
+
+// Next page
+$("#pagination").on("click", "#next-page", function () {
+    window.page++;
+    pagination();
+
+    if (window.filtered) {
+        getFilteredSeries();
+    }
+    else{
+        getAllSeries();
+    }
+
+});
+
+// Previous page
+$("#pagination").on("click", "#previous-page", function () {
+    window.page--;
+    pagination();
+
+    console.log(window.filtered);
+
+    if (window.filtered) {
+        getFilteredSeries();
+    }
+    else{
+        getAllSeries();
+    }
+});
+
+
+
+
+// -------------------------------------------------------
 // --------------------- SERIES --------------------------
 // -------------------------------------------------------
 
 // Get the series from the database
 function getAllSeries() {
+
+    window.filtered = false;
+
+    $("#pagination").css("display", "none");
+
+    var maxRow = (window.page - 1) * 25;
+
+    // Scroll to the top of the page
+    window.scrollTo(0, 0);
+
+    var sorting = $("#sorting-select").val();
+
+    switch (sorting) {
+        case "title_asc":
+            sorting = "nom ASC";
+            break;
+        case "title_desc":
+            sorting = "nom DESC";
+            break;
+        case "release_date_asc":
+            sorting = "date_sortie ASC";
+            break;
+        case "release_date_desc":
+            sorting = "date_sortie DESC";
+            break;
+        default:
+            break;
+    }
+
     $.ajax('../php/series.php/all', {
         method: 'GET',
+        data: {
+            maxRow: maxRow,
+            sorting: sorting
+        }
     }).done(function (data) {
         // console.log(data);
         createCard(data);
@@ -82,6 +213,8 @@ function getAllSeries() {
 
 // Get series filtered
 function getFilteredSeries() {
+
+    window.filtered = true;
 
     var seasons = $("#seasons").val();
     var category = $("#category").val();
@@ -93,18 +226,54 @@ function getFilteredSeries() {
         return;
     }
 
-    $.ajax('../php/series.php/filtered', {
+    var sorting = $("#sorting-select").val();
+
+    switch (sorting) {
+        case "title_asc":
+            sorting = "nom ASC";
+            break;
+        case "title_desc":
+            sorting = "nom DESC";
+            break;
+        case "release_date_asc":
+            sorting = "date_sortie ASC";
+            break;
+        case "release_date_desc":
+            sorting = "date_sortie DESC";
+            break;
+        default:
+            break;
+    }
+
+    $.ajax('../php/series.php/filteredLen', {
         method: 'GET',
         data: {
             seasons: seasons,
             category: category,
             duration: duration,
-            year: year,
-        },
+            year: year
+        }
     }).done(function (data) {
         // console.log(data);
-        createCard(data);
+        getSeriesFilteredLength(data);
+        var maxRow = (window.page - 1) * 25;
+        $.ajax('../php/series.php/filtered', {
+            method: 'GET',
+            data: {
+                seasons: seasons,
+                category: category,
+                duration: duration,
+                year: year,
+                maxRow: maxRow,
+                sorting: sorting
+            },
+        }).done(function (data) {
+            // console.log(data);
+            createCard(data);
+        });
     });
+
+    
 }
 
 // Get series sorted
@@ -118,7 +287,23 @@ $("#reset-button").click(function () {
     $("#duration").val("all");
     $("#year").val("all");
     $("#seasons").val("all");
+    $("#sorting-select").val("title_asc");
+    window.page = 1;
+    pagination();
     getAllSeries();
+});
+
+// Sort the series
+$("#sorting-select").change(function () {
+    window.page = 1;
+    pagination();
+
+    if (window.filtered) {
+        getFilteredSeries();
+    }
+    else {
+        getAllSeries();
+    }
 });
 
 
@@ -127,6 +312,8 @@ $("#reset-button").click(function () {
 // -------------------------------------------------------
 
 function createCard(data){
+
+    $("#pagination").css("display", "none"); 
 
     // Empty the list
     $('#list').empty();
@@ -287,10 +474,30 @@ function createCard(data){
         setTimeout(function () {
             $('#loading').remove();
             serieCard.fadeIn(500);
+            $("#pagination").css("display", "flex");
         }, 1000);
 
     }
 }
+
+// -------------------------------------------------------
+// ---------------------- GO UP --------------------------
+// -------------------------------------------------------
+
+// Go up button
+$(window).scroll(function () {
+    if ($(this).scrollTop() > 100) {
+        $('#go-top').fadeIn();
+    } else {
+        $('#go-top').fadeOut();
+    }
+});
+
+// When the user clicks on the go up button
+$('#go-top').click(function () {
+    $('html, body').animate({ scrollTop: 0 }, 800);
+    return false;
+});
 
 
 // -------------------------------------------------------
@@ -315,6 +522,9 @@ $(document).ready(function () {
 
     // Get all the series from the database
     getAllSeries();
+
+    // Get the number of pages
+    getSeriesLength();
 
     // Fill the select with years
     fillYears();

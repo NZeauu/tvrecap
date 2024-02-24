@@ -1,3 +1,15 @@
+/*
+    Filename: history.css
+    Author: Enzo Peigné
+    Description: CSS file for the history page
+                 Categorized by section: 
+                    - History section
+                    - Card design
+                    - Movie card
+                    - Serie card
+                    - Card texts
+*/
+
 /* ---------------------------------- */
 /* -------- HISTORY SECTION --------- */
 /* ---------------------------------- */
@@ -202,16 +214,6 @@
 }
 
 /* ---------------------------- */
-/* -------- CARD TEXTS -------- */
-/* ---------------------------- */
-.movie-title{
-    font-size: 24px;
-}
-.movie-year{
-    font-size: small;
-}
-
-/* ---------------------------- */
 /* -------- SERIE CARD -------- */
 /* ---------------------------- */
 
@@ -306,6 +308,14 @@
 /* ---------------------------- */
 /* -------- CARD TEXTS -------- */
 /* ---------------------------- */
+
+.movie-title{
+    font-size: 24px;
+}
+.movie-year{
+    font-size: small;
+}
+
 .serie-title{
     font-size: 24px;
 }

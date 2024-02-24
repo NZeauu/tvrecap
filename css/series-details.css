@@ -1,3 +1,13 @@
+/*
+    Filename: series-details.css
+    Author: Enzo Peigné
+    Description: CSS file for the series details page
+                 Categorized by section:
+                    - Structure of the details page
+                    - Return button
+                    - Details frame
+*/
+
 #details-page{
     display: flex;
     width: 100%;

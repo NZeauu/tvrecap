@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Filename: connect.php
+ * Author: Enzo Peigné
+ * Description: Connect the user to his account and send an email to reset the password if asked by the user. 
+ *              The file also checks if the email already exists in the database before connecting the user to display an error message.
+ */
+
 require_once 'database.php';
 
 // Enable all warnings and errors
@@ -18,7 +25,6 @@ $requestResource = array_shift($request);
 if($requestResource == "mail"){
     $data = false;
 
-    // Check if the request is a POST request
     if($requestMethod == "GET"){
 
         // Get the data from the request
@@ -32,7 +38,6 @@ if($requestResource == "mail"){
 if($requestResource == "login"){
     $data = false;
 
-    // Check if the request is a POST request
     if($requestMethod == "POST"){
 
         // Get the data from the request
@@ -53,7 +58,6 @@ if($requestResource == "login"){
 if($requestResource == 'resetPass'){
     $data = false;
 
-    // Check if the request is a POST request
     if($requestMethod == "POST"){
 
         $email = $_POST['email'];

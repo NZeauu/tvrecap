@@ -1,8 +1,20 @@
 <?php
 
+/**
+ * Filename: database.php
+ * Author: Enzo Peigné
+ * Description: Database functions to connect to the database and to get the data from the database
+ *              The file is divided into 5 parts: USERS, SERIES, EPISODES, MOVIES, SEEN LIST
+ *              Each part contains the functions to get the data from the database
+ */
+
 include 'constants.php';
 
-// Connect to the database "OK" 
+/**
+ * Connect to the database
+ *  
+ * @return mysqli Returns the database connection object
+ */ 
 function dbconnect() {
     // Create a connection to the database
     $conn = new mysqli(DB_SERVER, DB_USER, DB_PASSWORD, DB_NAME);
@@ -19,7 +31,18 @@ function dbconnect() {
 // -------------- USERS --------------- //
 // ------------------------------------ //
 
-// User connection "OK"
+
+/**
+ * Connect the user to his account
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $mail User's email
+ * @param string $password User's password
+ * 
+ * @return string|boolean Returns the user's informations if the connection is successful,
+ *                        Returns false if the password is incorrect, 
+ *                        Returns "Email not found" if the email is not in the database
+ */
 function connectionAccount($conn, $mail, $password) {
 
     try{
@@ -48,7 +71,16 @@ function connectionAccount($conn, $mail, $password) {
     } 
 }
 
-// User registration "OK"
+/**
+ * Register a new account
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $username User's username
+ * @param string $email User's email
+ * @param string $password User's password
+ * 
+ * @return boolean Returns true if the registration is successful, false otherwise
+ */
 function registerAccount($conn, $username, $email, $password){
     try{
         $sql = "INSERT INTO Accounts (username, email, password) VALUES (?, ?, ?)";
@@ -64,7 +96,14 @@ function registerAccount($conn, $username, $email, $password){
     }
 }
 
-// Check if the email is already used "OK"
+/**
+ * Check if the email is already used
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * 
+ * @return boolean Returns true if the email is already used, false otherwise
+ */
 function checkMail($conn, $email){
     try{
         $sql = "SELECT * FROM Accounts WHERE email = ?";
@@ -86,7 +125,14 @@ function checkMail($conn, $email){
     }
 }
 
-// Check if the username is already used "OK"
+/**
+ * Check if the username is already used
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $username User's username
+ * 
+ * @return boolean Returns true if the username is already used, false otherwise
+ */
 function checkUsername($conn, $username){
     try{
         $sql = "SELECT * FROM Accounts WHERE username = ?";
@@ -108,7 +154,14 @@ function checkUsername($conn, $username){
     }
 }
 
-// Get the user name from the email "OK"
+/**
+ * Get the username from the email
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * 
+ * @return string Returns the user's username if the email is found, "User not found" otherwise
+ */
 function getUsername($conn, $email){
     try{
         $sql = "SELECT username FROM Accounts WHERE email = ?";
@@ -131,7 +184,14 @@ function getUsername($conn, $email){
     }
 }
 
-// Get the user's avatar from the email "OK"
+/**
+ * Get the user's avatar
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * 
+ * @return string Returns the user's avatar filepath if the email is found, "User not found" otherwise
+ */
 function getAvatar($conn, $email){
     try{
         $sql = "SELECT avatar FROM Accounts WHERE email = ?";
@@ -154,7 +214,14 @@ function getAvatar($conn, $email){
     }
 }
 
-// Get user's information "OK"
+/**
+ * Get the user's information
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * 
+ * @return array|string Returns the user's information if the email is found, "User not found" otherwise
+ */
 function getUserInfo($conn, $email){
     try{
         $sql = "SELECT * FROM Accounts WHERE email = ?";
@@ -177,7 +244,15 @@ function getUserInfo($conn, $email){
     }
 }
 
-// Update user's username "OK"
+/**
+ * Update the user's username
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * @param string $username User's username
+ * 
+ * @return boolean Returns true if the username is updated, false otherwise
+ */
 function updateUsername($conn, $email, $username){
     try{
         $sql = "UPDATE Accounts SET username = ? WHERE email = ?";
@@ -193,7 +268,15 @@ function updateUsername($conn, $email, $username){
     }
 }
 
-// Update user's birthday "OK"
+/**
+ * Update the user's birthday
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * @param string $birthday User's birthday
+ * 
+ * @return boolean Returns true if the birthday is updated, false otherwise
+*/
 function updateBirthday($conn, $email, $birthday){
     try{
         $sql = "UPDATE Accounts SET birthday = ? WHERE email = ?";
@@ -209,7 +292,15 @@ function updateBirthday($conn, $email, $birthday){
     }
 }
 
-// Update user's password "OK"
+/**
+ * Update the user's password
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * @param string $password User's password
+ * 
+ * @return boolean Returns true if the password is updated, false otherwise
+ */
 function updatePassword($conn, $email, $password){
     try{
         $sql = "UPDATE Accounts SET password = ? WHERE email = ?";
@@ -225,7 +316,15 @@ function updatePassword($conn, $email, $password){
     }
 }
 
-// Update user's avatar "OK"
+/**
+ * Update the user's avatar
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * @param string $avatar User's avatar filepath
+ * 
+ * @return boolean Returns true if the avatar is updated, false otherwise
+ */
 function updateAvatar($conn, $email, $avatar){
     try{
         $sql = "UPDATE Accounts SET avatar = ? WHERE email = ?";
@@ -241,7 +340,16 @@ function updateAvatar($conn, $email, $avatar){
     }
 }
 
-// Insert a token in the database "OK"
+/**
+ * Insert a token and an expiration date in the database for the password reset
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * @param string $token User's token generated for the password reset
+ * @param string $expiration_date Token's expiration date
+ * 
+ * @return boolean Returns true if the token is inserted, false otherwise
+ */
 function insertToken($conn, $email, $token, $expiration_date){
     try{
         $sql = "UPDATE Accounts
@@ -260,7 +368,15 @@ function insertToken($conn, $email, $token, $expiration_date){
     }
 }
 
-// Check if the token is valid "OK"
+/**
+ * Check if the token is in the database and if the expiration date is not passed
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $token User's token generated for the password reset
+ * 
+ * @return string|boolean Returns the user's email if the token is in the database and the expiration date is not passed,
+ *                        Returns false otherwise and remove the token from the database
+ */
 function checkToken($conn, $token){
     try{
         $sql = "SELECT * FROM Accounts 
@@ -278,7 +394,7 @@ function checkToken($conn, $token){
                 return $user['email'];
             }
             else{
-                // removeToken($conn, $user['email']);
+                removeToken($conn, $user['email']);
                 return false;
             }
         }
@@ -288,7 +404,16 @@ function checkToken($conn, $token){
     }
 }
 
-// Reset the user's password "OK"
+/**
+ * Reset the user's password
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $token User's token generated for the password reset
+ * @param string $password User's new password
+ * @param string $email User's email
+ * 
+ * @return boolean Returns true if the password is reset, false otherwise
+ */
 function resetPass($conn, $token, $password, $email){
     try{
         $sql = "UPDATE Accounts
@@ -308,7 +433,14 @@ function resetPass($conn, $token, $password, $email){
     }
 }
 
-// Remove the token and the expiration date from the database "OK"
+/**
+ * Remove the token from the database
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * 
+ * @return boolean Returns true if the token is removed, false otherwise
+ */
 function removeToken($conn, $email){
     try{
         $sql = "UPDATE Accounts
@@ -332,10 +464,18 @@ function removeToken($conn, $email){
 // -------------- SERIES -------------- //
 // ------------------------------------ //
 
-// Get all the series "OK"
-function getAllSeries($conn){
+/**
+ * Get all the series from the database
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $sorting Sorting method
+ * @param int $maxrow The row to start from in the database
+ * 
+ * @return array|null Returns an array with the series if the request is successful, null otherwise
+ */
+function getAllSeries($conn, $sorting, $maxrow){
     try{
-        $sql = "SELECT * FROM Séries ORDER BY date_sortie DESC";
+        $sql = "SELECT * FROM Séries ORDER BY $sorting LIMIT $maxrow, 25";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
@@ -357,8 +497,20 @@ function getAllSeries($conn){
 
 }
 
-// Get filtered series "OK"
-function getFilteredSeries($conn, $seasons, $category, $duration, $year){
+/**
+ * Get filtered series from the database
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $seasons Number of seasons selected by the user
+ * @param string $category Category selected by the user
+ * @param string $duration Duration selected by the user
+ * @param string $year Year selected by the user
+ * @param string $sorting Sorting method selected by the user
+ * @param int $maxrow The row to start from in the database
+ * 
+ * @return array|null Returns an array with the series if the request is successful, null otherwise
+ */
+function getFilteredSeries($conn, $seasons, $category, $duration, $year, $sorting, $maxrow){
     try{
 
         // If the user didn't select a number of seasons, we select all the seasons
@@ -433,7 +585,7 @@ function getFilteredSeries($conn, $seasons, $category, $duration, $year){
             $year = "1";
         }
 
-        $sql = "SELECT * FROM Séries WHERE $seasons AND $category AND $duration AND $year";
+        $sql = "SELECT * FROM Séries WHERE $seasons AND $category AND $duration AND $year ORDER BY $sorting LIMIT $maxrow, 25";
 
         $result = $conn->query($sql);
 
@@ -456,7 +608,14 @@ function getFilteredSeries($conn, $seasons, $category, $duration, $year){
 
 }
 
-// Get average duration of the episodes of a serie "OK"
+/**
+ * Get the average duration of the serie's episodes
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $id_serie Serie's id
+ * 
+ * @return array|null Returns an array with the serie's id and the average duration if the request is successful, null otherwise
+ */
 function getAverageDuration($conn, $id_serie){
     try{
         $sql = "SELECT serie_id, AVG(duree) AS average_duration FROM Episodes WHERE serie_id = ?";
@@ -479,7 +638,14 @@ function getAverageDuration($conn, $id_serie){
     }
 }
 
-// Get the serie details "OK"
+/**
+ * Get the serie's details
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $serieId Serie's id
+ * 
+ * @return array|null Returns an array with the serie's details if the request is successful, null otherwise
+ */
 function getSerieDetails($db, $serieId){
     try{
         $sql = "SELECT * FROM Séries WHERE id = ?";
@@ -502,7 +668,14 @@ function getSerieDetails($db, $serieId){
     }
 }
 
-// Get the number of seasons of a serie "OK"
+/**
+ * Get the serie's number of seasons
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $id_serie Serie's id
+ * 
+ * @return array|null Returns an array with the serie's number of seasons if the request is successful, null otherwise
+ */
 function getNumberOfSeasons($conn, $id_serie){
     try{
         $sql = "SELECT nb_saisons FROM Séries WHERE id = ?";
@@ -525,11 +698,137 @@ function getNumberOfSeasons($conn, $id_serie){
     }
 }
 
+/**
+ * Get the amount of series in the database
+ * 
+ * @param mysqli $conn Database connection object
+ * 
+ * @return int Returns the amount of series in the database
+ */
+function getSeriesLength($conn){
+    try{
+        $sql = "SELECT COUNT(*) FROM Séries";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        $conn->close();
+        return $row['COUNT(*)'];
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+/**
+ * Get the amount of filtered series in the database
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $seasons Number of seasons selected by the user
+ * @param string $category Category selected by the user
+ * @param string $duration Duration selected by the user
+ * @param string $year Year selected by the user
+ * 
+ * @return int Returns the amount of filtered series in the database
+ */
+function getFilteredSeriesLength($conn, $seasons, $category, $duration, $year){
+    try{
+
+        // If the user didn't select a number of seasons, we select all the seasons
+        if ($seasons != "all"){
+
+            // Number of seasons less than 2
+            if ($seasons == "2"){
+                $seasons = "nb_saisons <= '2'";
+            }
+
+            // Number of seasons between 2 and 5
+            else if ($seasons == "5"){
+                $seasons = "nb_saisons > '2' AND nb_saisons <= '5'";
+            }
+
+            // Number of seasons more than 5
+            else if ($seasons == "999"){
+                $seasons = "nb_saisons > '5'";
+            }
+        }
+        else{
+            $seasons = "1";
+        }
+
+        // If the user didn't select a duration, we select all the durations
+        if ($duration != "all"){
+
+            // Duration less than 30 min
+            if ($duration == "30"){
+                $duration = "id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) <= 30)";
+            }
+
+            // Duration between 30 min and 1 hour
+            else if ($duration == "60"){
+                $duration = "id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) > 30 AND AVG(duree) <= 60)";
+            }
+
+            // Duration more than 1 hours
+            else if ($duration == "999"){
+                $duration = "id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) > 60)";
+            }
+        }
+        else{
+            $duration = "1";
+        }
+
+        // If the user didn't select a category, we select all the categories
+        if ($category != "all"){
+            $category = "categorie LIKE '%$category%'";
+        }
+        else{
+            $category = "1";
+        }
+
+        // If the user didn't select a year, we select all the years
+        if ($year != "all"){
+
+            // Get actual year
+            $actual_year = date("Y");
+
+            $min_year = $actual_year - 51;
+
+            if ($year == $min_year){
+                $year = "date_sortie <= '$min_year'";
+            }
+            else{
+                $year = "date_sortie = '$year'";
+            }
+
+        }
+        else{
+            $year = "1";
+        }
+
+        $sql = "SELECT COUNT(*) FROM Séries WHERE $seasons AND $category AND $duration AND $year";
+
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        $conn->close();
+        return $row['COUNT(*)'];
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
 // ------------------------------------ //
 // -------------- EPISODES ------------ //
 // ------------------------------------ //
 
-// Get all the episodes of a serie "OK"
+/**
+ * Get the serie's episodes for a specific season
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $id_serie Serie's id
+ * @param string $season Serie's season
+ * 
+ * @return array|null Returns an array with the serie's episodes if the request is successful, null otherwise
+ */
 function getSeasonEpisodes($conn, $id_serie, $season){
     try{
         $sql = "SELECT * FROM Episodes WHERE serie_id = ? AND saison = ?";
@@ -562,10 +861,18 @@ function getSeasonEpisodes($conn, $id_serie, $season){
 // -------------- MOVIES -------------- //
 // ------------------------------------ //
 
-// Get all the movies "OK"
-function getAllMovies($conn){
+/**
+ * Get all the movies from the database
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $sorting Sorting method
+ * @param int $maxrow The row to start from in the database
+ * 
+ * @return array|null Returns an array with the movies if the request is successful, null otherwise
+ */
+function getAllMovies($conn, $sorting, $maxrow){
     try{
-        $sql = "SELECT * FROM Films ORDER BY date_sortie DESC";
+        $sql = "SELECT * FROM Films ORDER BY $sorting LIMIT $maxrow, 25";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
@@ -587,8 +894,19 @@ function getAllMovies($conn){
 
 }
 
-// Get filtered movies "OK"
-function getFilteredMovies($conn, $category, $duration, $year){
+/**
+ * Get filtered movies from the database
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $category Category selected by the user
+ * @param string $duration Duration selected by the user
+ * @param string $year Year selected by the user
+ * @param string $sorting Sorting method selected by the user
+ * @param int $maxrow The row to start from in the database
+ * 
+ * @return array|null Returns an array with the movies if the request is successful, null otherwise
+ */
+function getFilteredMovies($conn, $category, $duration, $year, $sorting, $maxrow){
     try{
 
         // If the user didn't select a category, we select all the categories
@@ -641,7 +959,7 @@ function getFilteredMovies($conn, $category, $duration, $year){
             $year = "1";
         }
 
-        $sql = "SELECT * FROM Films WHERE $category AND $duration AND $year";
+        $sql = "SELECT * FROM Films WHERE $category AND $duration AND $year ORDER BY $sorting LIMIT $maxrow, 25";
 
         $result = $conn->query($sql);
 
@@ -664,7 +982,14 @@ function getFilteredMovies($conn, $category, $duration, $year){
 
 }
 
-// Get the movie details "OK"
+/**
+ * Get the movie's details
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $id_movie Movie's id
+ * 
+ * @return array|null Returns an array with the movie's details if the request is successful, null otherwise
+ */
 function getMovieDetails($conn, $id_movie){
     try{
         $sql = "SELECT * FROM Films WHERE id = ?";
@@ -687,12 +1012,113 @@ function getMovieDetails($conn, $id_movie){
     }
 }
 
+/**
+ * Get the amount of movies in the database
+ * 
+ * @param mysqli $conn Database connection object
+ * 
+ * @return int Returns the amount of movies in the database
+ */
+function getMoviesLength($conn){
+    try{
+        $sql = "SELECT COUNT(*) FROM Films";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        $conn->close();
+        return $row['COUNT(*)'];
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+/**
+ * Get the amount of filtered movies in the database
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $category Category selected by the user
+ * @param string $duration Duration selected by the user
+ * @param string $year Year selected by the user
+ * 
+ * @return int Returns the amount of filtered movies in the database
+ */
+function getFilteredMoviesLength($conn, $category, $duration, $year){
+    try{
+
+        // If the user didn't select a category, we select all the categories
+        if ($category != "all"){
+            $category = "categorie LIKE '%$category%'";
+        }
+        else{
+            $category = "1";
+        }
+
+        // If the user didn't select a duration, we select all the durations
+        if ($duration != "all"){
+
+            // Duration less than 1 hour
+            if ($duration == "60"){
+                $duration = "duree <= '60'";
+            }
+
+            // Duration between 1 hour and 2 hours
+            else if ($duration == "120"){
+                $duration = "duree > '60' AND duree <= '120'";
+            }
+
+            // Duration more than 2 hours
+            else if ($duration == "999"){
+                $duration = "duree > '120'";
+            }
+        }
+        else{
+            $duration = "1";
+        }
+
+        // If the user didn't select a year, we select all the years
+        if ($year != "all"){
+
+            // Get actual year
+            $actual_year = date("Y");
+
+            $min_year = $actual_year - 51;
+
+            if ($year == $min_year){
+                $year = "date_sortie <= '$min_year'";
+            }
+            else{
+                $year = "date_sortie = '$year'";
+            }        
+
+        }
+        else{
+            $year = "1";
+        }
+
+        $sql = "SELECT COUNT(*) FROM Films WHERE $category AND $duration AND $year";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        $conn->close();
+        return $row['COUNT(*)'];
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
 
 // ------------------------------------ //
 // ------------ SEEN LIST ------------- //
 // ------------------------------------ //
 
-// Get the total time of the seen list "OK"
+/**
+ * Get the total time spent watching movies and series by the user
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * 
+ * @return int|null Returns the total time spent watching movies and series by the user if the request is successful, null otherwise
+ */
 function getTotalTime($conn, $email){
     try{
         $sql = "SELECT `Accounts`.`email` AS `User_Email`,
@@ -735,7 +1161,14 @@ function getTotalTime($conn, $email){
     }
 }
 
-// Get the total number of movies watched by the user "OK"
+/**
+ * Get the total number of movies watched by the user
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * 
+ * @return int|null Returns the total number of movies watched by the user if the request is successful, null otherwise
+ */
 function getMoviesWatched($conn, $email){
     try{
         $sql = "SELECT `Accounts`.`email` AS `User_Email`,
@@ -775,7 +1208,14 @@ function getMoviesWatched($conn, $email){
     }
 }
 
-// Get the total number of episodes watched by the user "OK"
+/**
+ * Get the total number of episodes watched by the user
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * 
+ * @return int|null Returns the total number of episodes watched by the user if the request is successful, null otherwise
+ */
 function getEpisodesWatched($conn, $email){
     try{
         $sql = "SELECT `Accounts`.`email` AS `User_Email`,
@@ -815,7 +1255,14 @@ function getEpisodesWatched($conn, $email){
     }
 }
 
-// Check if the movie is in the seen list "OK"
+/**
+ * Get the list of movies seen by the user
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * 
+ * @return array|null Returns an array with the movies seen by the user if the request is successful, null otherwise
+ */
 function checkMovieSeen($conn, $email, $id_movie){
     try{
         $sql = "SELECT * FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = ?) AND movie_id = ?";
@@ -836,7 +1283,15 @@ function checkMovieSeen($conn, $email, $id_movie){
     }
 }
 
-// Add the movie to the seen list "OK"
+/**
+ * Add the movie to the seen list of the user
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * @param string $id_movie Movie's id
+ * 
+ * @return boolean Returns true if the movie is added to the seen list, false otherwise
+ */
 function addMovieSeen($conn, $email, $id_movie){
     try{
         $sql = "INSERT INTO Seen_List (user_id, type, movie_id, episode_id) VALUES ((SELECT id FROM Accounts WHERE email = ?), 'movie', ?, null)";
@@ -852,7 +1307,15 @@ function addMovieSeen($conn, $email, $id_movie){
     }
 }
 
-// Delete the movie from the seen list "OK"
+/**
+ * Delete the movie from the seen list of the user
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * @param string $id_movie Movie's id
+ * 
+ * @return boolean Returns true if the movie is deleted from the seen list, false otherwise
+ */
 function deleteMovieSeen($conn, $email, $id_movie){
     try{
         $sql = "DELETE FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = ?) AND movie_id = ?";
@@ -868,7 +1331,15 @@ function deleteMovieSeen($conn, $email, $id_movie){
     }
 }
 
-// Check if a serie is fully watched "OK"
+/**
+ * Check if the serie is fully watched by the user
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * @param string $id_serie Serie's id
+ * 
+ * @return boolean Returns true if the serie is fully watched by the user, false otherwise
+ */
 function checkSerieFullyWatched($conn, $email, $id_serie){
     try{
         $sql = "SELECT * FROM Episodes WHERE id NOT IN (SELECT episode_id FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = ?) AND type = 'serie') AND serie_id = ?";
@@ -889,7 +1360,17 @@ function checkSerieFullyWatched($conn, $email, $id_serie){
     }
 }
 
-// Check if the episode is in the seen list "OK"
+/**
+ * Check if the episode is seen by the user
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * @param string $serieId Serie's id
+ * @param string $episodeNumber Episode's number
+ * @param string $seasonNumber Season's number
+ * 
+ * @return boolean Returns true if the episode is seen by the user, false otherwise
+ */
 function checkEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumber){
     try{
         $sql = "SELECT * FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = ?) AND episode_id = (SELECT id FROM Episodes WHERE serie_id = ? AND num_ep = ? AND saison = ?)";
@@ -910,7 +1391,17 @@ function checkEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumber
     }
 }
 
-// Add the episode to the seen list "OK"
+/**
+ * Add the episode to the seen list of the user
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * @param string $serieId Serie's id
+ * @param string $episodeNumber Episode's number
+ * @param string $seasonNumber Season's number
+ * 
+ * @return boolean Returns true if the episode is added to the seen list, false otherwise
+ */
 function addEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumber){
     try{
         $sql = "INSERT INTO Seen_List (user_id, type, movie_id, episode_id) VALUES ((SELECT id FROM Accounts WHERE email = ?), 'serie', null, (SELECT id FROM Episodes WHERE serie_id = ? AND num_ep = ? AND saison = ?))";
@@ -926,7 +1417,17 @@ function addEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumber){
     }
 }
 
-// Delete the episode from the seen list "OK"
+/**
+ * Delete the episode from the seen list of the user
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * @param string $serieId Serie's id
+ * @param string $episodeNumber Episode's number
+ * @param string $seasonNumber Season's number
+ * 
+ * @return boolean Returns true if the episode is deleted from the seen list, false otherwise
+ */
 function deleteEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumber){
     try{
         $sql = "DELETE FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = ?) AND episode_id = (SELECT id FROM Episodes WHERE serie_id = ? AND num_ep = ? AND saison = ?)";
@@ -942,7 +1443,14 @@ function deleteEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumbe
     }
 }
 
-// Get the list of movies seen by the user "OK"
+/**
+ * Get the list of movies seen by the user
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * 
+ * @return array|null Returns an array with the movies seen by the user if the request is successful, null otherwise
+ */
 function getMoviesSeen($conn, $email){
     try{
         $sql = "SELECT * FROM Films WHERE id IN (SELECT movie_id FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = ?) AND type = 'movie')";
@@ -970,7 +1478,14 @@ function getMoviesSeen($conn, $email){
 
 }
 
-// Get the list of series seen by the user "OK"
+/**
+ * Get the list of series seen by the user
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * 
+ * @return array|null Returns an array with the series seen by the user if the request is successful, null otherwise
+ */
 function getSeriesSeen($conn, $email){
     try{
         $sql = "SELECT * FROM Séries WHERE id IN (SELECT serie_id FROM Episodes WHERE id IN (SELECT episode_id FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = ?) AND type = 'serie'))";
@@ -998,7 +1513,16 @@ function getSeriesSeen($conn, $email){
 
 }
 
-// Get the number of episodes of a serie seen by the user "OK"
+/**
+ * Get the number of episodes seen by the user for a specific serie
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * @param string $id_serie Serie's id
+ * 
+ * @return array|null Returns an array with the number of episodes seen by the user for a specific serie if the request is successful
+ *                    Returns null otherwise
+ */
 function getNumberOfEpisodesSeen($conn, $email, $id_serie){
     try{
         $sql = "SELECT COUNT(*) AS nb_episodes_seen FROM Episodes WHERE id IN (SELECT episode_id FROM Seen_List WHERE user_id = (SELECT id FROM Accounts WHERE email = ?) AND type = 'serie') AND serie_id = ?";

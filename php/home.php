@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Filename: home.php
+ * Author: Enzo Peigné
+ * Description: Get the total time spent by the user on the website, the number of movies and series seen by the user and the number of episodes seen for a specific serie
+ */
+
 require_once 'database.php';
 
 // Enable all warnings and errors

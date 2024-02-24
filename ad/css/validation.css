@@ -1,8 +1,12 @@
+/* 
+    Filename: validation.css
+    Author: Enzo Peigné
+    Description: CSS file for the validation page of the content added
+*/
+
 /* ------------------------- */
 /* ------ VALIDATION ------- */
 /* ------------------------- */
-
-/* STYLE FOR THE VALIDATION FORM WHEN A MOVIE IS CHOOSEN */
 
 .valid-form{
     display: flex;

@@ -93,12 +93,31 @@
                         </div>
                     </div>
                 </div>
+                <div id="sorting-section">
+                    <section>Trier par:</section>
+                    <select id="sorting-select">
+                        <option value="title_asc">Titre (croissant)</option>
+                        <option value="title_desc">Titre (décroissant)</option>
+                        <option value="release_date_asc">Date de sortie (croissante)</option>
+                        <option value="release_date_desc">Date de sortie (décroissante)</option>
+                    </select>
+                </div>
 
 
                 <!-- Series list -->
                 <div id="list">
                     <!-- Auto generate cards with database content -->
                 </div>
+                <div id="pagination" style="display: none;">
+                    <button id="previous-page">Précédent</button>
+                    <span id="page-number">1</span>
+                    <button id="next-page">Suivant</button>
+                </div>
+
+                <div id="go-top" style="display: none;">
+                    <button id="go-top-button"><img src="../img/go-up.svg"></button>
+                </div>
+
             </div>
         </div>
         <script type="module" src="../js/series.js"></script>

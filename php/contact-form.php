@@ -1,10 +1,20 @@
 <?php
+
+    /**
+     * Filename: contact-form.php
+     * Author: Enzo Peigné
+     * Description: Send an email to the administrator for a contact request from the user on the website (every contact form on the website)
+     */
+
     // Enable all warnings and errors
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
 
 
+    // Change the email address to the administrator's email address
     $to = "tvrecap@epeigne.fr";
+
+
     $from = $_POST['userMail'];
     $username = $_POST['username'];
     $contactSubject = $_POST['subject'];

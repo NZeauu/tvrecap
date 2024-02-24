@@ -73,10 +73,43 @@ function fillCategories() {
 
 // Get the movies from the database
 function getAllMovies() {
+
+    window.filtered = false;
+
+    $("#pagination").css("display", "none");
+
+    var maxRow = (window.page - 1) * 25;
+
+    // Scroll to the top of the page
+    window.scrollTo(0, 0);
+
+    var sorting = $("#sorting-select").val();
+
+    switch (sorting) {
+        case "title_asc":
+            sorting = "nom ASC";
+            break;
+        case "title_desc":
+            sorting = "nom DESC";
+            break;
+        case "release_date_asc":
+            sorting = "date_sortie ASC";
+            break;
+        case "release_date_desc":
+            sorting = "date_sortie DESC";
+            break;
+        default:
+            break;
+    }
+
+
     $.ajax('../php/movies.php/all', {
         method: 'GET',
+        data: {
+            sorting: sorting,
+            maxrow: maxRow
+        }
     }).done(function (data) {
-        // console.log(data);
         createCard(data);
     });
 }
@@ -84,16 +117,38 @@ function getAllMovies() {
 // Get movies filtered
 function getFilteredMovies() {
 
+    window.filtered = true;
+
+    $("#pagination").css("display", "none");
+
     var category = $("#category").val();
     var duration = $("#duration").val();
     var year = $("#year").val();
+    var sorting = $("#sorting-select").val();
+
+    switch (sorting) {
+        case "title_asc":
+            sorting = "nom ASC";
+            break;
+        case "title_desc":
+            sorting = "nom DESC";
+            break;
+        case "release_date_asc":
+            sorting = "date_sortie ASC";
+            break;
+        case "release_date_desc":
+            sorting = "date_sortie DESC";
+            break;
+        default:
+            break;
+    }
 
     if (category == "all" && duration == "all" && year == "all") {
         getAllMovies();
         return;
     }
 
-    $.ajax('../php/movies.php/filtered', {
+    $.ajax('../php/movies.php/filteredLen', {
         method: 'GET',
         data: {
             category: category,
@@ -101,9 +156,23 @@ function getFilteredMovies() {
             year: year,
         },
     }).done(function (data) {
-        // console.log(data);
-        createCard(data);
+        getMoviesFilterLength(data);
+        var maxRow = (window.page - 1) * 25;
+        $.ajax('../php/movies.php/filtered', {
+            method: 'GET',
+            data: {
+                category: category,
+                duration: duration,
+                year: year,
+                sorting: sorting,
+                maxrow: maxRow
+            },
+        }).done(function (data) {
+            createCard(data);
+        });
     });
+
+    
 }
 
 // Get movies sorted
@@ -116,7 +185,22 @@ $("#reset-button").click(function () {
     $("#category").val("all");
     $("#duration").val("all");
     $("#year").val("all");
+    $("#sorting-select").val("title_asc");
+    window.page = 1;
     getAllMovies();
+});
+
+// Sort the movies
+$("#sorting-select").change(function () {
+    window.page = 1;
+    pagination();
+
+    if (window.filtered) {
+        getFilteredMovies();
+    }
+    else {
+        getAllMovies();
+    }
 });
 
 // -------------------------------------------------------
@@ -125,7 +209,6 @@ $("#reset-button").click(function () {
 
 function createCard(data){
 
-    // console.log(data);
 
     // Empty the list
     $('#list').empty();
@@ -168,8 +251,6 @@ function createCard(data){
         // Get the movie image
         const movieCardImg = $('<div>').attr('id', 'movie-card-img' + i);
         movieCardImg.attr('class', 'movie-card-img');
-
-        console.log(data[i].image);
 
         const image = $('<img>').attr('src', data[i].image);
         movieCardImg.append(image);
@@ -242,9 +323,125 @@ function createCard(data){
         setTimeout(function () {
             $('#loading').remove();
             movieCard.fadeIn(500);
+            $("#pagination").css("display", "flex");
         }, 1000);
     }
 }
+
+// -------------------------------------------------------
+// -------------------- PAGINATION -----------------------
+// -------------------------------------------------------
+
+// Create a global variable to store the actual page
+window.page = 1;
+
+function getMoviesLength() {
+    $.ajax({
+        url: "../php/movies.php/length",
+        method: "GET",
+    }).done(function (data) {
+        var nbpages = Math.ceil(data / 25);
+        // Create a global variable to store the number of pages
+        window.nbpages = nbpages;
+        pagination();
+    });
+}
+
+function getMoviesFilterLength(data){
+
+    var data_length = data;
+
+    var nbpages = Math.ceil(data_length / 25);
+
+    window.nbpages = nbpages;
+
+    pagination();
+}
+
+// Create pagination
+function pagination() {
+
+    // Empty the pagination
+    $("#pagination").empty();
+
+    if (window.nbpages == 1) {
+        return;
+    }
+
+    // Create the pagination
+    if (window.page > 1 && window.page < window.nbpages) {
+        $("#pagination").append("<button id='previous-page'>Précédent</button>");
+
+        var previous = window.page - 1;
+        var next = window.page + 1;
+
+        $("#pagination").append("<section id='page-number'><span>" + previous + "</span> - <span style='text-decoration:underline; color:red'>" + window.page + "</span> - <span>" + next + "</span></section>");
+        $("#pagination").append("<button id='next-page'>Suivant</button>");
+    }
+    else{
+        if (window.page == 1) {
+        
+            var next = window.page + 1;
+
+            $("#pagination").append("<section id='page-number'><span style='text-decoration:underline; color:red'>" + window.page + "</span> - <span>" + next + "</span></section>");
+            $("#pagination").append("<button id='next-page'>Suivant</button>");
+        }
+        else{
+            $("#pagination").append("<button id='previous-page'>Précédent</button>");
+
+            var previous = window.page - 1;
+
+            $("#pagination").append("<section id='page-number'><span>" + previous + "</span> - <span style='text-decoration:underline; color:red'>" + window.page + "</span></section>");
+        }
+    }
+
+}
+
+// Next page
+$("#pagination").on("click", "#next-page", function () {
+    window.page++;
+    pagination();
+
+    if (window.filtered) {
+        getFilteredMovies();
+    }
+    else{
+        getAllMovies();
+    }
+
+});
+
+// Previous page
+$("#pagination").on("click", "#previous-page", function () {
+    window.page--;
+    pagination();
+
+    if (window.filtered) {
+        getFilteredMovies();
+    }
+    else{
+        getAllMovies();
+    }
+});
+
+// -------------------------------------------------------
+// ---------------------- GO UP --------------------------
+// -------------------------------------------------------
+
+// Go up button
+$(window).scroll(function () {
+    if ($(this).scrollTop() > 100) {
+        $('#go-top').fadeIn();
+    } else {
+        $('#go-top').fadeOut();
+    }
+});
+
+// When the user clicks on the go up button
+$('#go-top').click(function () {
+    $('html, body').animate({ scrollTop: 0 }, 800);
+    return false;
+});
 
 // -------------------------------------------------------
 // ---------------------- LOGOUT -------------------------
@@ -274,4 +471,7 @@ $(document).ready(function () {
 
     // Fill the select with categories
     fillCategories();
+
+    // Get the number of pages
+    getMoviesLength();
 });

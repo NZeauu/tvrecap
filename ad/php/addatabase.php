@@ -1,9 +1,20 @@
 <?php
 
+/**
+ * Filename: addatabase.php
+ * Author: Enzo Peigné
+ * Description: Functions to interact with the database for the administator
+ *              Divided into 4 parts: home page, add page, users page and content page
+ */
+
 include '../../php/constants.php';
 
 
-// Connect to the database "OK" 
+/**
+ * Function to connect to the database
+ * 
+ * @return mysqli The connection to the database
+ */
 function dbconnect() {
     // Create a connection to the database
     $conn = new mysqli(DB_SERVER, DB_USER, DB_PASSWORD, DB_NAME);
@@ -20,7 +31,13 @@ function dbconnect() {
 // -------------------- HOME PAGE -----------------------
 // ------------------------------------------------------
 
-// Get the number of users in the database "OK"
+/**
+ * Function to get the number of users registered in the database
+ * 
+ * @param mysqli $conn The connection to the database
+ * 
+ * @return int Return the number of users registered in the database
+ */
 function getNumUsers($conn) {
     $sql = "SELECT COUNT(*) FROM Accounts WHERE administrator IS NULL";
     $result = $conn->query($sql);
@@ -29,7 +46,13 @@ function getNumUsers($conn) {
     return $row['COUNT(*)'];
 }
 
-// Get the last user registered in the database "OK"
+/**
+ * Function to get the last user registered in the database
+ * 
+ * @param mysqli $conn The connection to the database
+ * 
+ * @return int Return the username of the last user registered in the database
+ */
 function getLastUser($conn) {
     $sql = "SELECT username FROM Accounts WHERE administrator IS NULL ORDER BY id DESC LIMIT 1";
     $result = $conn->query($sql);
@@ -42,7 +65,16 @@ function getLastUser($conn) {
 // --------------------- ADD PAGE -----------------------
 // ------------------------------------------------------
 
-// Check if the content is already in the database "OK"
+/**
+ * Function to check if a movie or a serie is already in the database
+ * 
+ * @param mysqli $conn The connection to the database
+ * @param string $title The title of the movie or serie
+ * @param int $year The year of release of the movie or serie
+ * @param string $type The type of content (movie or serie)
+ * 
+ * @return int Return the number of content found in the database
+ */
 function checkContent($conn, $title, $year, $type) {
     if ($type == "movie") {
         $sql = "SELECT COUNT(*) FROM Films WHERE nom = ? AND date_sortie = ?";
@@ -68,7 +100,22 @@ function checkContent($conn, $title, $year, $type) {
 
 }
 
-// Add a movie to the database "OK"
+/**
+ * Function to add a movie to the database
+ * 
+ * @param mysqli $conn The connection to the database
+ * @param string $title The title of the movie
+ * @param int $year The year of release of the movie
+ * @param string $genre The genre of the movie
+ * @param string $synopsis The synopsis of the movie
+ * @param int $duration The duration in minutes of the movie
+ * @param string $realisator The realisator of the movie
+ * @param string $actors The actors of the movie
+ * @param string $coverpath The path to the cover of the movie
+ * 
+ * @return bool|string Return true if the movie has been added to the database, 
+ *                     Returns "already exists" if the movie is already in the database and false if an error occured
+ */
 function addMovie($db, $title, $year, $genre, $synopsis, $duration, $realisator, $actors, $coverpath) {
 
     // Check if the movie is already in the database before adding it
@@ -89,7 +136,22 @@ function addMovie($db, $title, $year, $genre, $synopsis, $duration, $realisator,
     }
 }
 
-// add a serie to the database "OK"
+/**
+ * Function to add a serie to the database
+ * 
+ * @param mysqli $conn The connection to the database
+ * @param string $title The title of the serie
+ * @param int $year The year of release of the serie
+ * @param string $genre The genre of the serie
+ * @param string $synopsis The synopsis of the serie
+ * @param string $realisator The realisator of the serie
+ * @param string $actors The actors of the serie
+ * @param string $coverpath The path to the cover of the serie
+ * @param int $seasons The number of seasons of the serie
+ * 
+ * @return bool|string Return true if the serie has been added to the database, 
+ *                     Returns "already exists" if the serie is already in the database and false if an error occured
+ */
 function addSerie($db, $title, $year, $genre, $synopsis, $realisator, $actors, $coverpath, $seasons) {
 
     // Check if the serie is already in the database before adding it
@@ -114,7 +176,13 @@ function addSerie($db, $title, $year, $genre, $synopsis, $realisator, $actors, $
 // -------------------- USERS PAGE ----------------------
 // ------------------------------------------------------
 
-// Get the list of users in the database "OK"
+/**
+ * Get the list of users in the database
+ * 
+ * @param mysqli $conn The connection to the database
+ * 
+ * @return array|string Return the list of users in the database or "No users found" if no users are found
+ */
 function getUsers($conn) {
     try{
         $sql = "SELECT * FROM Accounts WHERE administrator IS NULL";
@@ -138,7 +206,14 @@ function getUsers($conn) {
     }
 }
 
-// Delete a user from the database "OK"
+/**
+ * Delete a user from the database
+ * 
+ * @param mysqli $conn The connection to the database
+ * @param  string $email The email of the user to delete
+ * 
+ * @return bool Return true if the user has been deleted from the database, false if an error occured
+ */
 function deleteUser($conn, $email) {
     try{
         $sql = "DELETE FROM Accounts WHERE email = ?";
@@ -153,7 +228,16 @@ function deleteUser($conn, $email) {
     }
 }
 
-// Update a user in the database "OK"
+/**
+ * Update the information of a user in the database
+ * 
+ * @param mysqli $conn The connection to the database
+ * @param int $userId The id of the user to update
+ * @param string $email The new email of the user
+ * @param string $username The new username of the user
+ * 
+ * @return bool Return true if the user has been updated in the database, false if an error occured
+ */
 function updateUser($conn, $userId, $email, $username) {
     try{
         $sql = "UPDATE Accounts SET email = ?, username = ? WHERE id = ?";
@@ -172,7 +256,13 @@ function updateUser($conn, $userId, $email, $username) {
 // ------------------ CONTENT PAGE ----------------------
 // ------------------------------------------------------
 
-// Get the length of the list of movies in the database "OK"
+/**
+ * Get the amount of movies in the database
+ * 
+ * @param mysqli $conn The connection to the database
+ * 
+ * @return int Return the amount of movies in the database
+ */
 function getMoviesLength($conn) {
     try{
         $sql = "SELECT COUNT(*) FROM Films";
@@ -186,7 +276,13 @@ function getMoviesLength($conn) {
     }
 }
 
-// Get the length of the list of series in the database "OK"
+/**
+ * Get the amount of series in the database
+ * 
+ * @param mysqli $conn The connection to the database
+ * 
+ * @return int Return the amount of series in the database
+ */
 function getSeriesLength($conn) {
     try{
         $sql = "SELECT COUNT(*) FROM Séries";
@@ -201,7 +297,15 @@ function getSeriesLength($conn) {
 }
 
 
-// Get the list of movies in the database between row 15 and 25 "OK"
+/**
+ * Get the list of movies in the database
+ * 
+ * @param mysqli $conn The connection to the database
+ * @param int $maxRow The row to start from in the database
+ * @param string $sorting The sorting method to use
+ * 
+ * @return array|string Return the list of movies in the database or "No movies found" if no movies are found
+ */
 function getMovies($conn, $maxRow, $sorting) {
     try{
         $sql = "SELECT * FROM Films ORDER BY $sorting LIMIT ?, 25";
@@ -227,7 +331,15 @@ function getMovies($conn, $maxRow, $sorting) {
     }
 }
 
-// Get the list of series in the database "OK"
+/**
+ * Get the list of series in the database
+ * 
+ * @param mysqli $conn The connection to the database
+ * @param int $maxRow The row to start from in the database
+ * @param string $sorting The sorting method to use
+ * 
+ * @return array|string Return the list of series in the database or "No series found" if no series are found
+ */
 function getSeries($conn, $maxRow, $sorting) {
     try{
         $sql = "SELECT * FROM Séries ORDER BY $sorting LIMIT ?, 25";
@@ -253,7 +365,14 @@ function getSeries($conn, $maxRow, $sorting) {
     }
 }
 
-// Delete a movie from the database "OK"
+/**
+ * Delete a movie from the database
+ * 
+ * @param mysqli $conn The connection to the database
+ * @param int $id The id of the movie to delete
+ * 
+ * @return bool Return true if the movie has been deleted from the database, false if an error occured
+ */
 function deleteMovie($conn, $id) {
     try{
         $sql = "DELETE FROM Films WHERE id = ?";
@@ -269,7 +388,14 @@ function deleteMovie($conn, $id) {
     }
 }
 
-// Delete a serie from the database "OK"
+/**
+ * Delete a serie from the database
+ * 
+ * @param mysqli $conn The connection to the database
+ * @param int $id The id of the serie to delete
+ * 
+ * @return bool Return true if the serie has been deleted from the database, false if an error occured
+ */
 function deleteSerie($conn, $id) {
     try{
         deleteEpisodes($conn, $id);
@@ -285,7 +411,14 @@ function deleteSerie($conn, $id) {
     }
 }
 
-// Delete the episodes of a serie from the database "OK"
+/**
+ * Get the list of episodes of a serie
+ * 
+ * @param mysqli $conn The connection to the database
+ * @param int $id The id of the serie
+ * 
+ * @return array|string Return the list of episodes of the serie or "No episodes found" if no episodes are found
+ */
 function deleteEpisodes($conn, $id) {
     try{
         $sql = "DELETE FROM Episodes WHERE serie_id = ?";
@@ -301,7 +434,14 @@ function deleteEpisodes($conn, $id) {
     }
 }
 
-// Search for a movie in the database "OK"
+/**
+ * Search for a movie by its title in the database
+ * 
+ * @param mysqli $conn The connection to the database
+ * @param string $value The title of the movie to search
+ * 
+ * @return array|string Return the list of movies found in the database or "No movies found" if no movies are found
+ */
 function searchMovie($conn, $value) {
     try{
         $value = "%".$value."%";
@@ -329,7 +469,14 @@ function searchMovie($conn, $value) {
     }
 }
 
-// Search for a serie in the database "OK"
+/**
+ * Search for a serie by its title in the database
+ * 
+ * @param mysqli $conn The connection to the database
+ * @param string $value The title of the serie to search
+ * 
+ * @return array|string Return the list of series found in the database or "No series found" if no series are found
+ */
 function searchSerie($conn, $value) {
     try{
         $value = "%".$value."%";

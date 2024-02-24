@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Filename: reset-pass.php
+ * Author: Enzo Peigné
+ * Description: Check if the reset token is valid and reset the password
+ */
+
 require_once 'database.php';
 
 // Enable all warnings and errors

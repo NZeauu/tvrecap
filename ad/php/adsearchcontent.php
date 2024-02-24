@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Filename: adsearchcontent.php
+ * Author: Enzo Peigné
+ * Description: Search a movie or a serie in the database using the Python scripts in the scripts folder
+ */
+
 // Enable all warnings and errors
 
 ini_set('display_errors', 1);

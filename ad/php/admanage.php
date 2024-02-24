@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Filename: admanage.php
+ * Author: Enzo Peigné
+ * Description: Get the movies and series, the length of the movies and series, 
+ *              Delete a movie or a serie and search a movie or a serie
+ */
+
 require_once 'addatabase.php';
 
 // Enable all warnings and errors

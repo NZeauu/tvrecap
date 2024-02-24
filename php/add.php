@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Filename: add.php
+ * Author: Enzo Peigné
+ * Description: Send an email to the administrator to ask for adding a new content
+ */
+
 require_once 'database.php';
 
 // Enable all warnings and errors

@@ -1,3 +1,12 @@
+/*
+    Filename: contact.css
+    Author: Enzo Peigné
+    Description: CSS file for the contact page
+                 Categorized by section: 
+                    - Contact section
+                    - Popup section
+*/
+
 #contact-form{
     display: flex;
     flex-direction: column;

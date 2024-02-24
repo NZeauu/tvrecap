@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Filename: adhome.php
+ * Author: Enzo Peigné
+ * Description: Get the number of users and the last user registered to the database
+ */
+
 require_once 'addatabase.php';
 
 // Enable all warnings and errors

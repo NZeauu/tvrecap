@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * Filename: adadd.php
+ * Author: Enzo Peigné
+ * Description: Add a movie or a serie to the database using the Python scripts in the scripts folder
+ */
+
 require_once 'addatabase.php';
 
 // Enable all warnings and errors

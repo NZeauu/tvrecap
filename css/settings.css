@@ -1,3 +1,12 @@
+/*
+    Filename: settings.css
+    Author: Enzo Peigné
+    Description: CSS file for the settings page
+                 Categorized by section: 
+                    - Structure of the page (body) and elements design
+                    - Popup style
+*/
+
 #user-settings{
     display: flex;
     flex-direction: column;

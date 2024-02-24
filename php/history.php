@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Filename: history.php
+ * Author: Enzo Peigné
+ * Description: Get the movies and series seen by the user and the number of episodes seen for a specific serie
+ */
+
 require_once 'database.php';
 
 // Enable all warnings and errors

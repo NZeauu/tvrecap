@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Filename: register.php
+ * Author: Enzo Peigné
+ * Description: Register a new account and check if the email and the username already exist in the database
+ 
+ */
+
 require_once 'database.php';
 
 // Enable all warnings and errors

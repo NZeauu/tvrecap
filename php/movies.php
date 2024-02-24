@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Filename: movies.php
+ * Author: Enzo Peigné
+ * Description: Get all the movies, the movies filtered by category, duration and year and the length of the movies
+ */
+
 require_once 'database.php';
 
 // Enable all warnings and errors
@@ -20,7 +26,11 @@ if($requestResource == "all"){
     $data = false;
 
     if($requestMethod == "GET"){
-        $data = getAllMovies($db);
+
+        $sorting = $_GET['sorting'];
+        $maxrow = $_GET['maxrow'];
+
+        $data = getAllMovies($db, $sorting, $maxrow);
     }
 
 }
@@ -34,9 +44,35 @@ if($requestResource == "filtered"){
         $category = $_GET['category'];
         $duration = $_GET['duration'];
         $year = $_GET['year'];
+        $sorting = $_GET['sorting'];
+        $maxrow = $_GET['maxrow'];
         
-        $data = getFilteredMovies($db, $category, $duration, $year);
+        $data = getFilteredMovies($db, $category, $duration, $year, $sorting, $maxrow);
     }
+}
+
+if($requestResource == "length"){
+    
+    $data = false;
+
+    if($requestMethod == "GET"){
+        $data = getMoviesLength($db);
+    }
+}
+
+if($requestResource == "filteredLen"){
+        
+        $data = false;
+    
+        if($requestMethod == "GET"){
+    
+            $category = $_GET['category'];
+            $duration = $_GET['duration'];
+            $year = $_GET['year'];
+            
+            $data = getFilteredMoviesLength($db, $category, $duration, $year);
+        }
+    
 }
 
 header('Content-Type: application/json; charset=utf-8');

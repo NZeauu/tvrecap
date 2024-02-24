@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Filename: adusers.php
+ * Author: Enzo Peigné
+ * Description: Get the users, delete a user and update a user
+ *              Send an email to the user when his account is deleted
+ */
+
 require_once 'addatabase.php';
 
 // Enable all warnings and errors

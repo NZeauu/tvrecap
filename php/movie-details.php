@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Filename: movie-details.php
+ * Author: Enzo Peigné
+ * Description: Get the details of a movie and check if the movie is in the watchlist of the user
+ */
+
 require_once 'database.php';
 
 // Enable all warnings and errors

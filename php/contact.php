@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Filename: contact-form.php
+ * Author: Enzo Peigné
+ * Description: Get the username of the user from the database to fill the username input in the contact form
+ */
+
 require_once 'database.php';
 
 // Enable all warnings and errors

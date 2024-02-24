@@ -1,3 +1,16 @@
+/*
+    Filename: movies.css
+    Author: Enzo Peigné
+    Description: CSS file for the movies page
+                 Categorized by section: 
+                    - Movies section
+                    - Filters
+                    - Sorting
+                    - Pagination
+                    - Movie list
+                    - Card design
+                    - Card texts
+*/
 /* ---------------------------------- */
 /* --------- MOVIES SECTION --------- */
 /* ---------------------------------- */
@@ -9,6 +22,34 @@
     width: 90%;
     border-radius: 10px;
     align-self: center;
+}
+
+#go-top{
+    display: flex;
+    justify-content: flex-end;
+    position: fixed;
+    z-index: 2;
+    bottom: 5%;
+    right: 2%;
+}
+
+#go-top button{
+    background-color:rgba(255, 0, 0, 0.58);
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    font-family: Inter;
+    font-size: 16px;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+}
+
+#go-top button:hover{
+    background-color:rgba(255, 0, 0, 0.8);
+    cursor: pointer;
 }
 
 /* --------------------------- */
@@ -93,6 +134,66 @@ option {
     background-color:rgba(255, 0, 0, 0.8);
     cursor: pointer;
 }
+
+/* ---------------------------- */
+/* --------- SORTING ---------- */
+/* ---------------------------- */
+
+#sorting-section{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-family: Inter;
+    justify-content: flex-end;
+    margin-top: 15px;
+    margin-right: 2%;
+}
+
+#sorting-select{
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    outline: none;
+    font-style: italic;
+}
+
+#sorting-select option{
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: fit-content;
+    font-weight: 500;
+}
+
+
+/* ---------------------------- */
+/* -------- PAGINATION -------- */
+/* ---------------------------- */
+
+#pagination{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-top: 3%;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0px 20px 0px;
+}
+
+#pagination button{
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: fit-content;
+}
+
+#pagination button:hover{
+    background-color: #ff4d4d;
+}
+
 
 
 /* ---------------------------- */

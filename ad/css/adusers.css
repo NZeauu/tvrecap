@@ -1,3 +1,12 @@
+/*
+    Filename: adusers.css
+    Author: Enzo Peigné
+    Description: CSS file for the users page in the admin dashboard
+                 Categorized by section: 
+                    - Users list section
+                    - Table section
+*/
+
 #users-list{
     display: flex;
     flex-direction: column;

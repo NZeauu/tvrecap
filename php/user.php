@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Filename: user.php
+ * Author: Enzo Peigné
+ * Description: Get the user's avatar and username
+ */
+
 require_once 'database.php';
 
 // Enable all warnings and errors

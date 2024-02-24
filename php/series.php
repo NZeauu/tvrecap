@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Filename: series.php
+ * Author: Enzo Peigné
+ * Description: Get all the series, the series filtered by category, duration, year and the length of the series (filtered or not)
+ */
+
 require_once 'database.php';
 
 // Enable all warnings and errors
@@ -20,8 +26,11 @@ if($requestResource == "all"){
     $data = false;
     
     if($requestMethod == "GET"){
+
+        $sorting = $_GET['sorting'];
+        $maxrow = $_GET['maxRow'];
         
-        $data = getAllSeries($db);
+        $data = getAllSeries($db, $sorting, $maxrow);
 
     }
 }
@@ -49,11 +58,41 @@ if($requestResource == "filtered"){
             $category = $_GET['category'];
             $duration = $_GET['duration'];
             $year = $_GET['year'];
+            $sorting = $_GET['sorting'];
+            $maxrow = $_GET['maxRow'];
 
-            $data = getFilteredSeries($db, $seasons, $category, $duration, $year);
+            $data = getFilteredSeries($db, $seasons, $category, $duration, $year, $sorting, $maxrow);
     
         }
     
+}
+
+if($requestResource == "length"){
+        
+    $data = false;
+    
+    if($requestMethod == "GET"){
+
+        $data = getSeriesLength($db);
+
+    }
+
+}
+
+if($requestResource == "filteredLen"){
+            
+        $data = false;
+        
+        if($requestMethod == "GET"){
+    
+            $seasons = $_GET['seasons'];
+            $category = $_GET['category'];
+            $duration = $_GET['duration'];
+            $year = $_GET['year'];
+    
+            $data = getFilteredSeriesLength($db, $seasons, $category, $duration, $year);
+    
+        }
 }
 
 

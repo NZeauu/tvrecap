@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Filename: serie-details.php
+ * Author: Enzo Peigné
+ * Description: Get the details of a serie, check if the serie is fully watched by the user, 
+ *              Check if an episode is seen by the user, get the number of seasons of a serie, 
+ *              Get the episodes of a season and update the status of an episode
+ */
+
 require_once 'database.php';
 
 // Enable all warnings and errors
