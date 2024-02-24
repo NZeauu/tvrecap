@@ -57,7 +57,9 @@ CREATE TABLE `Accounts`(
     `avatar` VARCHAR(50) NOT NULL DEFAULT '../img/avatars/default.svg',
     `administrator` BOOLEAN NOT NULL DEFAULT FALSE,*
     `reset_token_hash` VARCHAR(64) DEFAULT NULL,
-    `reset_token_expiration` DATETIME DEFAULT NULL
+    `reset_token_expiration` DATETIME DEFAULT NULL,
+    `verified` BOOLEAN NOT NULL DEFAULT FALSE,
+    `verification_token` VARCHAR(64) DEFAULT NULL
 );
 ALTER TABLE
     `Accounts` ADD INDEX `accounts_id_index`(`id`);

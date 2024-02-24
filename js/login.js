@@ -65,23 +65,36 @@ function login(){
             }
 
             if(allValid){
-                $.ajax('../php/connect.php/login', {
-                    method : 'POST', data : {
-                        email : email,
-                        password : password
+
+                $.ajax('../php/connect.php/checkVerified', {
+                    method : 'GET', data : {
+                        email : email
                     }
                 }).done(function(data){
-                    if(data == "admin" || data == "user"){
-                        if(data == "admin"){
-                            window.location.href = "../ad/html/adhome.html";
-                        }
-                        if(data == "user"){
-                            window.location.href = "../html/home.html";
-                        }
-                    }else{
-                        $("#passwordinput").css("border-color", "#ff0000");
-                        $("#passwordInvalid").css("display", "block");
+                    if(!data){
+                        window.userMail = email;
+                        openPopup('notVerified');
+                        return;
                     }
+
+                    $.ajax('../php/connect.php/login', {
+                        method : 'POST', data : {
+                            email : email,
+                            password : password
+                        }
+                    }).done(function(data){
+                        if(data == "admin" || data == "user"){
+                            if(data == "admin"){
+                                window.location.href = "../ad/html/adhome.html";
+                            }
+                            if(data == "user"){
+                                window.location.href = "../html/home.html";
+                            }
+                        }else{
+                            $("#passwordinput").css("border-color", "#ff0000");
+                            $("#passwordInvalid").css("display", "block");
+                        }
+                    });
                 });
             }
         });
@@ -166,6 +179,20 @@ function openPopup(type) {
         form.appendChild(submit);
 
         document.getElementById('popupText').appendChild(form);
+    }
+
+    if (type == 'notVerified') {
+        document.getElementById('popupTitle').innerText = 'Compte non vérifié';
+        var content = document.createElement('div');
+        content.setAttribute('id', 'notVerifiedContent');
+        var text = document.createElement('p');
+        text.innerText = 'Votre compte n\'a pas encore été vérifié. Veuillez vérifier votre boîte mail ainsi que vos spams pour activer votre compte. Si vous n\'avez pas reçu de mail, veuillez cliquer sur le bouton ci-dessous pour renvoyer un mail de confirmation.';
+        var resend = document.createElement('button');
+        resend.setAttribute('onclick', 'resendMail()');
+        resend.innerText = 'Renvoyer le mail de confirmation';
+        content.appendChild(text);
+        content.appendChild(resend);
+        document.getElementById('popupText').appendChild(content);
     }
 
 
@@ -268,4 +295,26 @@ function sendMail(){
         }
     });
 
+}
+
+function resendMail(){
+    var email = window.userMail;
+
+    console.log(email);
+
+    $.ajax('../php/connect.php/resendMail', {
+        method : 'POST', 
+        data : {
+            email : email
+        },
+        success: function(data){
+            if(data){
+                $("#notVerifiedContent").empty();
+                $("#notVerifiedContent").append("<p>" + data.msg + "</p>");
+            }else{
+                $("#notVerifiedContent").empty();
+                $("#notVerifiedContent").append("<p>Une erreur est survenue lors de l'envoi du message.</p>");
+            }
+        }
+    });
 }

@@ -459,6 +459,114 @@ function removeToken($conn, $email){
     }
 }
 
+/**
+ * Insert a token in the database for the account verification
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * @param string $token User's token generated for the account verification
+ * 
+ * @return boolean Returns true if the token is inserted, false otherwise
+ */
+
+function insertVerifToken($conn, $email, $token){
+    try{
+        $sql = "UPDATE Accounts
+                SET verification_token = ?
+                WHERE email = ?";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $token, $email);
+        $stmt->execute();
+
+        return true;
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+/**
+ * Check if the user's account is verified
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * 
+ * @return boolean Returns true if the user's account is verified, false otherwise
+ */
+function checkVerified($conn, $email){
+    try{
+        $sql = "SELECT * FROM Accounts 
+                WHERE email = ? AND verified = 1";
+                
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return true;
+        }
+        else {
+            return false;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+/**
+ * Check the user's token for the account verification
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $token User's token generated for the account verification
+ * 
+ * @return boolean Returns true if the token is in the database, false otherwise
+ */
+function checkVerifToken($conn, $token){
+    try{
+        $sql = "SELECT * FROM Accounts 
+                WHERE verification_token = ?";
+                
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return true;
+        }
+        else {
+            return false;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+function verifAccount($conn, $token){
+    try{
+        $sql = "UPDATE Accounts
+                SET verified = 1, verification_token = NULL
+                WHERE verification_token = ?";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+
+        return true;
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
 
 // ------------------------------------ //
 // -------------- SERIES -------------- //

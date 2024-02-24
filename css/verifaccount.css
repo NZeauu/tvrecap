@@ -1,0 +1,62 @@
+/*
+    Filename: verifaccount.css
+    Author: Enzo Peigné
+    Description: CSS file for the account verification page
+*/
+
+/* ----------------------------------------- */
+/* ----------------- BODY ------------------ */
+/* ----------------------------------------- */
+
+body{
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+#verif, #unvalidlink{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 5vh;
+    width: 100%;
+    height: 50%;
+}
+
+/* TVRecap title */
+#title{
+    font-family: Ubuntu;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+/* Login form part */
+#content{
+    font-family: Inter;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+
+#button{
+    display: flex;
+    padding: 10px 0px;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+}
+
+#button a{
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    background-color: #FF6B6B;
+    padding: 10px 20px;
+    border-radius: 5px;
+}

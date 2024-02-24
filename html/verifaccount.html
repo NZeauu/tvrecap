@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html lang='fr'>
+    <head>
+        <meta charset='utf-8'>
+        <title> Vérification de votre compte </title>
+        <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'>
+        <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+        <link href="../css/verifaccount.css" rel="stylesheet">
+        <link rel="icon" href="../img/icon.ico">
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    </head>
+    <body>
+
+        <div id="verif" style="display: none;">
+            <h1 id="title"><span style="color: #F20000;">TV</span>Recap</h1>
+            <div id="content">
+                <section>Votre compte a été vérifié avec succès !</section>
+                <section>Vous pouvez maintenant vous connecter.</section>
+                <div id="button">
+                    <a href="login.html">Se connecter</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error messages -->
+        <div id="unvalidlink" style="display: none;">
+            <h1 id="title"><span style="color: #F20000;">TV</span>Recap</h1>
+            <div id="content">
+                <section>Le lien de vérification est invalide.</section>
+                <section>Veuillez réessayer.</section>
+                <div id="button">
+                    <a href="login.html">Retour à la page de connexion</a>
+                </div>
+            </div>
+        </div>
+        <script src="../js/verifaccount.js"></script>
+    </body>

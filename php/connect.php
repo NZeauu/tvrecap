@@ -104,6 +104,63 @@ if($requestResource == 'resetPass'){
 
 }
 
+if($requestResource == 'checkVerified'){
+    $data = false;
+
+    if($requestMethod == "GET"){
+
+        // Get the data from the request
+        $email = $_GET['email'];
+
+        $data = checkVerified($db, $email);
+    }
+
+}
+
+if($requestResource == 'resendMail'){
+    $data = false;
+
+    if($requestMethod == "POST"){
+
+        // Get the data from the request
+        $email = $_POST['email'];
+
+        // Generate a token for the account verification
+        $token = bin2hex(random_bytes(16));
+
+        // Hash the token
+        $token_hash = hash('sha256', $token);
+
+        // Insert the token in the database
+        $result = insertVerifToken($db, $email, $token_hash);
+
+        // Send a mail to the user
+        if($result){
+            $to = $email;
+            $from = 'tvrecap.noreply@epeigne.fr';
+
+
+            $subject = 'Vérification de votre compte TVRecap';
+            $message = "Bonjour,\n\n";
+            $message .= "Merci de vous être inscrit sur TVRecap. Pour valider votre compte, veuillez cliquer sur le lien suivant : \n";
+            $message .= "https://epeigne.fr/tvrecap/html/verifaccount.html?token=" . $token . "\n\n";
+            $message .= "Une fois votre compte validé, vous pourrez vous connecter à votre compte TVRecap.\n\n";
+            $message .= "Merci de votre confiance.\n\n";
+            $message .= "L'équipe TVRecap";
+            $message .= "\n\nCeci est un mail automatique, merci de ne pas y répondre.";
+
+            $headers = "From: " . $from;
+
+            mail($to, $subject, $message, $headers);
+
+            $data = array("success" => true, "msg" => "Un email vous a été envoyé pour valider votre compte. Veuillez vérifier votre boîte de réception ou votre dossier de courrier indésirable (spam).");
+
+        }
+    }
+}
+
+
+
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-control: no-store, no-cache, must-revalidate');
 header('Pragma: no-cache');

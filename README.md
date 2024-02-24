@@ -31,13 +31,12 @@ ${\textcolor{red}{WARNING}}$: This will overwrite any existing tables with the s
 5. Configure your mail server to send emails. I used Postfix and Dovecot on a Debian server. You can follow the tutorial linked above to set up your mail server.
 
 ## Features to add
-- [ ] Add SMTP functionality to send verification email on account creation
+- [X] Add SMTP functionality to send verification email on account creation
 - [X] Add SMTP functionality to send password reset email
 - [X] Avatar choice on account parameters
 - [X] Content adding page for admin account
 - [ ] Responsive website (for screen under 15")
 - [ ] Remember me functionality on login
-- [ ] Forget password
 - [ ] Multi languages choice
 - [ ] Search bar
       

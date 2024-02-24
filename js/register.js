@@ -109,7 +109,7 @@ function register(){
                 }).done(function(data) {
                     if (data) {
                         //if register successful alert and redirect to login page
-                        alert("Inscription réussie. Vous pouvez maintenant vous connecter.");
+                        alert("Inscription réussie. Merci de valider votre adresse mail pour activer votre compte avant de vous connecter. Un mail de confirmation vous a été envoyé, veuillez vérifier votre boîte mail ainsi que vos spams");
                         // redirect to login page
                         window.location.href = "../html/login.html";
                     } else {
