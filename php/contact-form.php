@@ -40,32 +40,41 @@
         $mail->isHTML(true);
         $mail->Subject = 'Nouvelle demande de contact de la part de ' . $username;
         $mail->Body = '
-            <html>
-                <head>
-                    <title>Nouvelle demande de contact</title>
-                    <style>
-                        body {
-                            display: flex;
-                            width: 100%;
-                            height: 100%;
-                            flex-direction: column;
-                            background-color: #E5E5E5;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div style="width: 95%; display: flex; justify-content: center; background-color: black; border-radius: 10px; margin: 2%;">
-                        <img src="https://epeigne.fr/tvrecap/img/darkHeader.png" alt="Header Image" style="width: 150px; height: auto;">
-                    </div>
-                    <div>
-                        <h1>Nouvelle demande de contact</h1>
-                        <p>Un utilisateur a envoyé une nouvelle demande de contact.</p>
-                        <p>Adresse de contact: ' . $userMail . '</p>
-                        <p>Objet de la demande: ' . $contactSubject . '</p>
-                        <p>Message: ' . $content . '</p>
-                    </div>
-                </body>
-            </html>
+                <html>
+                    <head>
+                        <title>Nouvelle demande de contact</title>
+                        <style>
+                            body {
+                                display: flex;
+                                width: 95%;
+                                height: 100%;
+                                flex-direction: column;
+                                padding: 20px;
+                            }
+                            .message-container {
+                                width: 95%;
+                                margin: 2%;
+                            }
+                            .message {
+                                word-wrap: break-word; 
+                                text-align: center;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div style="width: 95%; display: flex; justify-content: center; background-color: black; border-radius: 10px; margin: 2%; font-style: italic; align-items: center;">
+                            <h1 style="color: white; width: 100%; text-align:center"><span style="color: red;">TV</span>Recap</h1>
+                        </div>
+                        <div class="message-container">
+                            <h1>Nouvelle demande de contact</h1>
+                            <p>Un utilisateur a envoyé une nouvelle demande de contact.</p>
+                            <p>Adresse de contact: ' . $userMail . '</p>
+                            <p>Objet de la demande: ' . $contactSubject . '</p>
+                            <p>Message:</p>
+                            <div class="message">' . $content . ' </div>
+                        </div>
+                    </body>
+                </html>    
         ';
 
         // Send the email

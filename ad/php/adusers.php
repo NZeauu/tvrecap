@@ -9,6 +9,11 @@
 
 require_once 'addatabase.php';
 
+require '../../vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 // Enable all warnings and errors
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -37,23 +42,73 @@ if($requestResource == "deleteUser"){
 
     if($requestMethod == 'POST'){
 
+        $mail = new PHPMailer(true);
+
         $email = $_POST['email'];
-        $data = deleteUser($db, $email);
 
-        $to = $email;
-        $subject = "Votre compte TVRecap a été supprimé";
-        $from = "tvrecap@epeigne.fr";
+        try{
+            
+            $data = deleteUser($db, $email);
 
-        $message .= "Bonjour,\n\n";
-        $message .= "Votre compte a été supprimé par un administrateur. Si vous pensez qu'il s'agit d'une erreur, veuillez contacter notre équipe.\n\n";
-        $message .= "Vous pouvez nous contacter à l'adresse suivante : tvrecap@epeigne.fr ou directement sur le site dans l'onglet Contact de la page de connexion.\n\n";
-        $message .= "Cordialement,\n\n";
-        $message .= "L'équipe TVRecap";
+            if(!$data){
+                throw new Exception('Error');
+            }
 
-        $headers = "From: " . $from . "\r\n";
-        
-        mail($to, $subject, $message, $headers);
+            // PHPMailer configuration
+            require_once '../../php/phpMailerConf.php';
 
+            $to = $email;
+
+            $mail->setFrom('tvrecap.noreply@epeigne.fr', 'TVRecap');
+            $mail->addAddress($to);
+
+            // Caracters encoding
+            $mail->CharSet = 'UTF-8';
+
+            // HTML content of the email
+            $mail->isHTML(true);
+            $mail->Subject = "Votre compte TVRecap a été supprimé";
+            $mail->Body = '
+            <html>
+                <head>
+                    <title>Vérification de votre compte TVRecap</title>
+                    <style>
+                        body {
+                            display: flex;
+                            width: 100%;
+                            height: 100%;
+                            flex-direction: column;
+                            padding: 20px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div style="width: 95%; display: flex; justify-content: center; background-color: black; border-radius: 10px; margin: 2%; font-style: italic; align-items: center;">
+                        <h1 style="color: white; width: 100%; text-align:center"><span style="color: red;">TV</span>Recap</h1>
+                    </div>
+                    <div>
+                        <p>Bonjour,</p>
+                        <p>Votre compte a été supprimé par un administrateur. Si vous pensez qu\'il s\'agit d\'une erreur, veuillez contacter notre équipe.</p>
+                        <p>Vous pouvez nous contacter via le formulaire de contact sur le site ou à l\'adresse suivante :
+                            <a href="mailto:tvrecap@epeigne.fr">tvrecap@epeigne.fr</a>
+                        </p>
+                        <p>Cordialement,</p>
+                        <p>L\'équipe TVRecap</p>
+                        <br><hr><br>
+                        <p>Ceci est un mail automatique, merci de ne pas y répondre.</p>
+                    </div>
+                </body>
+            </html>
+            ';
+
+            // Send the email
+            $mail->send();
+
+            $data = true;
+
+        }catch(Exception $e){
+            $data = false;
+        }
     }
 }
 

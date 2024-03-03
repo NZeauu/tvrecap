@@ -9,6 +9,11 @@
 
 require_once 'database.php';
 
+require '../vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 // Enable all warnings and errors
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -76,29 +81,66 @@ if($requestResource == 'resetPass'){
 
         // Send an email to the user with the token
         if($data){
-            $to = $email;
-            $from = 'tvrecap.noreply@epeigne.fr';
-            $subject = 'Reset your password';
-            
-            // Create the link to reset the password
-            $link = 'https://epeigne.fr/tvrecap/html/reset-password.html?token=' . $token;
 
-            // Create the email content
-            $message = "Bonjour,\n\n";
-            $message .= "Vous avez demandé à réinitialiser votre mot de passe. Veuillez cliquer sur le lien ci-dessous pour le réinitialiser.\n\n";
-            $message .= "Link: " . $link . "\n\n";
-            $message .= "Une fois le mot de passe réinitialisé, vous pourrez vous connecter à votre compte avec le nouveau mot de passe.\n\n";
+            $mail = new PHPMailer(true);
 
-            // Add a message footer for no reply
-            $message .= "Ceci est un message automatique, merci de ne pas y répondre.\n\n";
+            try{
+                // PHPMailer configuration
+                require_once 'phpMailerConf.php';
 
-            // Create the email headers
-            $headers = "From:" . $from;
+                $to = $email;
+                $from = 'tvrecap.noreply@epeigne.fr';
 
-            // Send the email
-            mail($to, $subject, $message, $headers);
+                $mail->setFrom($from, 'TVRecap');
+                $mail->addAddress($to);
 
-            $data = array("success" => true, "msg" => "Un email vous a été envoyé pour réinitialiser votre mot de passe. Veuillez vérifier votre boîte de réception ou votre dossier de courrier indésirable (spam).");
+                // Caracters encoding
+                $mail->CharSet = 'UTF-8';
+
+                // HTML content of the email
+                $mail->isHTML(true);
+                $mail->Subject = 'Réinitialisation de votre mot de passe TVRecap';
+                $mail->Body = '
+                    <html>
+                        <head>
+                            <title>Réinitialisation de votre mot de passe TVRecap</title>
+                            <style>
+                                body {
+                                    display: flex;
+                                    width: 100%;
+                                    height: 100%;
+                                    flex-direction: column;
+                                    padding: 20px;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <div style="width: 95%; display: flex; justify-content: center; background-color: black; border-radius: 10px; margin: 2%; font-style: italic; align-items: center;">
+                                <h1 style="color: white; width: 100%; text-align:center"><span style="color: red;">TV</span>Recap</h1>
+                            </div>
+                            <div>
+                                <h3>Réinitialisation de votre mot de passe TVRecap</h3>
+                                <p>Bonjour,</p>
+                                <p>Vous avez demandé à réinitialiser votre mot de passe. Veuillez cliquer sur le lien ci-dessous pour le réinitialiser.</p>
+                                <p>Link: <a href="https://epeigne.fr/tvrecap/html/reset-password.html?token=' . $token . '">Réinitialiser mon mot de passe</a></p>
+                                <p>Une fois le mot de passe réinitialisé, vous pourrez vous connecter à votre compte avec le nouveau mot de passe.</p>
+                                <p>Merci de votre confiance.</p>
+                                <p>L\'équipe TVRecap</p>
+                                <br><hr><br>
+                                <p>Ceci est un mail automatique, merci de ne pas y répondre.</p>
+                            </div>
+                        </body>
+                    </html>
+                ';
+
+                // Send the email
+                $mail->send();
+
+                $data = array("success" => true, "msg" => "Un email vous a été envoyé pour réinitialiser votre mot de passe. Veuillez vérifier votre boîte de réception ou votre dossier de courrier indésirable (spam).");
+
+            }catch(Exception $e){
+                $data = array("success" => false, "msg" => "Votre demande de réinitialisation de mot de passe n'a pas pu être prise en compte.");
+            }
         }        
     }
 

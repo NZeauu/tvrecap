@@ -8,6 +8,11 @@
 
 require_once 'database.php';
 
+require '../vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 // Enable all warnings and errors
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -26,6 +31,9 @@ if($requestResource == "sendmail"){
     $data = false;
 
     if($requestMethod == "POST"){
+
+        $mail = new PHPMailer(true);
+
         $type = $_POST['type'];
 
         if($type == "movie"){
@@ -34,11 +42,11 @@ if($requestResource == "sendmail"){
             $duration = $_POST['duration'];
             $synopsis = $_POST['synopsis'];
 
-            $message = "~~CONTENT ADDING ASK~~\n\n
-                        Title: $title\n
-                        Year: $year\n
-                        Duration: $duration\n
-                        Synopsis: $synopsis";
+            $message = "<h4>~~CONTENT ADDING ASK~~</h4>
+                        <p>Title: $title</p>
+                        <p>Year: $year</p>
+                        <p>Duration: $duration</p>
+                        <p>Synopsis: $synopsis</p>";
 
         }else if($type == "serie"){
             $title = $_POST['title'];
@@ -46,22 +54,73 @@ if($requestResource == "sendmail"){
             $seasons = $_POST['seasons'];
             $synopsis = $_POST['synopsis'];
 
-            $message = "~~CONTENT ADDING ASK~~\n\n
-                        Title: $title\n
-                        Year: $year\n
-                        Seasons: $seasons\n
-                        Synopsis: $synopsis";
+            $message = "<h4>~~CONTENT ADDING ASK~~</h4>
+                        <p>Title: $title</p>
+                        <p>Year: $year</p>
+                        <p>Seasons: $seasons</p>
+                        <p>Synopsis: $synopsis</p>";
         }
 
-        $to = "tvrecap@epeigne.fr";
-        $subject = "TVRecap - Add new $type";
 
-        $header = "From: tvrecap.noreply@epeigne.fr";
+        try{
+            // PHPMailer configuration
+            require_once 'phpMailerConf.php';
 
-        // Send email
-        mail($to, $subject, $message, $header);
+            $to = "tvrecap@epeigne.fr";
+            
+            $mail->setFrom('system.tvrecap@epeigne.fr', 'SYSTEM TVRecap');
+            $mail->addAddress($to, 'HOST Mail TVRecap');
 
-        $data = true;
+            // Caracters encoding
+            $mail->CharSet = 'UTF-8';
+
+            // HTML content of the email
+            $mail->isHTML(true);
+            $mail->Subject = 'Demande d\'ajout de contenu TVRecap';
+            $mail->Body = '
+                <html>
+                    <head>
+                        <title>Demande d\'ajout de contenu TVRecap</title>
+                        <style>
+                            body {
+                                display: flex;
+                                width: 100%;
+                                height: 100%;
+                                flex-direction: column;
+                            }
+                            .message-container {
+                                width: 95%;
+                                margin: 2%;
+                            }
+                            .message {
+                                word-wrap: break-word; 
+                                text-align: center;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div style="width: 95%; display: flex; justify-content: center; background-color: black; border-radius: 10px; margin: 2%;">
+                            <img src="https://epeigne.fr/tvrecap/img/darkHeader.png" alt="Header Image" style="width: 150px; height: auto;">
+                        </div>
+                        <div class="message-container">
+                            <h1>Demande d\'ajout de contenu TVRecap</h1>
+                            <p>Un utilisateur a envoyé une demande d\'ajout de contenu.</p>
+                            <p>Type de contenu: <strong>' . $type . '</strong></p>
+                            <p>Message:</p>
+                            <div class="message">' . $message . '</div>
+                        </div>
+                    </body>
+                </html>
+            ';
+
+            // Send the email
+            $mail->send();
+
+            $data = true;
+
+        }catch(Exception $e){
+            $data = false;
+        }
     }
 }
 
