@@ -11,6 +11,7 @@ TVRecap is a web application that allows users to search for TV shows and movies
 - [tmdbv3api](https://pypi.org/project/tmdbv3api/) (Python library to get data from the API)
 - Postfix / Dovecot (mail server) (following this [debian tutorial](https://www.linuxbabe.com/mail-server/build-email-server-from-scratch-debian-postfix-smtp) Part 1, 2 and 4)
 - Certbot (SSL certificate)
+- [PHPMailer](https://github.com/PHPMailer/PHPMailer) (to send emails)
 
 ## Installation
 1. Clone the repository to your local machine or server
@@ -29,6 +30,20 @@ ${\textcolor{red}{WARNING}}$: This will overwrite any existing tables with the s
 ```
 4. Add your TMDB API key to the python file in `ad/scripts/` folder to get the data from the API.
 5. Configure your mail server to send emails. I used Postfix and Dovecot on a Debian server. You can follow the tutorial linked above to set up your mail server.
+6. Install PHPMailer with composer `composer require phpmailer/phpmailer` (if you don't have composer, you can download it [here](https://getcomposer.org/download/))
+7. Create a `phpMailerConf.php` file in the `php` directory with this content:
+```
+<?php
+
+// Change the values with your mail server informations
+$mail->isSMTP();
+$mail->Host = 'your mail server';
+$mail->SMTPAuth = true;
+$mail->Username = 'your email address';
+$mail->Password = 'your password';
+$mail->SMTPSecure = 'tls';
+$mail->Port = 587;
+```
 
 ## Features to add
 - [X] Add SMTP functionality to send verification email on account creation

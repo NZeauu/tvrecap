@@ -1,2 +1,10 @@
-# Ignore constants.php in php/ folder
+# Ignore constants.php in php/ folder and phpMailerConf.php in php/ folder
 php/constants.php
+php/phpMailerConf.php
+
+
+# Ignore composer files
+/vendor/
+composer.lock
+composer.json
+/src/
