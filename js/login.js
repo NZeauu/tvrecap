@@ -1,3 +1,11 @@
+// Check if the user cookie exists and if it does, redirect the user to the home page
+window.onload = function() {
+    if (document.cookie.indexOf("user_mail") !== -1) {
+        window.location.href = "../html/home.html";
+    }
+};
+
+
 // If the user clicks on the login button, the login function is called
 $("#loginbutton").click(function(){
     login();  
@@ -77,10 +85,13 @@ function login(){
                         return;
                     }
 
+                    let rememberme = $("#rememberme").is(":checked");
+
                     $.ajax('../php/connect.php/login', {
                         method : 'POST', data : {
                             email : email,
-                            password : password
+                            password : password,
+                            rememberme : rememberme
                         }
                     }).done(function(data){
                         if(data == "admin" || data == "user"){

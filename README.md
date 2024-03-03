@@ -51,7 +51,7 @@ $mail->Port = 587;
 - [X] Avatar choice on account parameters
 - [X] Content adding page for admin account
 - [ ] Responsive website (for screen under 15")
-- [ ] Remember me functionality on login
+- [X] Remember me functionality on login
 - [ ] Multi languages choice
 - [ ] Search bar
       

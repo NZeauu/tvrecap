@@ -48,12 +48,20 @@ if($requestResource == "login"){
         // Get the data from the request
         $email = $_POST['email'];
         $password = $_POST['password'];
+        $rememberme = $_POST['rememberme'];
 
         $data = connectionAccount($db, $email, $password);
 
         // Create a cookie session with the user id
         if($data){
-            setcookie('user_mail', $email, time() + 3600, '/');
+
+            // If the user wants to stay connected keep the cookie for 30 days else keep it for 1 hour
+            if($rememberme == "true"){
+                setcookie('user_mail', $email, time() + 60*60*24*30, '/');
+            }else{
+                setcookie('user_mail', $email, time() + 3600, '/');
+            }
+            
         }
 
     }
