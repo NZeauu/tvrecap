@@ -1,4 +1,4 @@
-import { getCookie, cookieCheck, setUserName, getAvatar, disconnect } from "./mainContent.js";
+import { cookieCheck, setUserName, getAvatar, getEmail, disconnect } from "./mainContent.js";
 
 // Check if the cookie is set every second
 setInterval(cookieCheck, 1000);
@@ -92,7 +92,7 @@ function seriesChoice(element) {
 
 // Get the user's movies history
 function getMoviesHistory() {
-    var email = getCookie("user_mail");
+    var email = window.user_email;
 
     $.ajax('../php/history.php/movies', {
         method: 'GET',
@@ -107,7 +107,7 @@ function getMoviesHistory() {
 
 // Get the user's series history
 function getSeriesHistory() {
-    var email = getCookie("user_mail");
+    var email = window.user_email;
 
     $.ajax('../php/history.php/series', {
         method: 'GET',
@@ -365,7 +365,7 @@ function createSeriesCard(data){
             method: 'GET',
             data: {
                 idserie: data[i].id,
-                userMail: getCookie("user_mail")
+                userMail: window.user_email
             },
         }).done(function (data) {
             // console.log(data);
@@ -423,12 +423,17 @@ function createSeriesCard(data){
 
 // When the page is loaded
 $(document).ready(function () {
-    setUserName();
 
-    getAvatar("#avatar-header");
-    
-    // Select "Films" by default
-    moviesChoice($(".movies-content"));
+    // Get the user's mail
+    // When the promise is resolved, get the informations about the user
+    getEmail().then(function () {
+        setUserName();
+
+        getAvatar("#avatar-header");
+        
+        // Select "Films" by default
+        moviesChoice($(".movies-content"));
+    });
 
 });
 

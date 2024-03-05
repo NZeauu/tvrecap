@@ -549,6 +549,14 @@ function checkVerifToken($conn, $token){
     }
 }
 
+/**
+ * Verify the user's account
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $token User's token generated for the account verification
+ * 
+ * @return boolean Returns true if the account is verified, false otherwise
+ */
 function verifAccount($conn, $token){
     try{
         $sql = "UPDATE Accounts
@@ -567,6 +575,149 @@ function verifAccount($conn, $token){
     }
 }
 
+/**
+ * Insert the session token in the database once the user is connected
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email
+ * @param string $token User's session token
+ * @param string $expiration_date Token's expiration date
+ * 
+ * @return boolean Returns true if the session token is inserted, false otherwise
+ */
+function insertSessionToken($conn, $email, $token, $expiration_date){
+    try{
+        $sql = "UPDATE Accounts
+                SET session_token = ?, session_expiration = ?
+                WHERE email = ?";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sss", $token, $expiration_date, $email);
+        $stmt->execute();
+
+        return true;
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+/**
+ * Check the user's session token
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $token User's session token
+ * @param string $page Page where the request is made (null if it's not a login page request)
+ * 
+ * @return string|boolean Returns the user's email if the token is in the database and the expiration date is not passed,
+ *                        Returns false otherwise and remove the token from the database
+ */
+function checkSessionToken($conn, $token, $page = null){
+    try{
+        $sql = "SELECT * FROM Accounts 
+                WHERE session_token = ?";
+                
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        if ($result->num_rows > 0) {
+            if($user['session_expiration'] > date("Y-m-d H:i:s", time())){
+
+                if($page == "login"){
+                    if($user['administrator'] == 1){
+                        return "admin";
+                    }
+                    else{
+                        return "user";
+                    }
+                }else{
+                    return $user['email'];
+                }
+            }
+            else{
+                removeSessionToken($conn, $user['email']);
+                return false;
+            }
+        }
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+/**
+ * Get the expiration date of the user's session token
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $token User's session token
+ * 
+ * @return string|boolean Returns the expiration date if the token is in the database, false otherwise
+ */
+function getSessionExpiration($conn, $token){
+    try{
+        $sql = "SELECT session_expiration FROM Accounts 
+                WHERE session_token = ?";
+                
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        if ($result->num_rows > 0) {
+            return $user['session_expiration'];
+        }
+        else {
+            return false;
+        } 
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+/**
+ * Remove the session token from the database
+ * 
+ * @param mysqli $conn Database connection object
+ * @param string $email User's email (null if the user wants to disconnect)
+ * @param string $token User's session token (null in other cases)
+ * 
+ * @return boolean Returns true if the token is removed, false otherwise
+ */
+function removeSessionToken($conn, $email, $token = null){
+    try{
+        if($email != null){
+            $sql = "UPDATE Accounts
+                SET session_token = NULL, session_expiration = NULL
+                WHERE email = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $email);
+        }
+        else{
+            $sql = "UPDATE Accounts
+                SET session_token = NULL, session_expiration = NULL
+                WHERE session_token = ?";
+
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $token);
+        }
+
+        $stmt->execute();
+
+        return true;
+    }
+    catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
 
 // ------------------------------------ //
 // -------------- SERIES -------------- //

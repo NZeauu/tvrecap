@@ -1,4 +1,4 @@
-import { getCookie, cookieCheck, setUserName, getAvatar, disconnect } from "./mainContent.js";
+import { cookieCheck, setUserName, getAvatar, getEmail, disconnect } from "./mainContent.js";
 
 // Check if the cookie is set every second
 setInterval(cookieCheck, 1000);
@@ -9,7 +9,7 @@ setInterval(cookieCheck, 1000);
 
 // Display the user's infos
 function displayInfos() {
-    var email = getCookie("user_mail");
+    var email = window.user_email;
 
     $.ajax('../php/settings.php/infos', {
         method: 'GET',
@@ -62,7 +62,7 @@ $(".edit-ico").click(function () {
 
 // Update the user's username
 function updateUsername() {
-    var email = getCookie("user_mail");
+    var email = window.user_email;
 
     $("#username-but").attr("style", "display: none;");
     $("#username-save").attr("style", "display: auto;");
@@ -95,7 +95,7 @@ function updateUsername() {
 
 // Update the user's birthday
 function updateBirthday() {
-    var email = getCookie("user_mail");
+    var email = window.user_email;
 
     $("#birthday-but").attr("style", "display: none;");
     $("#birthday-save").attr("style", "display: auto;");
@@ -128,7 +128,7 @@ function updateBirthday() {
 
 // Update the user's password
 function updatePassword() {
-    var email = getCookie("user_mail");
+    var email = window.user_email;
 
     $("#password-but").attr("style", "display: none;");
     $("#password-save").attr("style", "display: auto;");
@@ -161,7 +161,7 @@ function updatePassword() {
 
 // Update the user's avatar
 function updateAvatar() {
-    var email = getCookie("user_mail");
+    var email = window.user_email;
 
     openPopup();
 
@@ -222,10 +222,16 @@ $("#logout").click(function () {
 
 // When the page is loaded
 $(document).ready(function () {
-    setUserName();
 
-    getAvatar("#avatar-header");
+    // Get the user's mail
+    // When the promise is resolved, get the informations about the user
+    getEmail().then(function() {
+        // Get the user's name
+        setUserName();
 
-    displayInfos();
+        getAvatar("#avatar-header");
+
+        displayInfos();
+    });
 
 });

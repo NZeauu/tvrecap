@@ -1,4 +1,4 @@
-import { getCookie, cookieCheck, setUserName, getAvatar, disconnect } from "./mainContent.js";
+import { cookieCheck, setUserName, getAvatar, disconnect } from "./mainContent.js";
 
 // Check if the user is connected
 setInterval(cookieCheck, 1000);

@@ -1,4 +1,4 @@
-import { getCookie, cookieCheck, setUserName, getAvatar, disconnect } from "./mainContent.js";
+import { cookieCheck, setUserName, getAvatar, disconnect } from "./mainContent.js";
 
 // Check if the cookie is set every second
 setInterval(cookieCheck, 1000);
@@ -464,12 +464,6 @@ function createCard(data){
 
         // Append the serie card to the body of the document
         $('#list').append(serieCard);
-
-        // Wait for the image to be loaded
-        // $('#serie-card-img' + i).ready(function () {
-        //     $('#loading').remove();
-        //     serieCard.fadeIn(500);
-        // });
 
         setTimeout(function () {
             $('#loading').remove();

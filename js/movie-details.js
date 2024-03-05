@@ -1,7 +1,7 @@
-import { getCookie, cookieCheck, setUserName, getAvatar } from "./mainContent.js";
+import { cookieCheck, setUserName, getAvatar, getEmail } from "./mainContent.js";
 
 // Check if the cookie is set every second
-// setInterval(cookieCheck, 1000);
+setInterval(cookieCheck, 1000);
 
 // -------------------------------------------------------
 // ---------------------- MOVIE --------------------------
@@ -72,7 +72,7 @@ function checkWatchlist() {
     const movieId = urlParams.get('id');
 
     // Get the user's id from the cookie
-    var userMail = getCookie("user_mail");
+    var userMail = window.user_email;
 
     // Get the movie's details from the database
     $.ajax('../php/movie-details.php/checkwatchlist', {
@@ -102,7 +102,7 @@ function addToWatchlist() {
     const movieId = urlParams.get('id');
 
     // Get the user's id from the cookie
-    var userMail = getCookie("user_mail");
+    var userMail = window.user_email;
 
     // Get the movie's details from the database
     $.ajax('../php/movie-details.php/addwatchlist', {
@@ -125,7 +125,7 @@ function removeFromWatchlist() {
     const movieId = urlParams.get('id');
 
     // Get the user's id from the cookie
-    var userMail = getCookie("user_mail");
+    var userMail = window.user_email;
 
     // Get the movie's details from the database
     $.ajax('../php/movie-details.php/removewatchlist', {
@@ -145,22 +145,28 @@ function removeFromWatchlist() {
 
 // When the page is loaded
 $(document).ready(function () {
-    setUserName();
 
-    // Get the movie's details
-    getMovieDetails();
+    // Get the user's email
+    // When the promise is resolved, get the informations about the user
+    getEmail().then(function () {
+        setUserName();
 
-    getAvatar("#avatar-header");
+        // Get the movie's details
+        getMovieDetails();
 
-    // When the user clicks on the "seen" button
-    $("#not-seen-button").click(function () {
-        addToWatchlist();
+        getAvatar("#avatar-header");
+
+        // When the user clicks on the "seen" button
+        $("#not-seen-button").click(function () {
+            addToWatchlist();
+        });
+
+        // When the user clicks on the "seen" button
+        $("#seen-button").click(function () {
+            removeFromWatchlist();
+        });
     });
 
-    // When the user clicks on the "seen" button
-    $("#seen-button").click(function () {
-        removeFromWatchlist();
-    });
 });
 
 

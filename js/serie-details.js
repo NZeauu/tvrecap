@@ -1,4 +1,4 @@
-import { getCookie, cookieCheck, setUserName, getAvatar } from "./mainContent.js";
+import { cookieCheck, setUserName, getAvatar, getEmail } from "./mainContent.js";
 
 // Check if the cookie is set every second
 setInterval(cookieCheck, 1000);
@@ -119,7 +119,7 @@ function checkWatchlist() {
     const serieId = urlParams.get('id');
 
     // Get the user's id from the cookie
-    var userMail = getCookie("user_mail");
+    var userMail = window.user_email;
 
     // Get the serie's details from the database
     $.ajax('../php/serie-details.php/checkfullywatched', {
@@ -148,7 +148,7 @@ function checkEpisodeWatched(episodeNumber, seasonNumber) {
     const serieId = urlParams.get('id');
 
     // Get the user's id from the cookie
-    var userMail = getCookie("user_mail");
+    var userMail = window.user_email;
 
     // Get the serie's details from the database
     $.ajax('../php/serie-details.php/checkepwatched', {
@@ -185,7 +185,7 @@ $("#episodes").on("click", ".ep-seen", function () {
     var seasonNumber = $(".season-button[value='selected']").attr("id").substring(1);
 
     // Get the user's id from the cookie
-    var userMail = getCookie("user_mail");
+    var userMail = window.user_email;
 
     // Get the serie's id from the url
     const queryString = window.location.search;
@@ -217,7 +217,7 @@ $("#episodes").on("click", ".ep-not-seen", function () {
     var seasonNumber = $(".season-button[value='selected']").attr("id").substring(1);
 
     // Get the user's id from the cookie
-    var userMail = getCookie("user_mail");
+    var userMail = window.user_email;
 
     // Get the serie's id from the url
     const queryString = window.location.search;
@@ -403,22 +403,28 @@ $("#seasons").on("click", ".season-button", function () {
 
 // When the page is loaded
 $(document).ready(function () {
-    setUserName();
-    getAvatar("#avatar-header");
 
-    // Get the movie's details
-    getSerieDetails();
+    // Get the user's mail
+    // When the promise is resolved, get the informations about the user
+    getEmail().then(function () {
+        setUserName();
+        getAvatar("#avatar-header");
 
-    // Set the seasons buttons
-    createSeasonButtons();
+        // Get the movie's details
+        getSerieDetails();
 
-    // When the user clicks on the "seen" button
-    $(".not-seen-button").click(function () {
-        addToWatchlist();
+        // Set the seasons buttons
+        createSeasonButtons();
+
+        // When the user clicks on the "seen" button
+        $(".not-seen-button").click(function () {
+            addToWatchlist();
+        });
+
+        // When the user clicks on the "seen" button
+        $(".seen-button").click(function () {
+            removeFromWatchlist();
+        });
     });
-
-    // When the user clicks on the "seen" button
-    $(".seen-button").click(function () {
-        removeFromWatchlist();
-    });
+    
 });

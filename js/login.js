@@ -1,8 +1,20 @@
 // Check if the user cookie exists and if it does, redirect the user to the home page
 window.onload = function() {
-    if (document.cookie.indexOf("user_mail") !== -1) {
-        window.location.href = "../html/home.html";
-    }
+
+    // Check if the cookie is valid
+    $.ajax('../php/connect.php/cookieCheck', {
+        method: 'GET',
+        data: {
+            page: "login"
+        },
+    }).done(function (data) {
+        if (data === "admin") {
+            window.location.href = "../ad/html/adhome.html";
+        }
+        if (data === "user") {
+            window.location.href = "../html/home.html";
+        }
+    });
 };
 
 

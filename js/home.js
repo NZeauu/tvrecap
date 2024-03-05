@@ -1,4 +1,4 @@
-import { getCookie, cookieCheck, setUserName, getAvatar, disconnect } from "./mainContent.js";
+import { cookieCheck, setUserName, getAvatar, getEmail, disconnect } from "./mainContent.js";
 
 // Check if the cookie is set every second
 setInterval(cookieCheck, 1000);
@@ -10,7 +10,7 @@ setInterval(cookieCheck, 1000);
 
 // Get total time spent watching TV shows
 function getTotalTime() {
-    var email = getCookie("user_mail");
+    var email = window.user_email;
 
     if (email === null) {
         $("#time-passed").text("----");
@@ -82,7 +82,7 @@ function getTotalTime() {
 
 // Get the number of movies watched
 function getMoviesWatched() {
-    var email = getCookie("user_mail");
+    var email = window.user_email;
 
     if (email === null) {
         $("#movies-num").text("----");
@@ -114,7 +114,7 @@ function getMoviesWatched() {
 
 // Get the number of episodes watched
 function getEpisodesWatched() {
-    var email = getCookie("user_mail");
+    var email = window.user_email;
 
     if (email === null) {
         $("#episodes-num").text("----");
@@ -145,19 +145,23 @@ function getEpisodesWatched() {
 }
 
 $(document).ready(function () {
-    // Get the user's name
-    setUserName();
+    // Get the user's mail
+    // When the promise is resolved, get the informations about the user
+    getEmail().then(function() {
+        // Get the user's name
+        setUserName();
 
-    getAvatar("#avatar-header");
+        getAvatar("#avatar-header");
 
-    // Get the number of movies watched
-    getMoviesWatched();
+        // Get the number of movies watched
+        getMoviesWatched();
 
-    // Get the number of episodes watched
-    getEpisodesWatched();
+        // Get the number of episodes watched
+        getEpisodesWatched();
 
-    // Get total time spent watching TV shows
-    getTotalTime();
+        // Get total time spent watching TV shows
+        getTotalTime();
+    });
 });
 
 // -------------------------------------------------------

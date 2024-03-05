@@ -59,7 +59,9 @@ CREATE TABLE `Accounts`(
     `reset_token_hash` VARCHAR(64) DEFAULT NULL,
     `reset_token_expiration` DATETIME DEFAULT NULL,
     `verified` BOOLEAN NOT NULL DEFAULT FALSE,
-    `verification_token` VARCHAR(64) DEFAULT NULL
+    `verification_token` VARCHAR(64) DEFAULT NULL,
+    `session_token` VARCHAR(64) DEFAULT NULL,
+    `session_expiration` DATETIME DEFAULT NULL
 );
 ALTER TABLE
     `Accounts` ADD INDEX `accounts_id_index`(`id`);

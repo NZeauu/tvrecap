@@ -2,35 +2,55 @@
 // --------------------- COOKIES -------------------------
 // -------------------------------------------------------
 
+window.expireSession = "";
+
+// Get the expiration date of the cookie
+function getExpirationDate() {
+
+    $.ajax('../../php/user.php/cookieCheck', {
+        method: 'GET',
+    }).done(function (data) {
+        if (data !== "false") {
+            window.expireSession = data;
+        }
+    });
+
+}
+
+getExpirationDate();
+
+
 // Cookie check
 export function cookieCheck() {
 
-    if(document.cookie.indexOf("user_mail") === -1) {
+    var today = new Date();
+    var expire = new Date(window.expireSession);
 
-        // Redirect to the login page
-        window.location.replace("../../html/login.html");
+    if (today > expire) {
+        disconnect(true);
     }
 }
 
-// Check if the cookie is set and redirect to the login page if not
-// cookieCheck();
 
+// -------------------------------------------------------
+// ----------------------- USER --------------------------
+// -------------------------------------------------------
+export function getEmail() {
+    // Get the user's email from the token
+    // Create a promise to wait for the email to be retrieved before doing anything else
+    return new Promise((resolve, reject) => {
 
-
-// Get the user's name from the cookie
-export function getCookie(cookieName) {
-    const name = cookieName + "=";
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const cookieArray = decodedCookie.split(';');
-
-    for (let i = 0; i < cookieArray.length; i++) {
-        let cookie = cookieArray[i].trim();
-        if (cookie.indexOf(name) === 0) {
-            return cookie.substring(name.length, cookie.length);
-        }
-    }
+        $.ajax('../../php/user.php/email', {
+            method: 'GET',
+        }).done(function (data) {
+            window.user_email = data;
+            resolve(data);
+        }).fail(function (error) {
+            reject(error);
+        });
+    });
+ 
 }
-
 
 // -------------------------------------------------------
 // --------------------- NAVBAR -------------------------
@@ -38,17 +58,9 @@ export function getCookie(cookieName) {
 
 // Set the user's name in the navbar
 export function setUserName() {
-    var email = getCookie("user_mail");
-
-    if (email === null) {
-        $("#username").text("User not found");
-    }
 
     $.ajax('../../php/user.php/username', {
         method: 'GET',
-        data: {
-            email: email
-        },
     }).done(function (data) {
         $("#username").text(data);
     });
@@ -56,22 +68,26 @@ export function setUserName() {
 
 // Get the user's avatar
 export function getAvatar(idImage) {
-    var email = getCookie("user_mail");
 
     $.ajax('../../php/user.php/avatar', {
         method: 'GET',
-        data: {
-            email: email
-        },
     }).done(function (data) {
         $(idImage).attr("src", data);
     });
 }
 
 // Disconnect the user
-export function disconnect() {
+export function disconnect(expire = false) {
     // Delete the cookie
-    document.cookie = "user_mail=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    // Redirect to the login page
-    window.location.replace("../../html/login.html");
+    if (expire){
+        window.location.replace("../../html/login.html");
+    }else{
+        // Delete the cookie
+        $.ajax('../php/user.php/disconnect', {
+            method: 'GET',
+        }).done(function (data) {
+            // Redirect to the login page
+            window.location.replace("../../html/login.html");  
+        });
+    }
 }

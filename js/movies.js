@@ -1,4 +1,4 @@
-import { getCookie, cookieCheck, setUserName, getAvatar, disconnect } from "./mainContent.js";
+import { cookieCheck, setUserName, getAvatar, disconnect } from "./mainContent.js";
 
 // Check if the cookie is set every second
 setInterval(cookieCheck, 1000);
@@ -315,11 +315,6 @@ function createCard(data){
         $('#list').append(movieCard);
 
         // Wait for the image to be loaded
-        // $('#movie-card-img' + i).ready(function () {
-        //     $('#loading').remove();
-        //     movieCard.fadeIn(500);
-        // });
-
         setTimeout(function () {
             $('#loading').remove();
             movieCard.fadeIn(500);

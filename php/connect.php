@@ -52,14 +52,30 @@ if($requestResource == "login"){
 
         $data = connectionAccount($db, $email, $password);
 
-        // Create a cookie session with the user id
+        // Create a cookie session with the user token and save the token in the database
         if($data){
+
+            // Generate a token
+            $token = bin2hex(random_bytes(16));
+
+            // Hash the token
+            $token_hash = hash('sha256', $token);
 
             // If the user wants to stay connected keep the cookie for 30 days else keep it for 1 hour
             if($rememberme == "true"){
-                setcookie('user_mail', $email, time() + 60*60*24*30, '/');
+
+                // Insert the token in the database
+                insertSessionToken($db, $email, $token_hash, date('Y-m-d H:i:s', time() + 3600 * 24 * 30));
+                
+                // Create a cookie session with the token with secure and httpOnly attributes and a strict policy
+                setcookie('USERSESSION', $token_hash, time() + 3600 * 24 * 30, '/', "epeigne.fr", true, true);
             }else{
-                setcookie('user_mail', $email, time() + 3600, '/');
+
+                // Insert the token in the database
+                insertSessionToken($db, $email, $token_hash, date('Y-m-d H:i:s', time() + 3600));
+
+                // Create a cookie session with the token with secure and httpOnly attributes and a strict policy
+                setcookie('USERSESSION', $token_hash, time() + 3600, '/', "epeigne.fr", true, true);
             }
             
         }
@@ -67,6 +83,25 @@ if($requestResource == "login"){
     }
 
 }
+
+if($requestResource == "cookieCheck"){
+    $data = false;
+
+    if($requestMethod == "GET"){
+
+        // Get the data from the request
+        if(isset($_COOKIE['USERSESSION'])){
+            $token = $_COOKIE['USERSESSION'];
+
+            $page = $_GET['page'];
+    
+            $data = checkSessionToken($db, $token, $page);
+        }
+
+    }
+
+}
+
 
 if($requestResource == 'resetPass'){
     $data = false;

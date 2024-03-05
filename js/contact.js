@@ -1,8 +1,7 @@
-import { getCookie, cookieCheck, setUserName, getAvatar, disconnect } from "./mainContent.js";
+import { cookieCheck, setUserName, getAvatar, getEmail, disconnect } from "./mainContent.js";
 
 // Check if user is connected
 setInterval(cookieCheck, 1000);
-
 
 // -------------------------------------------------------
 // -------------------- CONTACT PAGE ---------------------
@@ -10,7 +9,7 @@ setInterval(cookieCheck, 1000);
 
 // Fill the username input with the username of the connected user
 function fillUsername() {
-    var email = getCookie("user_mail");
+    var email = window.user_email;
 
     $.ajax("../php/contact.php/username", {
         type: "GET",
@@ -78,11 +77,15 @@ $("#logout").click(function () {
 
 // When the page is loaded
 $(document).ready(function () {
-    setUserName();
 
-    fillUsername();
+    // When the promise is resolved, get the informations about the user
+    getEmail().then(function() {
+        setUserName();
 
-    $("#email").val(getCookie("user_mail"));
+        fillUsername();
 
-    getAvatar("#avatar-header");
+        $("#email").val(window.user_email);
+
+        getAvatar("#avatar-header");
+    });
 });
