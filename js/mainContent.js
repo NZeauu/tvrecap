@@ -55,6 +55,26 @@ export function getAvatar(idImage) {
 }
 
 // -------------------------------------------------------
+// ----------------------- USER --------------------------
+// -------------------------------------------------------
+export function getEmail() {
+    // Get the user's email from the token
+    // Create a promise to wait for the email to be retrieved before doing anything else
+    return new Promise((resolve, reject) => {
+
+        $.ajax('../php/user.php/email', {
+            method: 'GET',
+        }).done(function (data) {
+            window.user_email = data;
+            resolve(data);
+        }).fail(function (error) {
+            reject(error);
+        });
+    });
+ 
+}
+
+// -------------------------------------------------------
 // ---------------------- LOGOUT -------------------------
 // -------------------------------------------------------
 
