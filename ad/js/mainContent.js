@@ -80,14 +80,14 @@ export function getAvatar(idImage) {
 export function disconnect(expire = false) {
     // Delete the cookie
     if (expire){
-        window.location.replace("../../html/login.html");
+        window.location.replace("https://tvrecap.epeigne.fr");
     }else{
         // Delete the cookie
         $.ajax('../../php/user.php/disconnect', {
             method: 'GET',
         }).done(function (data) {
             // Redirect to the login page
-            window.location.replace("../../html/login.html");  
+            window.location.replace("https://tvrecap.epeigne.fr");  
         });
     }
 }

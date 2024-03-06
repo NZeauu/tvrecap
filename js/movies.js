@@ -293,7 +293,7 @@ function createCard(data){
 
         const movieDetailsButton = $('<div>').attr('class', 'movie-details-but');
         const detailsButton = $('<button>').attr('class', 'movie-details-button').text('Détails');
-        detailsButton.attr('onclick', 'window.location.href = "movie-details.html?id=' + data[i].id + '";');
+        detailsButton.attr('onclick', 'window.location.href = "https://tvrecap.epeigne.fr/movieDetails?id=' + data[i].id + '";');
         detailsButton.attr('value', data[i].id);
         movieDetailsButton.append(detailsButton);
 

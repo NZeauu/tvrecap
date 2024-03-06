@@ -15,8 +15,8 @@ $("#return").on("click", function () {
     console.log(previousPage);
 
     // If the previous page is the history page redirect to it else go back to the previous page
-    if(previousPage == "https://epeigne.frstud.fr/tvrecap/html/history.html"){
-        window.location.replace("history.html");
+    if(previousPage == "https://tvrecap.epeigne.fr/history"){
+        window.location.replace("https://tvrecap.epeigne.fr/history");
     }
     else{
         window.history.back();

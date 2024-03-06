@@ -44,6 +44,23 @@ $mail->Password = 'your password';
 $mail->SMTPSecure = 'tls';
 $mail->Port = 587;
 ```
+8. Be careful, the site redirections use the `RewriteEngine` module of Apache. You need to enable it and configure each page in your configuration file. You will also need to change the redirections in html and JS files to match your domain.
+Here are the lines to add:
+```
+    RewriteEngine On
+    RewriteRule ^/register$ /html/register.html [L]
+    RewriteRule ^/add$ /html/add.html [L]
+    RewriteRule ^/movies$ /html/movies.html [L]
+    RewriteRule ^/series$ /html/series.html [L]
+    RewriteRule ^/settings$ /html/settings.html [L]
+    RewriteRule ^/home$ /html/home.html [L]
+    RewriteRule ^/contact$ /html/contact.html [L]
+    RewriteRule ^/history$ /html/history.html [L]
+    RewriteRule ^/resetPass$ /html/reset-password.html [L]
+    RewriteRule ^/verifyAccount$ /html/verifaccount.html [L]
+    RewriteRule ^/movieDetails$ /html/movie-details.html [L]
+    RewriteRule ^/serieDetails$ /html/serie-details.html [L]
+```	
 
 ## Features to add
 - [X] Add SMTP functionality to send verification email on account creation
