@@ -61,7 +61,8 @@ CREATE TABLE `Accounts`(
     `verified` BOOLEAN NOT NULL DEFAULT FALSE,
     `verification_token` VARCHAR(64) DEFAULT NULL,
     `session_token` VARCHAR(64) DEFAULT NULL,
-    `session_expiration` DATETIME DEFAULT NULL
+    `session_expiration` DATETIME DEFAULT NULL,
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 ALTER TABLE
     `Accounts` ADD INDEX `accounts_id_index`(`id`);

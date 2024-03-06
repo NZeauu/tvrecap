@@ -48,6 +48,13 @@
         <div id="users-list">
             <h1>Gérer les utilisateurs</h1>
             <div id="sep"></div>
+            <div id="filter">
+                <select id="filter-select">
+                    <option value="all">Tous les utilisateurs</option>
+                    <option value="verified">Comptes vérifiés</option>
+                    <option value="notverified">Comptes non vérifiés</option>
+                </select>
+            </div>
             <table id="users-table">
                 <thead>
                     <tr>
@@ -55,6 +62,8 @@
                         <th>Nom d'Utilisateur</th>
                         <th>Email</th>
                         <th>Date de naissance</th>
+                        <th>Compte vérifié?</th>
+                        <th>Date d'inscription</th>
                         <th>Modifier</th>
                         <th>Supprimer</th>
                     </tr>

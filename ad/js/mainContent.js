@@ -83,7 +83,7 @@ export function disconnect(expire = false) {
         window.location.replace("../../html/login.html");
     }else{
         // Delete the cookie
-        $.ajax('../php/user.php/disconnect', {
+        $.ajax('../../php/user.php/disconnect', {
             method: 'GET',
         }).done(function (data) {
             // Redirect to the login page

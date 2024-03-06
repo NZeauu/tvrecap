@@ -10,7 +10,6 @@ function addRow(){
     $.ajax('../php/adusers.php/getUsers', {
         type: 'GET',
         success: function (data) {
-            console.log(data);
             for (var i = 0; i < data.length; i++) {
                 var row = $("<tr></tr>");
 
@@ -33,13 +32,33 @@ function addRow(){
 
                 var birthday = $("<td></td>");
                 if(data[i].birthday != null){
-                    birthday.text(data[i].birthday);
+                    var bithValue = data[i].birthday.split("-");
+                    var birthdayValue = bithValue[2] + "/" + bithValue[1] + "/" + bithValue[0];
+                    birthday.text(birthdayValue);
                 }
                 else{
                     birthday.text("Non renseigné");
                 }
                 birthday.attr("id", "birthday" + data[i].id);
                 row.append(birthday);
+
+                var verified = $("<td></td>");
+                if(data[i].verified == 1){
+                    verified.text("Oui");
+                }
+                else{
+                    verified.text("Non");
+                }
+                verified.attr("id", "verified" + data[i].id);
+                row.append(verified);
+
+                var created_at = $("<td></td>");
+                var date = data[i].created_at.split(" ");
+                var dateValue = date[0].split("-");
+                var dateValue = dateValue[2] + "/" + dateValue[1] + "/" + dateValue[0];
+                created_at.text(dateValue);
+                created_at.attr("id", "created_at" + data[i].id);
+                row.append(created_at);
 
                 var updateButton = $("<td></td>");
                 var update = $("<button></button>").text("Modifier");
@@ -80,8 +99,9 @@ $(document).on("click", ".delete", function () {
             email: email
         },
         success: function (data) {
-            console.log(data);
+            // console.log(data);
             $("#users").empty();
+            $("#filter-select").val("all");
             addRow();
         },
         error: function (data) {
@@ -158,14 +178,35 @@ $(document).on("click", ".validate", function () {
             email: newEmail
         },
         success: function (data) {
-            console.log(data);
+            // console.log(data);
             $("#users").empty();
+            $("#filter-select").val("all");
             addRow();
         },
         error: function (data) {
             console.log(data);
         }
     });
+});
+
+$("#filter-select").on("change", function(){
+    var value = $("#filter-select").val();
+    var table = $("#users");
+    var tr = table.find("tr");
+    for (var i = 0; i < tr.length; i++) {
+        var td = tr[i].getElementsByTagName("td")[4];
+        if (td) {
+            if (td.textContent == "Oui" && value == "verified") { // If the user is verified and the filter is on "verified"
+                tr[i].style.display = "";
+            } else if (td.textContent == "Non" && value == "notverified") { // If the user is not verified and the filter is on "not-verified"
+                tr[i].style.display = "";
+            } else if (value == "all") { // If the filter is on "all"
+                tr[i].style.display = "";
+            } else { // If the user is not verified and the filter is on "verified" or if the user is verified and the filter is on "not-verified"
+                tr[i].style.display = "none";
+            }
+        }
+    }
 });
 
 
