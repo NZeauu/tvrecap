@@ -68,14 +68,14 @@ if($requestResource == "login"){
                 insertSessionToken($db, $email, $token_hash, date('Y-m-d H:i:s', time() + 3600 * 24 * 30));
                 
                 // Create a cookie session with the token with secure and httpOnly attributes and a strict policy
-                setcookie('USERSESSION', $token_hash, time() + 3600 * 24 * 30, '/', "epeigne.fr", true, true);
+                setcookie('USERSESSION', $token_hash, time() + 3600 * 24 * 30, '/', "tvrecap.epeigne.fr", true, true);
             }else{
 
                 // Insert the token in the database
                 insertSessionToken($db, $email, $token_hash, date('Y-m-d H:i:s', time() + 3600));
 
                 // Create a cookie session with the token with secure and httpOnly attributes and a strict policy
-                setcookie('USERSESSION', $token_hash, time() + 3600, '/', "epeigne.fr", true, true);
+                setcookie('USERSESSION', $token_hash, time() + 3600, '/', "tvrecap.epeigne.fr", true, true);
             }
             
         }
@@ -165,7 +165,7 @@ if($requestResource == 'resetPass'){
                                 <h3>Réinitialisation de votre mot de passe TVRecap</h3>
                                 <p>Bonjour,</p>
                                 <p>Vous avez demandé à réinitialiser votre mot de passe. Veuillez cliquer sur le lien ci-dessous pour le réinitialiser.</p>
-                                <p>Link: <a href="https://epeigne.fr/tvrecap/html/reset-password.html?token=' . $token . '">Réinitialiser mon mot de passe</a></p>
+                                <p>Link: <a href="https://tvrecap.epeigne.fr/resetPass?token=' . $token . '">Réinitialiser mon mot de passe</a></p>
                                 <p>Une fois le mot de passe réinitialisé, vous pourrez vous connecter à votre compte avec le nouveau mot de passe.</p>
                                 <p>Merci de votre confiance.</p>
                                 <p>L\'équipe TVRecap</p>
@@ -228,7 +228,7 @@ if($requestResource == 'resendMail'){
             $subject = 'Vérification de votre compte TVRecap';
             $message = "Bonjour,\n\n";
             $message .= "Merci de vous être inscrit sur TVRecap. Pour valider votre compte, veuillez cliquer sur le lien suivant : \n";
-            $message .= "https://epeigne.fr/tvrecap/html/verifaccount.html?token=" . $token . "\n\n";
+            $message .= "https://tvrecap.epeigne.fr/verifyAccount?token=" . $token . "\n\n";
             $message .= "Une fois votre compte validé, vous pourrez vous connecter à votre compte TVRecap.\n\n";
             $message .= "Merci de votre confiance.\n\n";
             $message .= "L'équipe TVRecap";

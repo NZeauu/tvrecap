@@ -111,7 +111,7 @@ function login(){
                                 window.location.href = "../ad/html/adhome.html";
                             }
                             if(data == "user"){
-                                window.location.href = "../html/home.html";
+                                window.location.href = "https://tvrecap.epeigne.fr/home";
                             }
                         }else{
                             $("#passwordinput").css("border-color", "#ff0000");

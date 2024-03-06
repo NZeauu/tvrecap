@@ -42,7 +42,7 @@ $("#contact-submit").click(function () {
             },
             success: function (data) {
                 alert(data.msg);
-                window.location.href = "../html/home.html";
+                window.location.href = "https://tvrecap.epeigne.fr/home";
             }
         });
     }

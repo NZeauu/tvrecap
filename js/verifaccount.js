@@ -38,7 +38,7 @@ $(document).ready(function() {
                     $("#verif").css('display', 'flex');
                 } else {
                     alert("Erreur lors de la vérification de votre compte");
-                    window.location.href = "../html/login.html";
+                    window.location.href = "https://tvrecap.epeigne.fr/";
                 }
             });
         }

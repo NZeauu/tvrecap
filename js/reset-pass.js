@@ -1,10 +1,12 @@
 // Check if the token exists in the URL
 var url = window.location.href;
-var token = url.split("?")[1];
-if(!token){
-    // window.location.href = "../html/login.html";
+
+// If the token doesn't exist, redirect to the home page
+if(url.indexOf("?") == -1){
+    window.location.href = "https://tvrecap.epeigne.fr/";
 }
 
+var token = url.split("?")[1];
 var userToken = token.split("=")[1];
 
 // Check if the token is valid
@@ -15,7 +17,7 @@ $.ajax('../php/reset-pass.php/checkToken', {
 }).done(function(data){
     if(!data){
         alert("Votre lien de réinitialisation de mot de passe est invalide ou a expiré.");
-        window.location.href = "../html/login.html";
+        window.location.href = "https://tvrecap.epeigne.fr/";
     }
     else{
         $("#tokenValid").css("display", "block");
@@ -60,7 +62,7 @@ $("#resetbutton").on("click", function(){
             }).done(function(data){
                 if(data){
                     alert("Votre mot de passe a été réinitialisé avec succès.");
-                    window.location.href = "../html/login.html";
+                    window.location.href = "https://tvrecap.epeigne.fr/";
                 }
                 else{
                     alert("Erreur lors de la réinitialisation du mot de passe.");

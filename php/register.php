@@ -94,7 +94,7 @@ if($requestResource == "register"){
                             <div>
                                 <p>Bonjour,</p>
                                 <p>Merci de vous être inscrit sur TVRecap. Pour valider votre compte, veuillez cliquer sur le lien suivant :</p>
-                                <a href="https://epeigne.fr/tvrecap/html/verifaccount.html?token=' . $token . '">Valider mon compte</a>
+                                <a href="https://tvrecap.epeigne.fr/verifyAccount?token=' . $token . '">Valider mon compte</a>
                                 <p>Une fois votre compte validé, vous pourrez vous connecter à votre compte TVRecap.</p>
                                 <p>Merci de votre confiance.</p>
                                 <p>L\'équipe TVRecap</p>
