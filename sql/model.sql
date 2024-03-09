@@ -55,7 +55,7 @@ CREATE TABLE `Accounts`(
     `password` VARCHAR(255) NOT NULL,
     `birthday` DATE DEFAULT NULL,
     `avatar` VARCHAR(50) NOT NULL DEFAULT '../img/avatars/default.svg',
-    `administrator` BOOLEAN NOT NULL DEFAULT FALSE,*
+    `administrator` BOOLEAN NOT NULL DEFAULT FALSE,
     `reset_token_hash` VARCHAR(64) DEFAULT NULL,
     `reset_token_expiration` DATETIME DEFAULT NULL,
     `verified` BOOLEAN NOT NULL DEFAULT FALSE,
