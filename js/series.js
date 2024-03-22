@@ -78,6 +78,7 @@ function getSeriesLength() {
         // console.log(data);
         var nbpages = Math.ceil(data / 25);
         window.nbpages = nbpages;
+        window.allpages = nbpages;
         pagination();
     });
 }
@@ -289,6 +290,7 @@ $("#reset-button").click(function () {
     $("#seasons").val("all");
     $("#sorting-select").val("title_asc");
     window.page = 1;
+    window.nbpages = window.allpages;
     pagination();
     getAllSeries();
 });

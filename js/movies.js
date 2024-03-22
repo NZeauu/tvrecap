@@ -187,6 +187,8 @@ $("#reset-button").click(function () {
     $("#year").val("all");
     $("#sorting-select").val("title_asc");
     window.page = 1;
+    window.nbpages = window.allpages;
+    pagination();
     getAllMovies();
 });
 
@@ -338,6 +340,7 @@ function getMoviesLength() {
         var nbpages = Math.ceil(data / 25);
         // Create a global variable to store the number of pages
         window.nbpages = nbpages;
+        window.allpages = nbpages;
         pagination();
     });
 }

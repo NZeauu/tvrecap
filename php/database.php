@@ -734,8 +734,11 @@ function removeSessionToken($conn, $email, $token = null){
  */
 function getAllSeries($conn, $sorting, $maxrow){
     try{
-        $sql = "SELECT * FROM Séries ORDER BY $sorting LIMIT $maxrow, 25";
-        $result = $conn->query($sql);
+        $sql = "SELECT * FROM Séries ORDER BY ? LIMIT ?, 25";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $sorting, $maxrow);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $series = array();
@@ -771,82 +774,82 @@ function getAllSeries($conn, $sorting, $maxrow){
  */
 function getFilteredSeries($conn, $seasons, $category, $duration, $year, $sorting, $maxrow){
     try{
+            
+        // Prepare the SQL query
+        $sql = "SELECT * FROM Séries WHERE nb_saisons <= ? AND categorie LIKE ?";
 
-        // If the user didn't select a number of seasons, we select all the seasons
-        if ($seasons != "all"){
+        // Prepare the parameters
+        $params = array();
 
-            // Number of seasons less than 2
-            if ($seasons == "2"){
-                $seasons = "nb_saisons <= '2'";
-            }
+        // Prepare the types of parameters
+        $params_type = "is";
 
-            // Number of seasons between 2 and 5
-            else if ($seasons == "5"){
-                $seasons = "nb_saisons > '2' AND nb_saisons <= '5'";
-            }
-
-            // Number of seasons more than 5
-            else if ($seasons == "999"){
-                $seasons = "nb_saisons > '5'";
-            }
+        // Selection of seasons parameter
+        if ($seasons == "2"){
+            $params[] = 2;
+        }
+        else if ($seasons == "5"){
+            $params[] = 5;
+        }
+        else if ($seasons == "999"){
+            $params[] = 999;
         }
         else{
-            $seasons = "1";
+            $params[] = 9999;
         }
 
-        // If the user didn't select a duration, we select all the durations
-        if ($duration != "all"){
-
-            // Duration less than 30 min
-            if ($duration == "30"){
-                $duration = "id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) <= 30)";
-            }
-
-            // Duration between 30 min and 1 hour
-            else if ($duration == "60"){
-                $duration = "id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) > 30 AND AVG(duree) <= 60)";
-            }
-
-            // Duration more than 1 hours
-            else if ($duration == "999"){
-                $duration = "id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) > 60)";
-            }
-        }
-        else{
-            $duration = "1";
-        }
-
-        // If the user didn't select a category, we select all the categories
         if ($category != "all"){
-            $category = "categorie LIKE '%$category%'";
+            $params[] = "%$category%";
         }
         else{
-            $category = "1";
+            $params[] = "%";
         }
 
-        // If the user didn't select a year, we select all the years
-        if ($year != "all"){
-
-            // Get actual year
-            $actual_year = date("Y");
-
-            $min_year = $actual_year - 51;
-
-            if ($year == $min_year){
-                $year = "date_sortie <= '$min_year'";
+        // Selection of duration parameter
+        if($duration != "all"){
+            if ($duration == "30"){
+                $sql .= " AND id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) <= 30)";
             }
-            else{
-                $year = "date_sortie = '$year'";
-            }        
-
+            else if ($duration == "60"){
+                $sql .= " AND id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) > 30 AND AVG(duree) <= 60)";
+            }
+            else if ($duration == "999"){
+                $sql .= " AND id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) > 60)";
+            }
         }
-        else{
-            $year = "1";
+
+        // Selection of year parameter
+        if($year != "all"){
+            $sql .= " AND date_sortie = ?";
+            $params[] = $year;
+            $params_type .= "i";
         }
 
-        $sql = "SELECT * FROM Séries WHERE $seasons AND $category AND $duration AND $year ORDER BY $sorting LIMIT $maxrow, 25";
+        switch($sorting){
+            case "nom ASC":
+                $sql .= " ORDER BY nom ASC";
+                break;
+            case "nom DESC":
+                $sql .= " ORDER BY nom DESC";
+                break;
+            case "date ASC":
+                $sql .= " ORDER BY date_sortie ASC";
+                break;
+            case "date DESC":
+                $sql .= " ORDER BY date_sortie DESC";
+                break;
+            default:
+                break;
+        }
 
-        $result = $conn->query($sql);
+        $sql .= " LIMIT ?, 25";
+        $params[] = $maxrow;
+        $params_type .= "i";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param($params_type, ...$params);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $series = array();
@@ -864,7 +867,6 @@ function getFilteredSeries($conn, $seasons, $category, $duration, $year, $sortin
     catch(PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
-
 }
 
 /**
@@ -987,88 +989,72 @@ function getSeriesLength($conn){
  * @param string $year Year selected by the user
  * 
  * @return int Returns the amount of filtered series in the database
- */
+*/
 function getFilteredSeriesLength($conn, $seasons, $category, $duration, $year){
     try{
+        // Prepare the SQL query
+        $sql = "SELECT COUNT(*) FROM Séries WHERE nb_saisons <= ? AND categorie LIKE ?";
 
-        // If the user didn't select a number of seasons, we select all the seasons
-        if ($seasons != "all"){
+        // Prepare the parameters
+        $params = array();
 
-            // Number of seasons less than 2
-            if ($seasons == "2"){
-                $seasons = "nb_saisons <= '2'";
-            }
+        // Prepare the types of parameters
+        $params_type = "is";
 
-            // Number of seasons between 2 and 5
-            else if ($seasons == "5"){
-                $seasons = "nb_saisons > '2' AND nb_saisons <= '5'";
-            }
-
-            // Number of seasons more than 5
-            else if ($seasons == "999"){
-                $seasons = "nb_saisons > '5'";
-            }
+        // Selection of seasons parameter
+        if ($seasons == "2"){
+            $params[] = 2;
+        }
+        else if ($seasons == "5"){
+            $params[] = 5;
+        }
+        else if ($seasons == "999"){
+            $params[] = 999;
         }
         else{
-            $seasons = "1";
+            $params[] = 9999;
         }
 
-        // If the user didn't select a duration, we select all the durations
-        if ($duration != "all"){
-
-            // Duration less than 30 min
-            if ($duration == "30"){
-                $duration = "id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) <= 30)";
-            }
-
-            // Duration between 30 min and 1 hour
-            else if ($duration == "60"){
-                $duration = "id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) > 30 AND AVG(duree) <= 60)";
-            }
-
-            // Duration more than 1 hours
-            else if ($duration == "999"){
-                $duration = "id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) > 60)";
-            }
-        }
-        else{
-            $duration = "1";
-        }
-
-        // If the user didn't select a category, we select all the categories
         if ($category != "all"){
-            $category = "categorie LIKE '%$category%'";
+            $params[] = "%$category%";
         }
         else{
-            $category = "1";
+            $params[] = "%";
         }
 
-        // If the user didn't select a year, we select all the years
-        if ($year != "all"){
-
-            // Get actual year
-            $actual_year = date("Y");
-
-            $min_year = $actual_year - 51;
-
-            if ($year == $min_year){
-                $year = "date_sortie <= '$min_year'";
+        // Selection of duration parameter
+        if($duration != "all"){
+            if ($duration == "30"){
+                $sql .= " AND id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) <= 30)";
             }
-            else{
-                $year = "date_sortie = '$year'";
+            else if ($duration == "60"){
+                $sql .= " AND id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) > 30 AND AVG(duree) <= 60)";
             }
-
+            else if ($duration == "999"){
+                $sql .= " AND id IN (SELECT serie_id FROM Episodes GROUP BY serie_id HAVING AVG(duree) > 60)";
+            }
         }
-        else{
-            $year = "1";
+
+        // Selection of year parameter
+        if($year != "all"){
+            $sql .= " AND date_sortie = ?";
+            $params[] = $year;
+            $params_type .= "i";
         }
 
-        $sql = "SELECT COUNT(*) FROM Séries WHERE $seasons AND $category AND $duration AND $year";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param($params_type, ...$params);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-        $result = $conn->query($sql);
-        $row = $result->fetch_assoc();
-        $conn->close();
-        return $row['COUNT(*)'];
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['COUNT(*)'];
+        }
+        else {
+            return null;
+        }
+
     }
     catch(PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -1131,8 +1117,30 @@ function getSeasonEpisodes($conn, $id_serie, $season){
  */
 function getAllMovies($conn, $sorting, $maxrow){
     try{
-        $sql = "SELECT * FROM Films ORDER BY $sorting LIMIT $maxrow, 25";
-        $result = $conn->query($sql);
+        $sql = "SELECT * FROM Films";
+
+        switch($sorting){
+            case "nom ASC":
+                $sql .= " ORDER BY nom ASC";
+                break;
+            case "nom DESC":
+                $sql .= " ORDER BY nom DESC";
+                break;
+            case "date_sortie ASC":
+                $sql .= " ORDER BY date_sortie ASC";
+                break;
+            case "date_sortie DESC":
+                $sql .= " ORDER BY date_sortie DESC";
+                break;
+            default:
+                break;
+        }
+
+        $sql .= " LIMIT ?, 25";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $maxrow);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $movies = array();
@@ -1167,60 +1175,74 @@ function getAllMovies($conn, $sorting, $maxrow){
  */
 function getFilteredMovies($conn, $category, $duration, $year, $sorting, $maxrow){
     try{
+        // Prepare the SQL query
+        $sql = "SELECT * FROM Films WHERE categorie LIKE ?";
 
-        // If the user didn't select a category, we select all the categories
+        // Prepare the parameters
+        $params = array();
+
+        // Prepare the types of parameters
+        $params_type = "s";
+
+        // Selection of category parameter
         if ($category != "all"){
-            $category = "categorie LIKE '%$category%'";
+            $params[] = "%$category%";
         }
         else{
-            $category = "1";
+            $params[] = "%";
         }
 
-        // If the user didn't select a duration, we select all the durations
-        if ($duration != "all"){
-
-            // Duration less than 1 hour
+        // Selection of duration parameter
+        if($duration != "all"){
             if ($duration == "60"){
-                $duration = "duree <= '60'";
+                $params[] = 60;
+                $sql .= " AND duree <= ?";
+                $params_type .= "i";
             }
-
-            // Duration between 1 hour and 2 hours
             else if ($duration == "120"){
-                $duration = "duree > '60' AND duree <= '120'";
+                $params[] = 120;
+                $sql .= " AND duree > 60 AND duree <= ?";
+                $params_type .= "i";
             }
-
-            // Duration more than 2 hours
             else if ($duration == "999"){
-                $duration = "duree > '120'";
+                $params[] = 120;
+                $sql .= " AND duree > ?";
+                $params_type .= "i";
             }
         }
-        else{
-            $duration = "1";
+
+        // Selection of year parameter
+        if($year != "all"){
+            $params[] = $year;
+            $sql .= " AND date_sortie = ?";
+            $params_type .= "i";
         }
 
-        // If the user didn't select a year, we select all the years
-        if ($year != "all"){
-
-            // Get actual year
-            $actual_year = date("Y");
-
-            $min_year = $actual_year - 51;
-
-            if ($year == $min_year){
-                $year = "date_sortie <= '$min_year'";
-            }
-            else{
-                $year = "date_sortie = '$year'";
-            }        
-
-        }
-        else{
-            $year = "1";
+        switch($sorting){
+            case "nom ASC":
+                $sql .= " ORDER BY nom ASC";
+                break;
+            case "nom DESC":
+                $sql .= " ORDER BY nom DESC";
+                break;
+            case "date ASC":
+                $sql .= " ORDER BY date_sortie ASC";
+                break;
+            case "date DESC":
+                $sql .= " ORDER BY date_sortie DESC";
+                break;
+            default:
+                break;
         }
 
-        $sql = "SELECT * FROM Films WHERE $category AND $duration AND $year ORDER BY $sorting LIMIT $maxrow, 25";
+        $sql .= " LIMIT ?, 25";
+        $params[] = $maxrow;
+        $params_type .= "i";
 
-        $result = $conn->query($sql);
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param($params_type, ...$params);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $movies = array();
@@ -1233,12 +1255,12 @@ function getFilteredMovies($conn, $category, $duration, $year, $sorting, $maxrow
         }
         else {
             return null;
-        } 
+        }
+
     }
     catch(PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
-
 }
 
 /**
@@ -1303,62 +1325,61 @@ function getMoviesLength($conn){
  */
 function getFilteredMoviesLength($conn, $category, $duration, $year){
     try{
+        // Prepare the SQL query
+        $sql = "SELECT COUNT(*) FROM Films WHERE categorie LIKE ?";
 
-        // If the user didn't select a category, we select all the categories
+        // Prepare the parameters
+        $params = array();
+
+        // Prepare the types of parameters
+        $params_type = "s";
+
+        // Selection of category parameter
         if ($category != "all"){
-            $category = "categorie LIKE '%$category%'";
+            $params[] = "%$category%";
         }
         else{
-            $category = "1";
+            $params[] = "%";
         }
 
-        // If the user didn't select a duration, we select all the durations
-        if ($duration != "all"){
-
-            // Duration less than 1 hour
+        // Selection of duration parameter
+        if($duration != "all"){
             if ($duration == "60"){
-                $duration = "duree <= '60'";
+                $params[] = 60;
+                $sql .= " AND duree <= ?";
+                $params_type .= "i";
             }
-
-            // Duration between 1 hour and 2 hours
             else if ($duration == "120"){
-                $duration = "duree > '60' AND duree <= '120'";
+                $params[] = 120;
+                $sql .= " AND duree > 60 AND duree <= ?";
+                $params_type .= "i";
             }
-
-            // Duration more than 2 hours
             else if ($duration == "999"){
-                $duration = "duree > '120'";
+                $params[] = 120;
+                $sql .= " AND duree > ?";
+                $params_type .= "i";
             }
         }
-        else{
-            $duration = "1";
+
+        // Selection of year parameter
+        if($year != "all"){
+            $params[] = $year;
+            $sql .= " AND date_sortie = ?";
+            $params_type .= "i";
         }
 
-        // If the user didn't select a year, we select all the years
-        if ($year != "all"){
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param($params_type, ...$params);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            // Get actual year
-            $actual_year = date("Y");
-
-            $min_year = $actual_year - 51;
-
-            if ($year == $min_year){
-                $year = "date_sortie <= '$min_year'";
-            }
-            else{
-                $year = "date_sortie = '$year'";
-            }        
-
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['COUNT(*)'];
         }
-        else{
-            $year = "1";
+        else {
+            return null;
         }
-
-        $sql = "SELECT COUNT(*) FROM Films WHERE $category AND $duration AND $year";
-        $result = $conn->query($sql);
-        $row = $result->fetch_assoc();
-        $conn->close();
-        return $row['COUNT(*)'];
     }
     catch(PDOException $e) {
         echo "Error: " . $e->getMessage();
