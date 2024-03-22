@@ -172,6 +172,27 @@ function addSerie($db, $title, $year, $genre, $synopsis, $realisator, $actors, $
     }
 }
 
+/**
+ * Get the last serie's name added in the database
+ * Used for the adding of episodes
+ * 
+ * @param mysqli $conn The connection to the database
+ * 
+ * @return string Return the name of the last serie added in the database
+ */
+function getLastSerie($conn) {
+    try{
+        $sql = "SELECT nom FROM Séries ORDER BY id DESC LIMIT 1";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        $conn->close();
+        return $row['nom'];
+    } catch(Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }    
+}
+
 // ------------------------------------------------------
 // -------------------- USERS PAGE ----------------------
 // ------------------------------------------------------

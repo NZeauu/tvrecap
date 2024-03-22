@@ -44,6 +44,10 @@ while season.details(contentID, n) is not None:
         
     n += 1
 
+# IF YOU NEED TO CHECK THE RESULTS (DEBUGGING)
+# DON'T FORGET TO COMMENT THE LINE AFTER THE DEBUGGING PRINT TO AVOID SENDING THE DATA TO THE DATABASE DURING DEBUGGING
+# print(json.dumps(episodes))
+
 # Connect to the database
 import mysql.connector
 

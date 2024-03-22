@@ -115,16 +115,18 @@ if ($requestResource == "addserie"){
         $data = addSerie($db, $title, $year, $genre, $synopsis, $realisator, $actors, $coverpath, $nbSeasons);
 
         // Add all the episodes of the serie if it's not already in the database
-        if ($data != "already exists"){
-             // Add all the episodes of the serie
-            exec("python3 ../scripts/getEpisodes.py " . escapeshellarg($contentID) . " " . escapeshellarg($title) . " 2>&1", $output, $return_var);
-            // Afficher la sortie
-            foreach ($output as $line) {
-                echo $line . "\n";
-            }
+        if ($data){
 
-            // Afficher le code de retour
-            echo "Code de retour: " . $return_var . "\n";
+            $serieName = getLastSerie($db);
+
+             // Add all the episodes of the serie
+            exec("python3 ../scripts/getEpisodes.py " . escapeshellarg($contentID) . " " . escapeshellarg($serieName) . " 2>&1", $output, $return_var);
+            // DEBUGGING
+            // foreach ($output as $line) {
+            //     echo $line . "\n";
+            // }
+
+            // echo "Code de retour: " . $return_var . "\n";
         }
 
        
