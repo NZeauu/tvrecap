@@ -61,21 +61,24 @@ if($requestResource == "login"){
             // Hash the token
             $token_hash = hash('sha256', $token);
 
-            // If the user wants to stay connected keep the cookie for 30 days else keep it for 1 hour
+            // If the user wants to stay connected keep the cookie for a month else keep it for 1 day
             if($rememberme == "true"){
 
+                $expirationDate = strtotime('+1 month', strtotime(gmdate('Y-m-d H:i:s', time())));
+
                 // Insert the token in the database
-                insertSessionToken($db, $email, $token_hash, date('Y-m-d H:i:s', time() + 3600 * 24 * 30));
+                insertSessionToken($db, $email, $token_hash, date('Y-m-d H:i:s', $expirationDate));
                 
                 // Create a cookie session with the token with secure and httpOnly attributes and a strict policy
-                setcookie('USERSESSION', $token_hash, time() + 3600 * 24 * 30, '/', "tvrecap.epeigne.fr", true, true);
+                setcookie('USERSESSION', $token_hash, $expirationDate, '/', "tvrecap.epeigne.fr", true, true);
             }else{
 
+                $expirationDate = strtotime('+1 days', strtotime(gmdate('Y-m-d H:i:s', time())));
                 // Insert the token in the database
-                insertSessionToken($db, $email, $token_hash, date('Y-m-d H:i:s', time() + 3600));
+                insertSessionToken($db, $email, $token_hash, date('Y-m-d H:i:s', $expirationDate));
 
                 // Create a cookie session with the token with secure and httpOnly attributes and a strict policy
-                setcookie('USERSESSION', $token_hash, time() + 3600, '/', "tvrecap.epeigne.fr", true, true);
+                setcookie('USERSESSION', $token_hash, $expirationDate, '/', "tvrecap.epeigne.fr", true, true);
             }
             
         }

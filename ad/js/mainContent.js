@@ -27,7 +27,7 @@ export function cookieCheck() {
     var expire = new Date(window.expireSession);
 
     if (today > expire) {
-        disconnect(true);
+        disconnect();
     }
 }
 
@@ -77,17 +77,12 @@ export function getAvatar(idImage) {
 }
 
 // Disconnect the user
-export function disconnect(expire = false) {
+export function disconnect() {
     // Delete the cookie
-    if (expire){
-        window.location.replace("https://tvrecap.epeigne.fr");
-    }else{
-        // Delete the cookie
-        $.ajax('../../php/user.php/disconnect', {
-            method: 'GET',
-        }).done(function (data) {
-            // Redirect to the login page
-            window.location.replace("https://tvrecap.epeigne.fr");  
-        });
-    }
+    $.ajax('../../php/user.php/disconnect', {
+        method: 'GET',
+    }).done(function (data) {
+        // Redirect to the login page
+        window.location.replace("https://tvrecap.epeigne.fr");  
+    });
 }

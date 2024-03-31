@@ -97,7 +97,7 @@ if($requestResource == "disconnect"){
         $data = removeSessionToken($db, null, $token);
 
         if($data){
-            setcookie('USERSESSION', '', time() - 3600, '/', "epeigne.fr", true, true);
+            setcookie('USERSESSION', '', time() - 3600, '/', "tvrecap.epeigne.fr", true, true);
         }
     }
 }
