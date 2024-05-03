@@ -67,7 +67,7 @@ if($requestResource == "addmovie"){
         
         
         $filename = $title . "-" . $year;
-        $filename = str_replace(' ', '', $filename);
+        $filename = str_replace(' ', '-', $filename);
         $filename = strtolower($filename);
         $coverpath = "../img/Covers/movies/" . $filename . ".jpg";
 
