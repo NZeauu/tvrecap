@@ -8,3 +8,6 @@ php/phpMailerConf.php
 composer.lock
 composer.json
 /src/
+
+# Ignore robots.txt
+robots.txt
