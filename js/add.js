@@ -135,7 +135,7 @@ $("#submit-movie").click(function () {
         },
     }).done(function (data) {
         alert("Demande d'ajout de film envoyée");
-        window.location.replace("home.html");
+        window.location.replace("https://tvrecap.epeigne.fr/home");
     });
 });
 
@@ -162,7 +162,7 @@ $("#submit-serie").click(function () {
         },
     }).done(function (data) {
         alert("Demande d'ajout de série envoyée");
-        window.location.replace("home.html");
+        window.location.replace("https://tvrecap.epeigne.fr/home");
     });
 });
 
