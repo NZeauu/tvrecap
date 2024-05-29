@@ -23,7 +23,7 @@ ${\textcolor{red}{WARNING}}$: This will overwrite any existing tables with the s
 <?php
     const DB_USER = "your user name";
     const DB_PASSWORD = "your password";
-    const DB_NAME = "tvrecap";
+    const DB_NAME = "tvrecap"; #or the name of your database
     const DB_SERVER = "127.0.0.1";
     const DB_PORT = 3306;
 ?>
@@ -60,7 +60,22 @@ Here are the lines to add:
     RewriteRule ^/verifyAccount$ /html/verifaccount.html [L]
     RewriteRule ^/movieDetails$ /html/movie-details.html [L]
     RewriteRule ^/serieDetails$ /html/serie-details.html [L]
-```	
+```
+9. Please add a `connectDatabase.py` file into `ad/scripts/` folder to enable the connection to your database for content adding. The file needs to be like this:
+```
+# Connect to the database
+import mysql.connector
+
+def connectDatabase():
+    conn = mysql.connector.connect(
+        host="127.0.0.1",
+        user="your database username",
+        password="your database password",
+        database="tvrecap" #or the name of your database
+    )
+
+    return conn
+```
 
 ## Features to add
 - [X] Add SMTP functionality to send verification email on account creation

@@ -1,6 +1,6 @@
 # Ignore constants.php in php/ folder and phpMailerConf.php in php/ folder
-php/constants.php
-php/phpMailerConf.php
+constants.php
+phpMailerConf.php
 
 
 # Ignore composer files
@@ -11,3 +11,6 @@ composer.json
 
 # Ignore robots.txt
 robots.txt
+
+# Ignore connectDatabase.py
+connectDatabase.py

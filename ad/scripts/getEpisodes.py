@@ -49,14 +49,9 @@ while season.details(contentID, n) is not None:
 # print(json.dumps(episodes))
 
 # Connect to the database
-import mysql.connector
+import connectDatabase
 
-conn = mysql.connector.connect(
-    host="127.0.0.1",
-    user="pma_user",
-    password="gecT5HCPQKD63xgF3h8",
-    database="tvrecap"
-)
+conn = connectDatabase.connectDatabase()
 
 cursor = conn.cursor()
 
