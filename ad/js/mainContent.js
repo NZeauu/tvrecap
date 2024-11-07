@@ -7,7 +7,7 @@ window.expireSession = "";
 // Get the expiration date of the cookie
 function getExpirationDate() {
 
-    $.ajax('../../php/user.php/cookieCheck', {
+    $.ajax('https://tvrecap.epeigne.fr/php/user.php/cookieCheck', {
         method: 'GET',
     }).done(function (data) {
         if (data !== "false") {
@@ -40,7 +40,7 @@ export function getEmail() {
     // Create a promise to wait for the email to be retrieved before doing anything else
     return new Promise((resolve, reject) => {
 
-        $.ajax('../../php/user.php/email', {
+        $.ajax('https://tvrecap.epeigne.fr/php/user.php/email', {
             method: 'GET',
         }).done(function (data) {
             window.user_email = data;
@@ -59,7 +59,7 @@ export function getEmail() {
 // Set the user's name in the navbar
 export function setUserName() {
 
-    $.ajax('../../php/user.php/username', {
+    $.ajax('https://tvrecap.epeigne.fr/php/user.php/username', {
         method: 'GET',
     }).done(function (data) {
         $("#username").text(data);
@@ -69,7 +69,7 @@ export function setUserName() {
 // Get the user's avatar
 export function getAvatar(idImage) {
 
-    $.ajax('../../php/user.php/avatar', {
+    $.ajax('https://tvrecap.epeigne.fr/php/user.php/avatar', {
         method: 'GET',
     }).done(function (data) {
         $(idImage).attr("src", data);
@@ -79,7 +79,7 @@ export function getAvatar(idImage) {
 // Disconnect the user
 export function disconnect() {
     // Delete the cookie
-    $.ajax('../../php/user.php/disconnect', {
+    $.ajax('https://tvrecap.epeigne.fr/php/user.php/disconnect', {
         method: 'GET',
     }).done(function (data) {
         // Redirect to the login page

@@ -43,14 +43,15 @@ if($requestResource == "avatar"){
 
     if($requestMethod == "GET"){
         
-        $token = $_COOKIE['USERSESSION'];
+        if (isset($_COOKIE['USERSESSION'])) {
+            $token = $_COOKIE['USERSESSION'];
 
-        $email = checkSessionToken($db, $token);
+            $email = checkSessionToken($db, $token);
 
-        if($email != false){
-            $data = getAvatar($db, $email);
+            if($email != false){
+                $data = getAvatar($db, $email);
+            }
         }
-
     }
 
 }
@@ -61,12 +62,14 @@ if($requestResource == "username"){
 
     if($requestMethod == "GET"){
         
-        $token = $_COOKIE['USERSESSION'];
+        if (isset($_COOKIE['USERSESSION'])) {
+            $token = $_COOKIE['USERSESSION'];
 
-        $email = checkSessionToken($db, $token);
+            $email = checkSessionToken($db, $token);
 
-        if($email != false){
-            $data = getUsername($db, $email);
+            if($email != false){
+                $data = getUsername($db, $email);
+            }
         }
     }
 }
@@ -77,12 +80,14 @@ if($requestResource == "email"){
 
     if($requestMethod == "GET"){
         
-        $token = $_COOKIE['USERSESSION'];
+        if (isset($_COOKIE['USERSESSION'])) {
+            $token = $_COOKIE['USERSESSION'];
 
-        $email = checkSessionToken($db, $token);
+            $email = checkSessionToken($db, $token);
 
-        if($email != false){
-            $data = $email;
+            if($email != false){
+                $data = $email;
+            }
         }
     }
 }
@@ -92,12 +97,14 @@ if($requestResource == "disconnect"){
 
     if($requestMethod == "GET"){
 
-        $token = $_COOKIE['USERSESSION'];
+        if (isset($_COOKIE['USERSESSION'])) {
+            $token = $_COOKIE['USERSESSION'];
 
-        $data = removeSessionToken($db, null, $token);
+            $data = removeSessionToken($db, null, $token);
 
-        if($data){
-            setcookie('USERSESSION', '', time() - 3600, '/', "tvrecap.epeigne.fr", true, true);
+            if($data){
+                setcookie('USERSESSION', '', time() - 3600, '/', "tvrecap.epeigne.fr", true, true);
+            }
         }
     }
 }

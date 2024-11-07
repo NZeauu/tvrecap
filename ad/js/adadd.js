@@ -123,7 +123,7 @@ $("#search-movie").click(function () {
     $("#no-results").css("display", "none");
     $("#loading").css("display", "block");
 
-    $.ajax('../php/adsearchcontent.php', {
+    $.ajax('https://tvrecap.epeigne.fr/ad/php/adsearchcontent.php', {
         method: 'GET',
         data: {
             title: title,
@@ -258,7 +258,7 @@ $("#search-serie").click(function () {
     $("#no-results").css("display", "none");
     $("#loading").css("display", "block");
 
-    $.ajax('../php/adsearchcontent.php', {
+    $.ajax('https://tvrecap.epeigne.fr/ad/php/adsearchcontent.php', {
         method: 'GET',
         data: {
             title: title,
@@ -297,9 +297,9 @@ $("#search-serie").click(function () {
             let content = $("<div></div>");
             content.attr("class", "content");
 
-            if (coverURL == '../img/noimg.png') {
+            if (coverURL == 'https://tvrecap.epeigne.fr/ad/img/noimg.png') {
                 let img = $("<img>");
-                img.attr("src", "../img/noimg.png");
+                img.attr("src", "https://tvrecap.epeigne.fr/ad/img/noimg.png");
                 img.attr("alt", "cover");
                 img.attr("class", "cover");
                 content.append(img);
@@ -473,7 +473,7 @@ function createValidForm(title, year, duration, synopsis, coverURL, actors, genr
     button.attr("class", "add-button");
     button.on("click", function () {
 
-        if ($("#mov-director").val() === "" || ($("#mov-cover").val() === "" && coverURL == '../img/noimg.png')) {
+        if ($("#mov-director").val() === "" || ($("#mov-cover").val() === "" && coverURL == 'https://tvrecap.epeigne.fr/ad/img/noimg.png')) {
             alert("Veuillez remplir tous les champs");
             return;
         }
@@ -495,7 +495,7 @@ function createValidForm(title, year, duration, synopsis, coverURL, actors, genr
         var movieActors = $("#mov-actors").val();
 
         if (type == "movie"){
-            $.ajax('../php/adadd.php/addmovie', {
+            $.ajax('https://tvrecap.epeigne.fr/ad/php/adadd.php/addmovie', {
                 method: 'POST',
                 data: {
                     title: movieTitle,
@@ -519,7 +519,7 @@ function createValidForm(title, year, duration, synopsis, coverURL, actors, genr
             });
         }
         else if (type == "serie"){
-            $.ajax('../php/adadd.php/addserie', {
+            $.ajax('https://tvrecap.epeigne.fr/ad/php/adadd.php/addserie', {
                 method: 'POST',
                 data: {
                     title: movieTitle,

@@ -10,7 +10,7 @@ setInterval(cookieCheck, 1000);
 // Get the number of users registered on the site
 function getNumberOfUsers() {
     $.ajax({
-        url: "../php/adhome.php/numUsers",
+        url: "https://tvrecap.epeigne.fr/ad/php/adhome.php/numUsers",
         type: "GET",
         success: function (data) {
             $("#num-users").html(data);
@@ -24,7 +24,7 @@ function getNumberOfUsers() {
 // Get the last user registered on the site
 function getLastUser() {
     $.ajax({
-        url: "../php/adhome.php/lastUser",
+        url: "https://tvrecap.epeigne.fr/ad/php/adhome.php/lastUser",
         type: "GET",
         success: function (data) {
             $("#last-user").html(data);

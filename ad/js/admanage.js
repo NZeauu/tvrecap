@@ -181,7 +181,7 @@ $("#pagination").on("click", "#previous-page", function () {
 
 function getMoviesLength() {
     $.ajax({
-        url: "../php/admanage.php/getMoviesLength",
+        url: "https://tvrecap.epeigne.fr/ad/php/admanage.php/getMoviesLength",
         method: "GET",
     }).done(function (data) {
         var nbpages = Math.ceil(data / 25);
@@ -193,7 +193,7 @@ function getMoviesLength() {
 
 function getSeriesLength() {
     $.ajax({
-        url: "../php/admanage.php/getSeriesLength",
+        url: "https://tvrecap.epeigne.fr/ad/php/admanage.php/getSeriesLength",
         method: "GET",
     }).done(function (data) {
         var nbpages = Math.ceil(data / 25);
@@ -232,7 +232,7 @@ function getMovies() {
     }
 
     $.ajax({
-        url: "../php/admanage.php/getMovies",
+        url: "https://tvrecap.epeigne.fr/ad/php/admanage.php/getMovies",
         method: "GET",
         data: { 
             maxRow: maxRow,
@@ -277,7 +277,7 @@ function getSeries() {
     }
 
     $.ajax({
-        url: "../php/admanage.php/getSeries",
+        url: "https://tvrecap.epeigne.fr/ad/php/admanage.php/getSeries",
         method: "GET",
         data: {
             maxRow: maxRow,
@@ -345,7 +345,7 @@ $("#results").on("click", ".delete-serie", function () {
     if (!r) return;
     
     $.ajax({
-        url: "../php/admanage.php/deleteSerie",
+        url: "https://tvrecap.epeigne.fr/ad/php/admanage.php/deleteSerie",
         method: "POST",
         data: { id: id },
         success: function (data) {
@@ -364,7 +364,7 @@ $("#results").on("click", ".delete-movie", function () {
     if (!r) return;
     
     $.ajax({
-        url: "../php/admanage.php/deleteMovie",
+        url: "https://tvrecap.epeigne.fr/ad/php/admanage.php/deleteMovie",
         method: "POST",
         data: { id: id },
         success: function (data) {
@@ -397,7 +397,7 @@ $("#search-content-bar").on("change", function () {
     if (choice == "serie") {
 
         $.ajax({
-            url: "../php/admanage.php/searchSerie",
+            url: "https://tvrecap.epeigne.fr/ad/php/admanage.php/searchSerie",
             method: "GET",
             data: { value: value },
             success: function (data) {
@@ -419,7 +419,7 @@ $("#search-content-bar").on("change", function () {
     if (choice == "movie") {
 
         $.ajax({
-            url: "../php/admanage.php/searchMovie",
+            url: "https://tvrecap.epeigne.fr/ad/php/admanage.php/searchMovie",
             method: "GET",
             data: { value: value },
             success: function (data) {

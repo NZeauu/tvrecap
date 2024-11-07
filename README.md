@@ -44,7 +44,7 @@ $mail->Password = 'your password';
 $mail->SMTPSecure = 'tls';
 $mail->Port = 587;
 ```
-8. Be careful, the site redirections use the `RewriteEngine` module of Apache. You need to enable it and configure each page in your configuration file. You will also need to change the redirections in html and JS files to match your domain.
+8. Be careful, the site redirections use the `RewriteEngine` module of Apache. You need to enable it and configure each page in your configuration file. You will also need to change the redirections in html and JS files to match your domain. Adapt the following lines to your configuration.
 Here are the lines to add:
 ```
     RewriteEngine On
@@ -60,6 +60,10 @@ Here are the lines to add:
     RewriteRule ^/verifyAccount$ /html/verifaccount.html [L]
     RewriteRule ^/movieDetails$ /html/movie-details.html [L]
     RewriteRule ^/serieDetails$ /html/serie-details.html [L]
+    RewriteRule ^/AdminHomePanel$ /ad/html/adhome.html [L]
+    RewriteRule ^/AdminAddContent$ /ad/html/adadd.html [L]
+    RewriteRule ^/AdminManageContent$ /ad/html/admanage.html [L]
+    RewriteRule ^/AdminManageUsers$ /ad/html/adusers.html [L]
 ```
 9. Please add a `connectDatabase.py` file into `ad/scripts/` folder to enable the connection to your database for content adding. The file needs to be like this:
 ```

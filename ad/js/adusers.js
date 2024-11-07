@@ -7,7 +7,7 @@ setInterval(cookieCheck, 1000);
 function addRow(){
     var tableBody = $("#users")
 
-    $.ajax('../php/adusers.php/getUsers', {
+    $.ajax('https://tvrecap.epeigne.fr/ad/php/adusers.php/getUsers', {
         type: 'GET',
         success: function (data) {
             for (var i = 0; i < data.length; i++) {
@@ -93,7 +93,7 @@ $(document).on("click", ".delete", function () {
         return;
     }
     
-    $.ajax('../php/adusers.php/deleteUser', {
+    $.ajax('https://tvrecap.epeigne.fr/ad/php/adusers.php/deleteUser', {
         type: 'POST',
         data: {
             email: email
@@ -170,7 +170,7 @@ $(document).on("click", ".validate", function () {
     var newUsername = $("#newUsername" + id).val();
     var newEmail = $("#newEmail" + id).val();
 
-    $.ajax('../php/adusers.php/updateUser', {
+    $.ajax('https://tvrecap.epeigne.fr/ad/php/adusers.php/updateUser', {
         type: 'POST',
         data: {
             userId: id,
