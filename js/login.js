@@ -268,7 +268,8 @@ function submit(){
         success: function(data){
             if(data){
                 $("#contactForm").empty();
-                $("#contactForm").append("<p>" + data.msg + "</p>");
+                const p = $("<p></p>").text(data.msg);
+                $("#contactForm").append(p);
             }else{
                 $("#contactForm").empty();
                 $("#contactForm").append("<p>Une erreur est survenue lors de l'envoi du message.</p>");
@@ -307,7 +308,8 @@ function sendMail(){
                 success: function(data){
                     if(data){
                         $("#passwordForm").empty();
-                        $("#passwordForm").append("<p>" + data.msg + "</p>");
+                        const p = $("<p></p>").text(data.msg);
+                        $("#passwordForm").append(p);
                     }else{
                         $("#passwordForm").empty();
                         $("#passwordForm").append("<p>Une erreur est survenue lors de l'envoi du message.</p>");
@@ -333,7 +335,8 @@ function resendMail(){
         success: function(data){
             if(data){
                 $("#notVerifiedContent").empty();
-                $("#notVerifiedContent").append("<p>" + data.msg + "</p>");
+                const p = $("<p></p>").text(data.msg);
+                $("#notVerifiedContent").append(p);
             }else{
                 $("#notVerifiedContent").empty();
                 $("#notVerifiedContent").append("<p>Une erreur est survenue lors de l'envoi du message.</p>");

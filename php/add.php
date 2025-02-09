@@ -36,29 +36,29 @@ if($requestResource == "sendmail"){
 
         $type = $_POST['type'];
 
-        if($type == "movie"){
-            $title = $_POST['title'];
-            $year = $_POST['year'];
-            $duration = $_POST['duration'];
-            $synopsis = $_POST['synopsis'];
-
+        if ($type === "movie") {
+            $title = htmlspecialchars($_POST['title'] ?? '', ENT_QUOTES, 'UTF-8');
+            $year = filter_var($_POST['year'] ?? '', FILTER_VALIDATE_INT);
+            $duration = htmlspecialchars($_POST['duration'] ?? '', ENT_QUOTES, 'UTF-8');
+            $synopsis = htmlspecialchars($_POST['synopsis'] ?? '', ENT_QUOTES, 'UTF-8');
+    
             $message = "<h4>~~CONTENT ADDING ASK~~</h4>
-                        <p>Title: $title</p>
-                        <p>Year: $year</p>
-                        <p>Duration: $duration</p>
-                        <p>Synopsis: $synopsis</p>";
-
-        }else if($type == "serie"){
-            $title = $_POST['title'];
-            $year = $_POST['year'];
-            $seasons = $_POST['seasons'];
-            $synopsis = $_POST['synopsis'];
-
+                        <p><strong>Title:</strong> " . nl2br($title) . "</p>
+                        <p><strong>Year:</strong> " . ($year ?: 'Invalid Year') . "</p>
+                        <p><strong>Duration:</strong> " . nl2br($duration) . "</p>
+                        <p><strong>Synopsis:</strong> " . nl2br($synopsis) . "</p>";
+    
+        } elseif ($type === "serie") {
+            $title = htmlspecialchars($_POST['title'] ?? '', ENT_QUOTES, 'UTF-8');
+            $year = filter_var($_POST['year'] ?? '', FILTER_VALIDATE_INT);
+            $seasons = filter_var($_POST['seasons'] ?? '', FILTER_VALIDATE_INT);
+            $synopsis = htmlspecialchars($_POST['synopsis'] ?? '', ENT_QUOTES, 'UTF-8');
+    
             $message = "<h4>~~CONTENT ADDING ASK~~</h4>
-                        <p>Title: $title</p>
-                        <p>Year: $year</p>
-                        <p>Seasons: $seasons</p>
-                        <p>Synopsis: $synopsis</p>";
+                        <p><strong>Title:</strong> " . nl2br($title) . "</p>
+                        <p><strong>Year:</strong> " . ($year ?: 'Invalid Year') . "</p>
+                        <p><strong>Seasons:</strong> " . ($seasons ?: 'Invalid Seasons') . "</p>
+                        <p><strong>Synopsis:</strong> " . nl2br($synopsis) . "</p>";
         }
 
 

@@ -21,30 +21,11 @@ $request =substr($_SERVER['PATH_INFO'], 1);
 $request = explode('/', $request);
 $requestResource = array_shift($request);
 
-// caracters to remove from filename
-$caractersToRemove = array(' ', '\'', '\"', '(', ')', '?', '!', ':', ';', ',', '.', '*');
-
-if($requestResource == "saveimg"){
-
-    $data = false;
-
-    if($requestMethod == 'POST' && isset($_FILES["file"]["name"])){
-
-        $title = $_POST['title'];
-        $year = $_POST['year'];
-
-        $targetDirectory = "../../img/Covers/";
-        $filename = $title . "-" . $year;
-        $filename = str_replace($caractersToRemove, '', $filename);
-        $filename = strtolower($filename);
-        $targetFile = $targetDirectory . $filename . ".jpg";
-
-        if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFile)) {
-            echo "The file ". basename( $_FILES["file"]["name"]). " has been uploaded.";
-        } else {
-            echo "Sorry, there was an error uploading your file.";
-        }
-    }
+function sanitizeFilename($filename){
+    $filename = mb_strtolower($filename);
+    $filename = preg_replace('/[^a-z0-9]+/u', '-', $filename);
+    $filename = trim($filename, '-');
+    return $filename;
 }
 
 if($requestResource == "addmovie"){
@@ -67,8 +48,7 @@ if($requestResource == "addmovie"){
         
         
         $filename = $title . "-" . $year;
-        $filename = str_replace(' ', '-', $filename);
-        $filename = strtolower($filename);
+        $filename = sanitizeFilename($filename);
         $coverpath = "../img/Covers/movies/" . $filename . ".jpg";
 
         // Delete spaces in the URL
@@ -102,8 +82,7 @@ if ($requestResource == "addserie"){
         $actors = str_replace('"', '\"', $actors);
 
         $filename = $title . "-" . $year;
-        $filename = str_replace(' ', '', $filename);
-        $filename = strtolower($filename);
+        $filename = sanitizeFilename($filename);
         $coverpath = "../img/Covers/series/" . $filename . ".jpg";
 
         // Delete spaces in the URL

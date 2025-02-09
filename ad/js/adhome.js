@@ -13,7 +13,7 @@ function getNumberOfUsers() {
         url: "https://tvrecap.epeigne.fr/ad/php/adhome.php/numUsers",
         type: "GET",
         success: function (data) {
-            $("#num-users").html(data);
+            $("#num-users").text(data);
         },
         error: function (error) {
             console.log("Error: " + error);
@@ -27,7 +27,7 @@ function getLastUser() {
         url: "https://tvrecap.epeigne.fr/ad/php/adhome.php/lastUser",
         type: "GET",
         success: function (data) {
-            $("#last-user").html(data);
+            $("#last-user").text(data);
         },
         error: function (error) {
             console.log("Error: " + error);

@@ -95,7 +95,13 @@ function getSerieDetails(){
         $("#actors-value").text(data.actors);
         $("#real-value").text(data.realisator);
         $("#synopsis").text(data.synopsis);
-        $('#picture').html('<img src="' + data.image + '" alt="Image" id="picture-img">');
+        $('#picture').empty();
+        $('<img>', {
+            src: data.image,
+            alt: "cover",
+            id: "picture-img"
+        }).appendTo('#picture');
+
 
         // Check if the serie is in the user's watchlist
         checkWatchlist();
@@ -194,12 +200,13 @@ $("#episodes").on("click", ".ep-seen", function () {
 
     // Get the serie's details from the database
     $.ajax('../php/serie-details.php/updateepstatus', {
-        method: 'DELETE',
+        method: 'POST',
         data: {
             episodeNumber: episodeNumber,
             seasonNumber: seasonNumber,
             userMail: userMail,
-            serieId: serieId
+            serieId: serieId,
+            status: "seen"
         },
     }).done(function (data) {
         checkEpisodeWatched(episodeNumber, seasonNumber);
@@ -226,12 +233,13 @@ $("#episodes").on("click", ".ep-not-seen", function () {
 
     // Get the serie's details from the database
     $.ajax('../php/serie-details.php/updateepstatus', {
-        method: 'PUT',
+        method: 'POST',
         data: {
             episodeNumber: episodeNumber,
             seasonNumber: seasonNumber,
             userMail: userMail,
-            serieId: serieId
+            serieId: serieId,
+            status: "not-seen"
         },
     }).done(function (data) {
         checkEpisodeWatched(episodeNumber, seasonNumber);

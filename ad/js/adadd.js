@@ -74,7 +74,6 @@ function seriesChoice() {
     $(".series-content").css({
         "background-color" : "rgba(255, 0, 0, 0.70)",
         "padding-left" : "10%",
-        // "padding-right" : "1%",
         "z-index" : "3"
     })
     $(".movies-content").css({"z-index": "5", "background-color": "transparent", "margin-right": "-10%"});
@@ -157,8 +156,9 @@ $("#search-movie").click(function () {
             movie.attr("class", "movie");
             movie.attr("id", "movie" + i);
 
-            let title = $("<section>" + resultTitle + " (" + resultYear + ")</section>");
+            let title = $("<section></section>").text(resultTitle + " (" + resultYear + ")");
             movie.append(title);
+
 
             let content = $("<div></div>");
             content.attr("class", "content");
@@ -183,7 +183,8 @@ $("#search-movie").click(function () {
             
             let durationDiv = $("<div></div>");
             durationDiv.attr("class", "duration");
-            durationDiv.append("<section>Durée: " + resultDuration + " min</section>");
+            let durationDivText = $("<section></section>").text("Durée: " + resultDuration + " min");
+            durationDiv.append(durationDivText);
             rightContent.append(durationDiv);
 
             let actorsDiv = $("<div></div>");
@@ -199,7 +200,8 @@ $("#search-movie").click(function () {
                 }
             }
 
-            actorsDiv.append("<section>Acteurs: " + actors + "</section>");
+            let actorsDivText = $("<section></section>").text("Acteurs: " + actors);
+            actorsDiv.append(actorsDivText);
             rightContent.append(actorsDiv);
 
             let genreDiv = $("<div></div>");
@@ -215,12 +217,14 @@ $("#search-movie").click(function () {
                 }
             }
 
-            genreDiv.append("<section>Genre: " + genres + "</section>");
+            let genreDivText = $("<section></section>").text("Genre: " + genres);
+            genreDiv.append(genreDivText);
             rightContent.append(genreDiv);
 
             let synopsisDiv = $("<div></div>");
             synopsisDiv.attr("class", "synopsis");
-            synopsisDiv.append("<section>" + resultSynopsis + "</section>");
+            let synopsisDivText = $("<section></section>").text(resultSynopsis);
+            synopsisDiv.append(synopsisDivText);
             rightContent.append(synopsisDiv);
             content.append(rightContent);
 
@@ -291,7 +295,7 @@ $("#search-serie").click(function () {
             serie.attr("class", "serie");
             serie.attr("id", "serie" + i);
 
-            let title = $("<section>" + resultTitle + " (" + resultYear + ")</section>");
+            let title = $("<section></section>").text(resultTitle + " (" + resultYear + ")");
             serie.append(title);
 
             let content = $("<div></div>");
@@ -329,7 +333,8 @@ $("#search-serie").click(function () {
                 }
             }
 
-            actorsDiv.append("<section>Acteurs: " + actors + "</section>");
+            let actorsDivText = $("<section></section>").text("Acteurs: " + actors);
+            actorsDiv.append(actorsDivText);
             rightContent.append(actorsDiv);
 
             let genreDiv = $("<div></div>");
@@ -345,12 +350,14 @@ $("#search-serie").click(function () {
                 }
             }
 
-            genreDiv.append("<section>Genre: " + genres + "</section>");
+            let genreDivText = $("<section></section>").text("Genre: " + genres);
+            genreDiv.append(genreDivText);
             rightContent.append(genreDiv);
 
             let synopsisDiv = $("<div></div>");
             synopsisDiv.attr("class", "synopsis");
-            synopsisDiv.append("<section>" + resultSynopsis + "</section>");
+            let synopsisDivText = $("<section></section>").text(resultSynopsis);
+            synopsisDiv.append(synopsisDivText);
             rightContent.append(synopsisDiv);
             content.append(rightContent);
 
@@ -391,19 +398,29 @@ function createValidForm(title, year, duration, synopsis, coverURL, actors, genr
 
     let titleDiv = $("<div></div>");
     titleDiv.attr("class", "valid-title");
-    titleDiv.append("<section><span id='mov-title'>" + title + "</span> (<span id='mov-year'>" + year + "</span>)</section>");
+    let titleDivText = $("<section></section>");
+    titleDivText.append($("<span></span>").attr("id", "mov-title").text(title));
+    titleDivText.append(" (");
+    titleDivText.append($("<span></span>").attr("id", "mov-year").text(year));
+    titleDivText.append(")");
+    titleDiv.append(titleDivText);
     dataContent.append(titleDiv);
 
     if (duration != null) {
         let durationDiv = $("<div></div>");
         durationDiv.attr("class", "valid-duration");
-        durationDiv.append("<section>Durée: <span id='mov-duration'>" + duration + "</span> min</section>");
+        let durationDivText = $("<section></section>");
+        durationDivText.append("Durée: ");
+        durationDivText.append($("<span></span>").attr("id", "mov-duration").text(duration));
+        durationDivText.append(" min");
+        durationDiv.append(durationDivText);
         dataContent.append(durationDiv);
     }
 
     let synopsisDiv = $("<div></div>");
     synopsisDiv.attr("class", "valid-synopsis");
-    synopsisDiv.append("<section id='mov-synopsis'>" + synopsis + "</section>");
+    let synopsisDivText = $("<section></section>").attr("id", "mov-synopsis").text(synopsis);
+    synopsisDiv.append(synopsisDivText);
     dataContent.append(synopsisDiv);
 
     let addingDiv = $("<div></div>");
@@ -437,7 +454,8 @@ function createValidForm(title, year, duration, synopsis, coverURL, actors, genr
     }
     else {
         genreDiv.append("<label for='mov-genre'>Genre: </label>");
-        genreDiv.append("<input type='text' id='mov-genre' name='mov-genre' value='" + genres + "' required disabled>");
+        let genreDivText = $("<input>").attr("type", "text").attr("id", "mov-genre").attr("name", "mov-genre").attr("value", genres).attr("required", "disabled");
+        genreDiv.append(genreDivText);
         rightContent.append(genreDiv);
     }
 
@@ -452,7 +470,8 @@ function createValidForm(title, year, duration, synopsis, coverURL, actors, genr
     else {
         actorsDiv.attr("class", "valid-actors");
         actorsDiv.append("<label for='mov-actors'>Acteurs: </label>");
-        actorsDiv.append("<input type='text' id='mov-actors' name='mov-actors' value='" + actors + "' required disabled>");
+        let actorsDivText = $("<input>").attr("type", "text").attr("id", "mov-actors").attr("name", "mov-actors").attr("value", actors).attr("required", "disabled");
+        actorsDiv.append(actorsDivText);
         rightContent.append(actorsDiv);
     }
 

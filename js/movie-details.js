@@ -48,7 +48,12 @@ function getMovieDetails(){
         $("#actors-value").text(data.actors);
         $("#real-value").text(data.realisator);
         $("#synopsis").text(data.synopsis);
-        $('#picture').html('<img src="' + data.image + '" alt="Image" id="picture-img">');
+        $('#picture').empty();
+        $('<img>', {
+            src: data.image,
+            alt: "cover",
+            id: "picture-img"
+        }).appendTo('#picture');
 
         // Check if the movie is in the user's watchlist
         checkWatchlist();
@@ -106,7 +111,7 @@ function addToWatchlist() {
 
     // Get the movie's details from the database
     $.ajax('../php/movie-details.php/addwatchlist', {
-        method: 'PUT',
+        method: 'POST',
         data: {
             movieId: movieId,
             userMail: userMail
@@ -129,7 +134,7 @@ function removeFromWatchlist() {
 
     // Get the movie's details from the database
     $.ajax('../php/movie-details.php/removewatchlist', {
-        method: 'DELETE',
+        method: 'POST',
         data: {
             movieId: movieId,
             userMail: userMail

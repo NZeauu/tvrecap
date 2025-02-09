@@ -3,6 +3,11 @@ import { cookieCheck, setUserName, getAvatar, getEmail, disconnect } from "./mai
 // Check if the cookie is set every second
 setInterval(cookieCheck, 1000);
 
+function isValidImagePath(path) {
+    // Check if the path is a valid image path
+    return /^(\.\.\/)?img\/Covers\/(movies|series)\/[a-zA-Z0-9_-]+\.(jpg|jpeg|png)$/i.test(path);
+}
+
 // -------------------------------------------------------
 // --------------------- CHOICE --------------------------
 // -------------------------------------------------------
@@ -61,7 +66,6 @@ function seriesChoice(element) {
     $(element).css({
         "background-color" : "rgba(255, 0, 0, 0.70)",
         "padding-left" : "10%",
-        // "padding-right" : "1%",
         "z-index" : "3"
     })
     $(".movies-content").css({"z-index": "5", "background-color": "transparent", "margin-right": "-10%"});
@@ -132,8 +136,6 @@ function createMovieCard(data){
     $("#history-content").html('<h1 id="loading" style="font-size: 50px"> Loading... </h1>');
     $('#loading').attr('style', 'text-align: center; font-size: 2em; margin-top: 50px; font-family: Inter;');
 
-    // console.log(data);
-
     // If the data is empty or null print a message
     if (data === null || data === "") {
         const message = $('<p>').text('Aucun film vu !');
@@ -170,8 +172,13 @@ function createMovieCard(data){
         const movieCardImg = $('<div>').attr('id', 'movie-card-img' + i);
         movieCardImg.attr('class', 'movie-card-img');
 
-        const img = $('<img>').attr('src', data[i].image);
-        movieCardImg.append(img);
+        const imagePath = data[i].image;
+        if (isValidImagePath(imagePath)) {
+            const img = $('<img>').attr('src', imagePath);
+            movieCardImg.append(img);
+        } else {
+            console.error("Invalid image path:", imagePath);
+        }
 
         const movieCardInfo = $('<div>').attr('class', 'movie-card-info');
 
@@ -198,20 +205,25 @@ function createMovieCard(data){
         movieCardDuration.append(durationTitleSection);
         movieCardDuration.append(movieDurationSection);
 
-        // movieCardDetails.append(movieCardCategory);
         movieCardDetails.append(movieCardDuration);
 
         const movieDetailsButton = $('<div>').attr('class', 'movie-details-but');
         const detailsButton = $('<button>').attr('class', 'movie-details-button').text('Détails');
-        detailsButton.attr('onclick', 'window.location.href = "https://tvrecap.epeigne.fr/movieDetails?id=' + data[i].id + '";');
         detailsButton.attr('value', data[i].id);
+        detailsButton.on('click', function() {
+            const movieId = $(this).val(); // Get the movie ID
+            if (/^\d+$/.test(movieId)) {  // Check if the ID is a number
+                window.location.href = `https://tvrecap.epeigne.fr/movieDetails?id=${movieId}`;
+            } else {
+                console.error("Invalid movie ID:", movieId);
+            }
+        });
         movieDetailsButton.append(detailsButton);
 
         bottomCard.append(movieCardDetails);
         bottomCard.append(movieDetailsButton);
 
         movieCardInfo.append(movieCardTitle);
-        // movieCardInfo.append(separatorLine);
         movieCardInfo.append(bottomCard);
 
         cardContent.append(movieCardImg);
@@ -223,12 +235,6 @@ function createMovieCard(data){
 
         // Append the movie card to the body of the document
         $('#history-content').append(movieCard);
-
-        // Wait for the image to be loaded
-        // $('#movie-card-img' + i).ready(function () {
-        //     $('#loading').remove();
-        //     movieCard.fadeIn(500);
-        // });
 
         setTimeout(function () {
             $('#loading').remove();
@@ -273,8 +279,13 @@ function createSeriesCard(data){
         const serieCardImg = $('<div>').attr('id', 'serie-card-img' + i);
         serieCardImg.attr('class', 'serie-card-img');
 
-        const img = $('<img>').attr('src', data[i].image);
-        serieCardImg.append(img);
+        const imagePath = data[i].image;
+        if (isValidImagePath(imagePath)) {
+            const img = $('<img>').attr('src', imagePath);
+            serieCardImg.append(img);
+        } else {
+            console.error("Invalid image path:", imagePath);
+        }
 
         const serieCardInfo = $('<div>').attr('class', 'serie-card-info');
 
@@ -291,17 +302,9 @@ function createSeriesCard(data){
         serieCardTitle.append(serieTitle);
         serieCardTitle.append(serieYear);
 
-        // const separatorLine = $('<div>').attr('id', 'separator-line');
-
         const bottomCard = $('<div>').attr('class', 'bottom-card');
 
         const serieCardDetails1 = $('<div>').attr('class', 'serie-card-details');
-
-        // const serieCardCategory = $('<div>').attr('id', 'serie-card-category');
-        // const categoryTitleSection = $('<section>').attr('id', 'category-title').text('Catégorie(s)');
-        // const serieCategorySection = $('<section>').attr('id', 'serie-category').text(data[i].categorie);
-        // serieCardCategory.append(categoryTitleSection);
-        // serieCardCategory.append(serieCategorySection);
 
         const serieCardDuration = $('<div>').attr('class', 'serie-card-duration');
         const durationTitleSection = $('<section>').attr('class', 'duration-title').text('Durée moyenne d\'un épisode');
@@ -351,7 +354,6 @@ function createSeriesCard(data){
         serieCardDuration.append(durationTitleSection);
         serieCardDuration.append(serieDurationSection);
 
-        // serieCardDetails1.append(serieCardCategory);
         serieCardDetails1.append(serieCardDuration);
 
         const serieCardDetails2 = $('<div>').attr('class', 'serie-card-details');
@@ -368,7 +370,6 @@ function createSeriesCard(data){
                 userMail: window.user_email
             },
         }).done(function (data) {
-            // console.log(data);
             $('.serie-category').text(data);
         });
 
@@ -377,11 +378,18 @@ function createSeriesCard(data){
         serieCardWatched.append(serieWatchedSection);
 
         serieCardDetails2.append(serieCardWatched);
-
+        safely
         const serieDetailsButton = $('<div>').attr('class', 'serie-details-but');
         const detailsButton = $('<button>').attr('class', 'serie-details-button').text('Détails');
-        detailsButton.attr('onclick', 'window.location.href = "https://tvrecap.epeigne.fr/serieDetails?id=' + data[i].id + '";');
         detailsButton.attr('value', data[i].id);
+        detailsButton.on('click', function() {
+            const serieId = $(this).val(); // Get the movie ID 
+            if (/^\d+$/.test(serieId)) {  // Check if the ID is a number
+                window.location.href = `https://tvrecap.epeigne.fr/serieDetails?id=${serieId}`;
+            } else {
+                console.error("Invalid serie ID:", serieId);
+            }
+        });
         serieDetailsButton.append(detailsButton);
 
         bottomCard.append(serieCardDetails1);
@@ -389,7 +397,6 @@ function createSeriesCard(data){
         bottomCard.append(serieDetailsButton);
 
         serieCardInfo.append(serieCardTitle);
-        // serieCardInfo.append(separatorLine);
         serieCardInfo.append(bottomCard);
 
         cardContent.append(serieCardImg);
@@ -400,13 +407,6 @@ function createSeriesCard(data){
         serieCard.attr('style', 'display: none;');
 
         $('#history-content').append(serieCard);
-
-
-        // Wait for the image to be loaded
-        // $('#serie-card-img' + i).ready(function () {
-        //     $('#loading').remove();
-        //     serieCard.fadeIn(500);
-        // });
 
         setTimeout(function () {
             $('#loading').remove();

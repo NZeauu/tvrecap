@@ -3,7 +3,10 @@ import { cookieCheck, setUserName, getAvatar, disconnect } from "./mainContent.j
 // Check if the cookie is set every second
 setInterval(cookieCheck, 1000);
 
-
+function isValidImagePath(path) {
+    // Check if the path is a valid image path
+    return /^(\.\.\/)?img\/Covers\/series\/[a-zA-Z0-9_-]+\.(jpg|jpeg|png)$/i.test(path);
+}
 // -------------------------------------------------------
 // -------------------- FILTERS --------------------------
 // -------------------------------------------------------
@@ -351,8 +354,14 @@ function createCard(data){
         serieCardImg.attr('class', 'serie-card-img');
 
         // Get the image from the database
-        const image = $('<img>').attr('src', data[i].image);
-        serieCardImg.append(image);
+        const imgPath = data[i].image;
+        if (isValidImagePath(imgPath)) {
+            const image = $('<img>').attr('src', imgPath);
+            serieCardImg.append(image);
+        } else {
+            const image = $('<img>').attr('src', '../img/noimg.png');
+            serieCardImg.append(image);
+        }
 
         const serieCardInfo = $('<div>').attr('class', 'serie-card-info');
 
@@ -445,8 +454,15 @@ function createCard(data){
 
         const serieDetailsButton = $('<div>').attr('class', 'serie-details-but');
         const detailsButton = $('<button>').attr('class', 'serie-details-button').text('Détails');
-        detailsButton.attr('onclick', 'window.location.href = "https://tvrecap.epeigne.fr/serieDetails?id=' + data[i].id + '";');
         detailsButton.attr('value', data[i].id);
+        detailsButton.on('click', function() {
+            const serieId = $(this).val(); // Get the movie ID 
+            if (/^\d+$/.test(serieId)) {  // Check if the ID is a number
+                window.location.href = `https://tvrecap.epeigne.fr/serieDetails?id=${serieId}`;
+            } else {
+                console.error("Invalid serie ID:", serieId);
+            }
+        });
         serieDetailsButton.append(detailsButton);
 
         bottomCard.append(serieCardDetails1);

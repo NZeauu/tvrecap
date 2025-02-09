@@ -221,7 +221,8 @@ function submit(){
         success: function(data){
             if(data){
                 $("#contactForm").empty();
-                $("#contactForm").append("<p>" + data.msg + "</p>");
+                const p = $("<p></p>").text(data.msg);
+                $("#contactForm").append(p);
             }else{
                 $("#contactForm").empty();
                 $("#contactForm").append("<p>Une erreur est survenue lors de l'envoi du message.</p>");

@@ -51,12 +51,12 @@ if($requestResource == "addwatchlist"){
 
     $data = false;
     
-    if($requestMethod == "PUT"){
+    if($requestMethod == "POST"){
 
-        parse_str(file_get_contents('php://input'), $_PUT);
+        // parse_str(file_get_contents('php://input'), $_PUT);
 
-        $movieId = $_PUT['movieId'];
-        $userMail = $_PUT['userMail'];
+        $movieId = $_POST['movieId'];
+        $userMail = $_POST['userMail'];
 
         $data = addMovieSeen($db, $userMail, $movieId);
 
@@ -67,12 +67,12 @@ if($requestResource == "removewatchlist"){
 
     $data = false;
     
-    if($requestMethod == "DELETE"){
+    if($requestMethod == "POST"){
 
-        parse_str(file_get_contents('php://input'), $_DELETE);
+        // parse_str(file_get_contents('php://input'), $_DELETE);
 
-        $movieId = $_DELETE['movieId'];
-        $userMail = $_DELETE['userMail'];
+        $movieId = $_POST['movieId'];
+        $userMail = $_POST['userMail'];
 
         $data = deleteMovieSeen($db, $userMail, $movieId);
 

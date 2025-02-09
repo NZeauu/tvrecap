@@ -67,7 +67,7 @@ function connectionAccount($conn, $mail, $password) {
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     } 
 }
 
@@ -91,7 +91,7 @@ function registerAccount($conn, $username, $email, $password){
         return true;
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -121,7 +121,7 @@ function checkMail($conn, $email){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -150,7 +150,7 @@ function checkUsername($conn, $username){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -180,7 +180,7 @@ function getUsername($conn, $email){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -210,7 +210,7 @@ function getAvatar($conn, $email){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -240,7 +240,7 @@ function getUserInfo($conn, $email){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -263,7 +263,7 @@ function updateUsername($conn, $email, $username){
         return true;
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -287,7 +287,7 @@ function updateBirthday($conn, $email, $birthday){
         return true;
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -311,7 +311,7 @@ function updatePassword($conn, $email, $password){
         return true;
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -335,7 +335,7 @@ function updateAvatar($conn, $email, $avatar){
         return true;
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -363,7 +363,7 @@ function insertToken($conn, $email, $token, $expiration_date){
         return true;
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -400,7 +400,7 @@ function checkToken($conn, $token){
         }
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -428,7 +428,7 @@ function resetPass($conn, $token, $password, $email){
         return true;
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -454,7 +454,7 @@ function removeToken($conn, $email){
         return true;
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -482,7 +482,7 @@ function insertVerifToken($conn, $email, $token){
         return true;
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -514,7 +514,7 @@ function checkVerified($conn, $email){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -545,7 +545,7 @@ function checkVerifToken($conn, $token){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -570,7 +570,7 @@ function verifAccount($conn, $token){
         return true;
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -598,7 +598,7 @@ function insertSessionToken($conn, $email, $token, $expiration_date){
         return true;
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -646,7 +646,7 @@ function checkSessionToken($conn, $token, $page = null){
         }
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -678,7 +678,7 @@ function getSessionExpiration($conn, $token){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -714,7 +714,7 @@ function removeSessionToken($conn, $email, $token = null){
         return true;
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -754,7 +754,7 @@ function getAllSeries($conn, $sorting, $maxrow){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 
 }
@@ -865,7 +865,7 @@ function getFilteredSeries($conn, $seasons, $category, $duration, $year, $sortin
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -895,7 +895,7 @@ function getAverageDuration($conn, $id_serie){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -925,7 +925,7 @@ function getSerieDetails($db, $serieId){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -955,7 +955,7 @@ function getNumberOfSeasons($conn, $id_serie){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -975,7 +975,7 @@ function getSeriesLength($conn){
         return $row['COUNT(*)'];
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -1057,7 +1057,7 @@ function getFilteredSeriesLength($conn, $seasons, $category, $duration, $year){
 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -1096,7 +1096,7 @@ function getSeasonEpisodes($conn, $id_serie, $season){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 
 }
@@ -1156,7 +1156,7 @@ function getAllMovies($conn, $sorting, $maxrow){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 
 }
@@ -1259,7 +1259,7 @@ function getFilteredMovies($conn, $category, $duration, $year, $sorting, $maxrow
 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -1289,7 +1289,7 @@ function getMovieDetails($conn, $id_movie){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -1309,7 +1309,7 @@ function getMoviesLength($conn){
         return $row['COUNT(*)'];
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -1382,7 +1382,7 @@ function getFilteredMoviesLength($conn, $category, $duration, $year){
         }
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -1437,7 +1437,7 @@ function getTotalTime($conn, $email){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -1484,7 +1484,7 @@ function getMoviesWatched($conn, $email){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -1531,7 +1531,7 @@ function getEpisodesWatched($conn, $email){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -1559,7 +1559,7 @@ function checkMovieSeen($conn, $email, $id_movie){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -1582,7 +1582,7 @@ function addMovieSeen($conn, $email, $id_movie){
         return true;
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -1606,7 +1606,7 @@ function deleteMovieSeen($conn, $email, $id_movie){
         return true;
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -1636,7 +1636,7 @@ function checkSerieFullyWatched($conn, $email, $id_serie){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -1667,7 +1667,7 @@ function checkEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumber
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 }
 
@@ -1692,7 +1692,7 @@ function addEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumber){
         return true;
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -1718,7 +1718,7 @@ function deleteEpisodeSeen($conn, $email, $serieId, $episodeNumber, $seasonNumbe
         return true;
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -1753,7 +1753,7 @@ function getMoviesSeen($conn, $email){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 
 }
@@ -1788,7 +1788,7 @@ function getSeriesSeen($conn, $email){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 
 }
@@ -1821,7 +1821,7 @@ function getNumberOfEpisodesSeen($conn, $email, $id_serie){
         } 
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return false;
     }
 
 }

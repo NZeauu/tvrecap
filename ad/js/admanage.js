@@ -3,6 +3,11 @@ import { cookieCheck, setUserName, getAvatar, disconnect } from "./mainContent.j
 // Check if the user is connected
 setInterval(cookieCheck, 1000);
 
+function isValidImagePath(path) {
+    // Check if the path is a valid image path
+    return /^(\.\.\/\.\.\/)?img\/Covers\/(movies|series)\/[a-zA-Z0-9_-]+\.(jpg|jpeg|png)$/i.test(path);
+}
+
 // -------------------------------------------------------
 // ---------------------- CHOICE -------------------------
 // -------------------------------------------------------
@@ -214,23 +219,6 @@ function getMovies() {
 
     var sorting = $("#sorting-select").val();
 
-    switch (sorting) {
-        case "title_asc":
-            sorting = "nom ASC";
-            break;
-        case "title_desc":
-            sorting = "nom DESC";
-            break;
-        case "release_date_asc":
-            sorting = "date_sortie ASC";
-            break;
-        case "release_date_desc":
-            sorting = "date_sortie DESC";
-            break;
-        default:
-            break;
-    }
-
     $.ajax({
         url: "https://tvrecap.epeigne.fr/ad/php/admanage.php/getMovies",
         method: "GET",
@@ -258,23 +246,6 @@ function getSeries() {
     window.scrollTo(0, 0);
 
     var sorting = $("#sorting-select").val();
-
-    switch (sorting) {
-        case "title_asc":
-            sorting = "nom ASC";
-            break;
-        case "title_desc":
-            sorting = "nom DESC";
-            break;
-        case "release_date_asc":
-            sorting = "date_sortie ASC";
-            break;
-        case "release_date_desc":
-            sorting = "date_sortie DESC";
-            break;
-        default:
-            break;
-    }
 
     $.ajax({
         url: "https://tvrecap.epeigne.fr/ad/php/admanage.php/getSeries",
@@ -309,29 +280,105 @@ function displayContent(data, type) {
 
             // If the type is a serie
             if (type == "serie") {
-                $("#results").append(
-                    "<div class='db-data'>" +
-                    "<img src='../" + data[i].image + "' alt='poster' style='width:100px;height:150px;border-radius:10px'>" +
-                    "<div class='serie-content'>" +
-                    "<section style='font-weight:bold'>" + data[i].nom + " (<span>" + data[i].date_sortie + "</span>)" + "</section>" +
-                    "<section>" + data[i].categorie + "</section>" +
-                    "<section>" + data[i].synopsis + "</section>" +
-                    "<button id='" + data[i].id + "' class='delete-serie'>Supprimer</button>" +
-                    "</div>" +
-                    "</div>"
-                );
+                // $("#results").append(
+                //     "<div class='db-data'>" +
+                //     "<img src='../" + data[i].image + "' alt='poster' style='width:100px;height:150px;border-radius:10px'>" +
+                //     "<div class='serie-content'>" +
+                //     "<section style='font-weight:bold'>" + data[i].nom + " (<span>" + data[i].date_sortie + "</span>)" + "</section>" +
+                //     "<section>" + data[i].categorie + "</section>" +
+                //     "<section>" + data[i].synopsis + "</section>" +
+                //     "<button id='" + data[i].id + "' class='delete-serie'>Supprimer</button>" +
+                //     "</div>" +
+                //     "</div>"
+                // );
+                
+                let div = $("<div>").addClass("db-data");
+                
+                let imgPath = "../" + data[i].image;
+
+                if (isValidImagePath(imgPath)) {
+                    var img = $("<img>").attr("src", imgPath).attr("alt", "poster").css({
+                        "width": "100px",
+                        "height": "150px",
+                        "border-radius": "10px"
+                    });
+                }
+                else {
+                    console.log("Invalid image path: " + imgPath);
+                    var img = $("<img>").attr("src", "https://tvrecap.epeigne.fr/ad/img/noimg.png").attr("alt", "poster").css({
+                        "width": "100px",
+                        "height": "150px",
+                        "border-radius": "10px"
+                    });
+                }
+                
+                
+
+                let div2 = $("<div>").addClass("serie-content");
+                let section = $("<section>").css("font-weight", "bold").text(data[i].nom + " (");
+                let span = $("<span>").text(data[i].date_sortie);
+                section.append(span);
+                section.append(")");
+                let section2 = $("<section>").text(data[i].categorie);
+                let section3 = $("<section>").text(data[i].synopsis);
+                let button = $("<button>").attr("id", data[i].id).addClass("delete-serie").text("Supprimer");
+
+                div2.append(section);
+                div2.append(section2);
+                div2.append(section3);
+                div2.append(button);
+                div.append(img);
+                div.append(div2);
+                $("#results").append(div);
             } else {
-                $("#results").append(
-                    "<div class='db-data'>" +
-                    "<img src='../" + data[i].image + "' alt='poster' style='width:100px;height:150px;border-radius:10px'>" +
-                    "<div class='movie-content'>" +
-                    "<section style='font-weight:bold'>" + data[i].nom + " (<span>" + data[i].date_sortie + "</span>)" + "</section>" +
-                    "<section>" + data[i].categorie + "</section>" +
-                    "<section>" + data[i].synopsis + "</section>" +
-                    "<button id='" + data[i].id + "' class='delete-movie'>Supprimer</button>" +
-                    "</div>" +
-                    "</div>"
-                );
+                // $("#results").append(
+                //     "<div class='db-data'>" +
+                //     "<img src='../" + data[i].image + "' alt='poster' style='width:100px;height:150px;border-radius:10px'>" +
+                //     "<div class='movie-content'>" +
+                //     "<section style='font-weight:bold'>" + data[i].nom + " (<span>" + data[i].date_sortie + "</span>)" + "</section>" +
+                //     "<section>" + data[i].categorie + "</section>" +
+                //     "<section>" + data[i].synopsis + "</section>" +
+                //     "<button id='" + data[i].id + "' class='delete-movie'>Supprimer</button>" +
+                //     "</div>" +
+                //     "</div>"
+                // );
+
+                let div = $("<div>").addClass("db-data");
+
+                let imgPath = "../" + data[i].image;
+
+                if (isValidImagePath(imgPath)) {
+                    var img = $("<img>").attr("src", imgPath).attr("alt", "poster").css({
+                        "width": "100px",
+                        "height": "150px",
+                        "border-radius": "10px"
+                    });
+                }
+                else {
+                    console.log("Invalid image path: " + imgPath);
+                    var img = $("<img>").attr("src", "https://tvrecap.epeigne.fr/ad/img/noimg.png").attr("alt", "poster").css({
+                        "width": "100px",
+                        "height": "150px",
+                        "border-radius": "10px"
+                    });
+                }
+
+                let div2 = $("<div>").addClass("movie-content");
+                let section = $("<section>").css("font-weight", "bold").text(data[i].nom + " (");
+                let span = $("<span>").text(data[i].date_sortie);
+                section.append(span);
+                section.append(")");
+                let section2 = $("<section>").text(data[i].categorie);
+                let section3 = $("<section>").text(data[i].synopsis);
+                let button = $("<button>").attr("id", data[i].id).addClass("delete-movie").text("Supprimer");
+
+                div2.append(section);
+                div2.append(section2);
+                div2.append(section3);
+                div2.append(button);
+                div.append(img);
+                div.append(div2);
+                $("#results").append(div);
             }
         }
     }

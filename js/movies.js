@@ -3,6 +3,10 @@ import { cookieCheck, setUserName, getAvatar, disconnect } from "./mainContent.j
 // Check if the cookie is set every second
 setInterval(cookieCheck, 1000);
 
+function isValidImagePath(path) {
+    // Check if the path is a valid image path
+    return /^(\.\.\/)?img\/Covers\/movies\/[a-zA-Z0-9_-]+\.(jpg|jpeg|png)$/i.test(path);
+}
 
 // -------------------------------------------------------
 // -------------------- FILTERS --------------------------
@@ -254,8 +258,14 @@ function createCard(data){
         const movieCardImg = $('<div>').attr('id', 'movie-card-img' + i);
         movieCardImg.attr('class', 'movie-card-img');
 
-        const image = $('<img>').attr('src', data[i].image);
-        movieCardImg.append(image);
+        const imgPath = data[i].image;
+        if (isValidImagePath(imgPath)) {
+            const image = $('<img>').attr('src', imgPath);
+            movieCardImg.append(image);
+        } else {
+            const image = $('<img>').attr('src', '../img/noimg.png');
+            movieCardImg.append(image);
+        }
 
         const movieCardInfo = $('<div>').attr('class', 'movie-card-info');
 
@@ -295,8 +305,16 @@ function createCard(data){
 
         const movieDetailsButton = $('<div>').attr('class', 'movie-details-but');
         const detailsButton = $('<button>').attr('class', 'movie-details-button').text('Détails');
-        detailsButton.attr('onclick', 'window.location.href = "https://tvrecap.epeigne.fr/movieDetails?id=' + data[i].id + '";');
+        // detailsButton.attr('onclick', 'window.location.href = "https://tvrecap.epeigne.fr/movieDetails?id=' + data[i].id + '";');
         detailsButton.attr('value', data[i].id);
+        detailsButton.on('click', function() {
+            const movieId = $(this).val(); // Get the movie ID
+            if (/^\d+$/.test(movieId)) {  // Check if the ID is a number
+                window.location.href = `https://tvrecap.epeigne.fr/movieDetails?id=${movieId}`;
+            } else {
+                console.error("Invalid movie ID:", movieId);
+            }
+        });
         movieDetailsButton.append(detailsButton);
 
         bottomCard.append(movieCardDetails);

@@ -93,7 +93,7 @@ function checkContent($conn, $title, $year, $type) {
 
         return $count;
     } catch(Exception $e) {
-        echo "Error: " . $e->getMessage();
+        // 
         return false;
     
     }
@@ -131,7 +131,7 @@ function addMovie($db, $title, $year, $genre, $synopsis, $duration, $realisator,
         $stmt->close();
         return true;
     } catch(Exception $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -167,7 +167,7 @@ function addSerie($db, $title, $year, $genre, $synopsis, $realisator, $actors, $
         $stmt->close();
         return true;
     } catch(Exception $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -188,7 +188,7 @@ function getLastSerie($conn) {
         $conn->close();
         return $row['nom'];
     } catch(Exception $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }    
 }
@@ -222,7 +222,7 @@ function getUsers($conn) {
         
 
     } catch(Exception $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -244,7 +244,7 @@ function deleteUser($conn, $email) {
         $stmt->close();
         return true;
     } catch(Exception $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -268,7 +268,7 @@ function updateUser($conn, $userId, $email, $username) {
         $stmt->close();
         return true;
     } catch(Exception $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -292,7 +292,7 @@ function getMoviesLength($conn) {
         $conn->close();
         return $row['COUNT(*)'];
     } catch(Exception $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -312,7 +312,7 @@ function getSeriesLength($conn) {
         $conn->close();
         return $row['COUNT(*)'];
     } catch(Exception $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -329,7 +329,22 @@ function getSeriesLength($conn) {
  */
 function getMovies($conn, $maxRow, $sorting) {
     try{
-        $sql = "SELECT * FROM Films ORDER BY $sorting LIMIT ?, 25";
+        switch($sorting) {
+            case "title_asc":
+                $sql = "SELECT * FROM Films ORDER BY nom ASC LIMIT ?, 25";
+                break;
+            case "title_desc":
+                $sql = "SELECT * FROM Films ORDER BY nom DESC LIMIT ?, 25";
+                break;
+            case "release_date_asc":
+                $sql = "SELECT * FROM Films ORDER BY date_sortie ASC LIMIT ?, 25";
+                break;
+            case "release_date_desc":
+                $sql = "SELECT * FROM Films ORDER BY date_sortie DESC LIMIT ?, 25";
+                break;
+            default:
+                $sql = "SELECT * FROM Films ORDER BY nom ASC LIMIT ?, 25";
+        }
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $maxRow);
         $stmt->execute();
@@ -347,7 +362,7 @@ function getMovies($conn, $maxRow, $sorting) {
         
 
     } catch(Exception $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -363,7 +378,22 @@ function getMovies($conn, $maxRow, $sorting) {
  */
 function getSeries($conn, $maxRow, $sorting) {
     try{
-        $sql = "SELECT * FROM Séries ORDER BY $sorting LIMIT ?, 25";
+        switch($sorting) {
+            case "title_asc":
+                $sql = "SELECT * FROM Séries ORDER BY nom ASC LIMIT ?, 25";
+                break;
+            case "title_desc":
+                $sql = "SELECT * FROM Séries ORDER BY nom DESC LIMIT ?, 25";
+                break;
+            case "release_date_asc":
+                $sql = "SELECT * FROM Séries ORDER BY date_sortie ASC LIMIT ?, 25";
+                break;
+            case "release_date_desc":
+                $sql = "SELECT * FROM Séries ORDER BY date_sortie DESC LIMIT ?, 25";
+                break;
+            default:
+                $sql = "SELECT * FROM Séries ORDER BY nom ASC LIMIT ?, 25";
+        }
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $maxRow);
         $stmt->execute();
@@ -381,7 +411,7 @@ function getSeries($conn, $maxRow, $sorting) {
         
 
     } catch(Exception $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -404,7 +434,7 @@ function deleteMovie($conn, $id) {
 
         return true;
     } catch(Exception $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -427,7 +457,7 @@ function deleteSerie($conn, $id) {
         $stmt->close();
         return true;
     } catch(Exception $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -450,7 +480,7 @@ function deleteEpisodes($conn, $id) {
 
         return true;
     } catch(Exception $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -485,7 +515,7 @@ function searchMovie($conn, $value) {
         
 
     } catch(Exception $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }
@@ -520,7 +550,7 @@ function searchSerie($conn, $value) {
         
 
     } catch(Exception $e) {
-        echo "Error: " . $e->getMessage();
+        
         return false;
     }
 }

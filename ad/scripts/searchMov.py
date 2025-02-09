@@ -1,7 +1,7 @@
 from tmdbv3api import TMDb
 
 tmdb = TMDb()
-tmdb.api_key = '7211e6e46ba968b31e37cd8632cd1205'
+tmdb.api_key = 'YOUR_API_KEY'
 
 tmdb.language = 'fr'
 

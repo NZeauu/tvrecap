@@ -94,30 +94,21 @@ if($requestResource == "updateepstatus"){
 
     $data = false;
     
-    if($requestMethod == "PUT"){
+    if($requestMethod == "POST"){
 
-        parse_str(file_get_contents('php://input'), $_PUT);
+        // parse_str(file_get_contents('php://input'), $_PUT);
 
-        $episodeNumber = $_PUT['episodeNumber'];
-        $seasonNumber = $_PUT['seasonNumber'];
-        $userMail = $_PUT['userMail'];
-        $serieId = $_PUT['serieId'];
+        $episodeNumber = $_POST['episodeNumber'];
+        $seasonNumber = $_POST['seasonNumber'];
+        $userMail = $_POST['userMail'];
+        $serieId = $_POST['serieId'];
+
+        if ($_POST['status'] == "not-seen") {
+            $data = addEpisodeSeen($db, $userMail, $serieId, $episodeNumber, $seasonNumber);
+        } elseif ($_POST['status'] == "seen") {
+            $data = deleteEpisodeSeen($db, $userMail, $serieId, $episodeNumber, $seasonNumber);
+        }
        
-        $data = addEpisodeSeen($db, $userMail, $serieId, $episodeNumber, $seasonNumber);
-
-    }
-
-    if($requestMethod == "DELETE"){
-
-        parse_str(file_get_contents('php://input'), $_DELETE);
-
-        $episodeNumber = $_DELETE['episodeNumber'];
-        $seasonNumber = $_DELETE['seasonNumber'];
-        $userMail = $_DELETE['userMail'];
-        $serieId = $_DELETE['serieId'];
-
-        $data = deleteEpisodeSeen($db, $userMail, $serieId, $episodeNumber, $seasonNumber);
-
     }
 
 }
