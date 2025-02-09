@@ -454,7 +454,13 @@ function createValidForm(title, year, duration, synopsis, coverURL, actors, genr
     }
     else {
         genreDiv.append("<label for='mov-genre'>Genre: </label>");
-        let genreDivText = $("<input>").attr("type", "text").attr("id", "mov-genre").attr("name", "mov-genre").attr("value", genres).attr("required", "disabled");
+        let genreDivText = $("<input>").attr({
+            type: "text",
+            id: "mov-genre",
+            name: "mov-genre",
+            required: true,
+            disabled: true 
+        }).val(genres); 
         genreDiv.append(genreDivText);
         rightContent.append(genreDiv);
     }
@@ -470,7 +476,13 @@ function createValidForm(title, year, duration, synopsis, coverURL, actors, genr
     else {
         actorsDiv.attr("class", "valid-actors");
         actorsDiv.append("<label for='mov-actors'>Acteurs: </label>");
-        let actorsDivText = $("<input>").attr("type", "text").attr("id", "mov-actors").attr("name", "mov-actors").attr("value", actors).attr("required", "disabled");
+        let actorsDivText = $("<input>").attr({
+            type: "text",
+            id: "mov-actors",
+            name: "mov-actors",
+            required: true,
+            disabled: true 
+        }).val(actors); 
         actorsDiv.append(actorsDivText);
         rightContent.append(actorsDiv);
     }
